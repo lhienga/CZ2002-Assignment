@@ -1,0 +1,6 @@
+public enum TYPE {
+	APPETIZER,
+	MAINCOURSE,
+	DESSERT,
+	DRINKS
+}
