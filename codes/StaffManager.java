@@ -13,10 +13,10 @@ public class StaffManager {
 
 	/**
 	 * add new staff
-	 * @param name
-	 * @param gender
-	 * @param id
-	 * @param title
+	 * @param name staff's name
+	 * @param gender staff's gender
+	 * @param id staff's ID
+	 * @param title staff's title
 	 */
 	public void addStaff(String name, char gender, int id, String title) {
 		// TODO - implement StaffManager.addStaff
@@ -32,7 +32,7 @@ public class StaffManager {
 
 	/**
 	 * remove staff
-	 * @param id
+	 * @param id staff's ID
 	 */
 	public void removeStaff(int id) {
 		// TODO - implement StaffManager.removeStaff
@@ -47,7 +47,7 @@ public class StaffManager {
 
 	/**
 	 * find staff by id
-	 * @param id
+	 * @param id ID of staff we want to find
 	 * @return staff or null
 	 */
 	public Staff getStaffByID(int id) {
@@ -61,7 +61,7 @@ public class StaffManager {
 	}
 	/**
 	 * get all staff
-	 * @return staffs
+	 * @return list of staffs
 	 */
 	public ArrayList<Staff> getAllStaff() {
 		// TODO - implement StaffManager.getAllStaff
@@ -70,7 +70,7 @@ public class StaffManager {
 
 	/**
 	 * print staff by ID
-	 * @param id
+	 * @param id ID of staff whose info we want to print
 	 */
 	public void printStaffByID(int id) {
 		// TODO - implement StaffManager.printStaffByID
@@ -96,11 +96,34 @@ public class StaffManager {
 
 	/**
 	 * update staff information
-	 * @param id
+	 * @param id ID of staff whose info we want to update
 	 */
 	public void updateStaffInfo(int id) {
 		// TODO - implement StaffManager.updateStaffInfo
-		throw new UnsupportedOperationException();
+		Staff curStaff = getStaffByID(id);
+		if (curStaff==null){
+			System.out.println("Staff ID does not exist!");
+			return;
+		}
+		System.out.println("Choose staff information to update: ");
+		System.out.println("(1) Staff name");
+		System.out.println("(2) Staff gender");
+		System.out.println("(3) Staff title");
+		int choice = UserInput.nextInt("Enter your choice", 1, 3);
+		switch(choice){
+			case 1:
+			String newName = UserInput.getString("Enter staff's new name:");
+			curStaff.setName(newName);
+			break;
+			case 2:
+			char gender = UserInput.getGender("Enter staff's new gender:");
+			curStaff.setGender(gender);
+			break;
+			case 3: 
+			String newTitle = UserInput.getString("Enter staff's new title");
+			curStaff.setJobTitle(newTitle);
+			break;
+		}
 	}
 
 }

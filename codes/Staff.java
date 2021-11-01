@@ -7,10 +7,10 @@ public class Staff {
 
 	/**
 	 * Staff constructor 
-	 * @param name 
-	 * @param gender 'M' or 'F'
-	 * @param id
-	 * @param title
+	 * @param name Staff's name
+	 * @param gender 'M' for Male or 'F' for Female
+	 * @param id Staff's ID
+	 * @param title Staff's Title
 	 */
 	public Staff(String name, char gender, int id, String title) {
 		// TODO - implement Staff.Staff
@@ -36,7 +36,7 @@ public class Staff {
 
 	/**
 	 * set staff name
-	 * @param name
+	 * @param name staff's name
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -61,7 +61,7 @@ public class Staff {
 
 	/**
 	 * set staff's gender 'M' or 'F'
-	 * @param gender
+	 * @param gender staff's gender
 	 */
 	public void setGender(char gender) {
 		this.gender = gender;
@@ -69,7 +69,7 @@ public class Staff {
 
 	/**
 	 * set staff ID
-	 * @param id
+	 * @param id staff's id
 	 */
 	public void setID(int id) {
 		// TODO - implement Staff.setID
@@ -78,7 +78,7 @@ public class Staff {
 
 	/**
 	 * set staff job title
-	 * @param title
+	 * @param title staff's title
 	 */
 	public void setJobTitle(String title) {
 		this.jobTitle = title;
