@@ -3,6 +3,7 @@ public class Table {
 	private int tableid;
 	private int capacity;
 	private STATUS status;
+	private boolean smokingOrNot;
 
 	/**
 	 * 
@@ -18,7 +19,10 @@ public class Table {
 		// TODO - implement Table.getTableId
 		throw new UnsupportedOperationException();
 	}
-
+	public boolean getSmoking() {
+		// TODO - implement Table.getTableId
+		throw new UnsupportedOperationException();
+	}
 	public int getCapacity() {
 		return this.capacity;
 	}

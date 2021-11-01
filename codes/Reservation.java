@@ -1,95 +1,83 @@
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
+
 public class Reservation {
 
-	private Date date;
-	private Date bookingTime;
+	private Calendar bookingTime;
 	private int numOfPax;
 	private String name;
 	private int contact;
-	private Date expiryTime;
-	private boolean smokingOrNot;
-	private int tableCapacity;
+	private Calendar expiryTime;
 	public int EXPIRYDURATION = 30;
+	private int tableid;
 
 	/**
-	 * 
-	 * @param date
+	 * constructor of reservation - 1 contact number can only book 1 reservation
 	 * @param bookTime
 	 * @param numOfPax
 	 * @param name
 	 * @param contact
 	 * @param smoking
 	 */
-	public Reservation(Date date, Date bookTime, int numOfPax, String name, int contact, boolean smoking) {
+	public Reservation(Calendar bookTime, int numOfPax, String name, int contact, int tableid) {
 		// TODO - implement Reservation.Reservation
-		throw new UnsupportedOperationException();
+		this.bookingTime = bookTime;
+		this.numOfPax = numOfPax;
+		this.name = name;
+		this.contact = contact;
+		this.tableid = tableid;
 	}
+
 
 	/**
-	 * 
-	 * @param contact
+	 * get booking time of reservation
+	 * @return booking time
 	 */
-	public boolean IsTableExpired(int contact) {
-		// TODO - implement Reservation.IsTableExpired
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * 
-	 * @param numOfPax
-	 */
-	public int getTableCapacity(int numOfPax) {
-		return this.tableCapacity;
-	}
-
-	public Date getDate() {
-		return this.date;
-	}
-
-	public Date getBookingTime() {
+	public Calendar getBookingTime() {
 		return this.bookingTime;
 	}
 
+	/**
+	 * get number of customers
+	 * @return number of customers
+	 */
 	public int getNumOfPax() {
 		return this.numOfPax;
 	}
 
+	/**
+	 * get customer's name
+	 * @return customer's name
+	 */
 	public String getName() {
 		return this.name;
 	}
 
+	/**
+	 * get customer's contact
+	 * @return customer's contact
+	 */
 	public int getContact() {
 		return this.contact;
 	}
 
-	public Date getExpiryTime() {
+	/**
+	 * get expiry time
+	 * @return expiry time
+	 */
+	public Calendar getExpiryTime() {
 		return this.expiryTime;
 	}
 
-	public boolean getSmoking() {
-		// TODO - implement Reservation.getSmoking
-		throw new UnsupportedOperationException();
-	}
-
 	/**
-	 * 
+	 * set booking time
 	 * @param date
 	 */
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	/**
-	 * 
-	 * @param date
-	 */
-	public void setBookingTime(Date date) {
+	public void setBookingTime(Calendar date) {
 		this.bookingTime = date;
 	}
 
 	/**
-	 * 
+	 * set number of customers
 	 * @param num
 	 */
 	public void setNumOfPax(int num) {
@@ -97,7 +85,7 @@ public class Reservation {
 	}
 
 	/**
-	 * 
+	 * set customer's name
 	 * @param name
 	 */
 	public void setName(String name) {
@@ -105,7 +93,7 @@ public class Reservation {
 	}
 
 	/**
-	 * 
+	 * set customer's contact number
 	 * @param contact
 	 */
 	public void setContact(int contact) {
@@ -113,20 +101,29 @@ public class Reservation {
 	}
 
 	/**
-	 * 
+	 * set reservation expiry time
 	 * @param date
 	 */
-	public void setExpiryTime(Date date) {
+	public void setExpiryTime(Calendar date) {
 		this.expiryTime = date;
 	}
 
 	/**
-	 * 
-	 * @param smoking
+	 * get table id of the reservation
+	 * @return table id
 	 */
-	public void setSmoking(boolean smoking) {
-		// TODO - implement Reservation.setSmoking
-		throw new UnsupportedOperationException();
+	public int getTableID() {
+		// TODO - implement Reservation.getTableID
+		return this.tableid;
+	}
+
+	/**
+	 * set table id for reservation
+	 * @param tableid
+	 */
+	public void setTableID(int tableid) {
+		// TODO - implement Reservation.setTableID
+		this.tableid = tableid;
 	}
 
 }

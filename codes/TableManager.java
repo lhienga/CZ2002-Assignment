@@ -9,7 +9,7 @@ public class TableManager {
 		throw new UnsupportedOperationException();
 	}
 
-	public ArrayList<Table> getAvaliableTables() {
+	public ArrayList<Table> getAvailableTables() {
 		// TODO - implement TableManager.getAvaliableTables
 		throw new UnsupportedOperationException();
 	}
