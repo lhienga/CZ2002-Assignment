@@ -1,75 +1,83 @@
-import java.util.ArrayList; // import the ArrayList class
+import java.util.ArrayList;
+
 public abstract class MenuItem {
 
-	public MenuItem() {
-		// TODO - implement MenuItem.MenuItem
-		throw new UnsupportedOperationException();
-	}
-
-	public String getName() {
-		// TODO - implement MenuItem.getName
-		throw new UnsupportedOperationException();
-	}
-
-	public double getPrice() {
-		// TODO - implement MenuItem.getPrice
-		throw new UnsupportedOperationException();
-	}
-
-	public String getDesc() {
-		// TODO - implement MenuItem.getDesc
-		throw new UnsupportedOperationException();
-	}
-
+	/**
+	 * default constructor for abstract class MenuItem
+	 */
+	public MenuItem() {}
+	
+	/**
+	 * abstract getName method
+	 * @return name of MenuItem
+	 */
+	public abstract String getName();
+	
+	/**
+	 * abstract getPrice method
+	 * @return price of MenuItem
+	 */
+	public abstract double getPrice();
+	
+	/**
+	 * abstract getDesc method
+	 * @return description of MenuItem
+	 */
+	public abstract String getDesc();
+	
+	/**
+	 * getPackage method
+	 * to be overwritten by other classes
+	 * @return null
+	 */
 	public ArrayList<Food> getPackage() {
-		// TODO - implement MenuItem.getPackage
-		throw new UnsupportedOperationException();
+		return null;
 	}
 
+	/**
+	 * getFood method
+	 * to be overwritten by other classes
+	 * @return null
+	 */
 	public Food getFood() {
-		// TODO - implement MenuItem.getFood
-		throw new UnsupportedOperationException();
+		return null;
 	}
+	
+	/**
+	 * getType method
+	 * to be overwritten by other classes
+	 * @return null
+	 */
 
-	public TYPE getType() {
-		// TODO - implement MenuItem.getType
-		throw new UnsupportedOperationException();
+	public Food.TYPE getType() {
+		return null;
 	}
 
 	/**
-	 * 
-	 * @param name
+	 * abstract setName method
+	 * @param name name of MenuItem
 	 */
-	public void setName(String name) {
-		// TODO - implement MenuItem.setName
-		throw new UnsupportedOperationException();
-	}
+	public abstract void setName(String name);
 
 	/**
-	 * 
-	 * @param price
+	 * abstract setPrice method
+	 * @param price price of MenuItem
 	 */
-	public void setPrice(double price) {
-		// TODO - implement MenuItem.setPrice
-		throw new UnsupportedOperationException();
-	}
+	public abstract void setPrice(double price);
+	
+	/**
+	 * abstract setDesc method
+	 * @param desc description of MenuItem
+	 */
+	public abstract void setDesc(String desc);
 
 	/**
-	 * 
-	 * @param desc
+	 * setType method
+	 * to be overwritten by other classes
+	 * @param type type of MenuItem
 	 */
-	public void setDesc(String desc) {
-		// TODO - implement MenuItem.setDesc
-		throw new UnsupportedOperationException();
-	}
+	public void setType(Food.TYPE type) {
 
-	/**
-	 * 
-	 * @param type
-	 */
-	public void setType(TYPE type) {
-		// TODO - implement MenuItem.setType
-		throw new UnsupportedOperationException();
 	}
 
 }
