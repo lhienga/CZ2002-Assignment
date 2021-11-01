@@ -1,9 +1,11 @@
+
 public class Staff {
 
 	private String name;
 	private char gender;
 	private int staffID;
-	private String jobTitle;
+	private JOB jobTitle;
+	public enum JOB {MANAGER,CASHIER,PART_TIME,FULL_TIME;}
 
 	/**
 	 * Staff constructor 
@@ -12,7 +14,7 @@ public class Staff {
 	 * @param id Staff's ID
 	 * @param title Staff's Title
 	 */
-	public Staff(String name, char gender, int id, String title) {
+	public Staff(String name, char gender, int id, JOB title) {
 		// TODO - implement Staff.Staff
 		this.name = name;
 		this.gender = gender;
@@ -55,7 +57,7 @@ public class Staff {
 	 * get staff's job title
 	 * @return job title
 	 */
-	public String getJobTitle() {
+	public JOB getJobTitle() {
 		return this.jobTitle;
 	}
 
@@ -80,7 +82,7 @@ public class Staff {
 	 * set staff job title
 	 * @param title staff's title
 	 */
-	public void setJobTitle(String title) {
+	public void setJobTitle(JOB title) {
 		this.jobTitle = title;
 	}
 
