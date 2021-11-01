@@ -4,17 +4,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Calendar;
 import java.text.ParseException;
+
 public class UserInput {
 	
-	public static void main(String[] args) { 
-		int num = UserInput.getContact("Enter a 8 digit contact number:");
-		System.out.println("The number is: "+num);
-	}
 	private static Scanner sc = new Scanner(System.in);
 
 	/**
 	 * Get an integer from user
-	 * @param inMsg Prompt displayed for users, Error message showed when input entered is not an integer
+	 * Error message showed when input entered is not an integer
+	 * @param inMsg Prompt displayed for users
 	 * @returnEntered Integer
 	 */
 	public static int nextInt(String inMsg) {
@@ -24,7 +22,7 @@ public class UserInput {
 		do{
 			try{
 				valid = true;
-				System.out.print(inMsg+" ");
+				System.out.print(inMsg);
 				n = sc.nextInt();
 			}catch(InputMismatchException e){
 				valid = false;
@@ -39,7 +37,8 @@ public class UserInput {
 	
 	/**
 	 * Get an integer from user within a range of numbers
-	 * @param inMsg Prompt displayed for users, Error message showed when input entered is not an integer or not within the range
+	 * Error message showed when input entered is not an integer or not within the range
+	 * @param inMsg Prompt displayed for users
 	 * @param lLimit Lower limit of accepted value, inclusive
 	 * @param uLimit Upper limit of accepted value, inclusive
 	 * @return Entered Integer
@@ -52,7 +51,7 @@ public class UserInput {
 		do{
 			try{
 				valid = true;
-				System.out.print(inMsg+" ");
+				System.out.print(inMsg);
 				n = sc.nextInt();
 				valid = (n >= lLimit && n <= uLimit);
 				if(!valid){
@@ -73,7 +72,8 @@ public class UserInput {
 	
 	/**
 	 * Get a double from user
-	 * @param inMsg Prompt displayed for users, Error message showed when input entered is not an integer
+	 * Error message showed when input entered is not an integer
+	 * @param inMsg Prompt displayed for users
 	 * @return Entered Double
 	 */
 	public static double nextDouble(String inMsg){
@@ -84,7 +84,7 @@ public class UserInput {
 		do{
 			try{
 				valid = true;
-				System.out.print(inMsg+" ");
+				System.out.print(inMsg);
 				n = sc.nextDouble();
 			}catch(InputMismatchException e){
 				valid = false;
@@ -99,8 +99,44 @@ public class UserInput {
 	}
 	
 	/**
+	 * Get an integer from user within a range of numbers
+	 * Error message showed when input entered is not a double or not within the range
+	 * @param inMsg Prompt displayed for users
+	 * @param lLimit Lower limit of accepted value, inclusive
+	 * @param uLimit Upper limit of accepted value, inclusive
+	 * @return
+	 */
+	public static double nextDouble(String inMsg, double lLimit, double uLimit){
+		
+		double n = 0;
+		boolean valid = true;
+		
+		do{
+			try{
+				valid = true;
+				System.out.print(inMsg);
+				n = sc.nextDouble();
+				valid = (n >= lLimit && n <= uLimit);
+				if(!valid){
+					System.out.println("Please enter a double between " + lLimit + " and " + uLimit + " (inclusive).");
+					sc.nextLine();	// get dummy line
+				}
+					
+			}catch(InputMismatchException e){
+				valid = false;
+				sc.nextLine();	// get dummy line
+				System.out.println("Error: expected a double number value\n");
+			}
+		} while(!valid);
+		
+		sc.nextLine();	// get dummy line
+		return n;
+	}
+	
+	/**
 	 * Get input for Gender from user
-	 * @param inMsg Prompt displayed for users, Error message if input is not M or F
+	 * Error message if input is not M or F
+	 * @param inMsg Prompt displayed for users
 	 * @return Entered Gender
 	 */
 	public static char getGender(String inMsg){
@@ -110,7 +146,7 @@ public class UserInput {
 		
 		do{
 			valid = true;
-			System.out.print(inMsg+" ");
+			System.out.print(inMsg);
 			n = sc.next().charAt(0);
 			if (Character.compare(n, 'M') != 0 && Character.compare(n, 'F') != 0) {
 				valid = false;
@@ -128,7 +164,8 @@ public class UserInput {
 	
 	/**
 	 * Get input String from user
-	 * @param inMsg Prompt displayed for users, Error message if input is not a string
+	 * Error message if input is not a string
+	 * @param inMsg Prompt displayed for users
 	 * @return Entered String
 	 */
 	public static String getString(String inMsg) {
@@ -138,7 +175,7 @@ public class UserInput {
 		do{
 			try{
 				valid = true;
-				System.out.print(inMsg+" ");
+				System.out.print(inMsg);
 				n = sc.nextLine();
 			}catch(InputMismatchException e){
 				valid = false;
@@ -150,39 +187,74 @@ public class UserInput {
 		return n;
 	}
 	
-	
+	/**
+	 * Get Food Type from user
+	 * @param inMsg Prompt displayed for users
+	 * @return Food Type
+	 */
 	public static Food.TYPE getType(String inMsg) {
-		Food.TYPE t;
+
 		int choice;
-		boolean valid = true;
-		
-				valid = true;
-				System.out.println(inMsg);
-		        System.out.println("(1) Appetizer");
-		        System.out.println("(2) Main Course");
-		        System.out.println("(3) Dessert");
-		        System.out.println("(4) Drink");
-		        System.out.println("(5) Back"); 
-		        choice = UserInput.nextInt("\n    Enter the number of your choice: ", 1, 5);
-		        switch (choice) {
-		        case 1:
-		        	return Food.TYPE.APPETIZER;
-		        	
-		        
-				case 2:
-		        	return Food.TYPE.MAINCOURSE;
 
-				case 3:
-		        	return Food.TYPE.DESSERT;
-		        
-				case 4:
-			    	return Food.TYPE.DRINK;
+		System.out.println(inMsg);
+        System.out.println("(1) Appetizer");
+        System.out.println("(2) Main Course");
+        System.out.println("(3) Dessert");
+        System.out.println("(4) Drink");
+        choice = UserInput.nextInt("Enter the number of your choice: ", 1, 4);
+        switch (choice) {
+        case 1:
+        	return Food.TYPE.APPETIZER;
+        	
+        
+		case 2:
+        	return Food.TYPE.MAINCOURSE;
 
-				case 5:
-					return null;
-		        }
+		case 3:
+        	return Food.TYPE.DESSERT;
+        
+		case 4:
+	    	return Food.TYPE.DRINK;
+
+		default:
+			return null;
+        }
 			    
-		        return null;
+	}
+	
+	/**
+	 * Get Job Title from user
+	 * @param inMsg Prompt displayed for users
+	 * @return Job Title
+	 */
+	public static Staff.JOB getJobTitle(String inMsg) {
+
+		int choice;
+
+		System.out.println(inMsg);
+        System.out.println("(1) Manager");
+        System.out.println("(2) Cashier");
+        System.out.println("(3) Part-Time");
+        System.out.println("(4) Full-Time");
+        choice = UserInput.nextInt("Enter the number of your choice: ", 1, 4);
+        switch (choice) {
+        case 1:
+        	return Staff.JOB.MANAGER;
+        	
+        
+		case 2:
+        	return Staff.JOB.CASHIER;
+
+		case 3:
+        	return Staff.JOB.PART_TIME;
+        
+		case 4:
+	    	return Staff.JOB.FULL_TIME;
+
+		default:
+			return null;
+        }
+
 	}
 	
 	/**
@@ -197,7 +269,7 @@ public class UserInput {
 		do{
 			try{
 				valid = true;
-				System.out.print(inMsg+" ");
+				System.out.print(inMsg);
 				n = sc.nextInt();
 				int length = (int) (Math.log10(n) + 1);
 				if (length != 8) {
@@ -214,10 +286,12 @@ public class UserInput {
 		sc.nextLine();	// get dummy line
 		return n;
 	}
+
 	/**
 	 * Get a date time input from user
-	 * @param inMsg Prompt displayed for users, Error message showed when input entered is not in dd/mm/yy hh
-	 * @return Integer
+	 * Error message showed when input entered is not in dd/mm/yy
+	 * @param inMsg Prompt displayed for users
+	 * @return Time
 	 */
 	public static Calendar getDateTime(String inMsg) {
 		String date = "";
@@ -243,4 +317,3 @@ public class UserInput {
 		return time;
 	}
 }
-
