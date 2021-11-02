@@ -2,73 +2,112 @@
 import java.util.ArrayList;
 public class PromotionPackage extends MenuItem {
 
-	private ArrayList<Food> setpackage;
+	private ArrayList<Food> setpackage = new ArrayList<Food>();
 	private String package_desc;
 	private String package_name;
 	private double package_price;
 
-	public ArrayList<Food> getPackage() {
-		// TODO - implement PromotionPackage.getPackage
-		throw new UnsupportedOperationException();
-	}
 
 	/**
-	 * 
-	 * @param food
-	 * @param package_name
-	 * @param package_desc
-	 * @param package_price
+	 * Default constructor of PromotionPackage
+	 * with price given
+	 * @param food ArrayList of food items in package
+	 * @param package_name Package Name
+	 * @param package_desc Package Description
+	 * @param package_price Package Price
 	 */
 	public PromotionPackage(ArrayList<Food> food, String package_name, String package_desc, double package_price) {
-		// TODO - implement PromotionPackage.PromotionPackage
-		throw new UnsupportedOperationException();
+		this.setpackage = food;
+		this.package_name = package_name;
+		this.package_desc = package_desc;
+		this.package_price = package_price;
+		
 	}
-
+	
+	/**
+	 * getName() method from abstract class MenuItem
+	 * get name of promotional set package
+	 * @return promotion name
+	 */
 	public String getName() {
-		// TODO - implement PromotionPackage.getName
-		throw new UnsupportedOperationException();
+		return this.package_name;
 	}
-
+	
+	/**
+	 * getDesc() method from abstract class MenuItem
+	 * get description of promotional set package
+	 * @return promotion description
+	 */
 	public String getDesc() {
-		// TODO - implement PromotionPackage.getDesc
-		throw new UnsupportedOperationException();
-	}
-
-	public double getPrice() {
-		// TODO - implement PromotionPackage.getPrice
-		throw new UnsupportedOperationException();
+		return this.package_desc;
 	}
 
 	/**
-	 * 
-	 * @param name
+	 * getPrice() method from abstract class MenuItem
+	 * get price of promotional set package
+	 * @return price of promotional set package
+	 */
+	public double getPrice() {
+		return this.package_price;
+	}
+
+	/**
+	 * setName() method from abstract class MenuItem
+	 * set name of promotional set package
+	 * @param name Promotional set package name
 	 */
 	public void setName(String name) {
-		// TODO - implement PromotionPackage.setName
-		throw new UnsupportedOperationException();
+		this.package_name = name;
 	}
 
 	/**
-	 * 
-	 * @param desc
+	 * setDesc() method from abstract class MenuItem
+	 * set description of promotional set package
+	 * @param desc Promotional set package description
 	 */
 	public void setDesc(String desc) {
-		// TODO - implement PromotionPackage.setDesc
-		throw new UnsupportedOperationException();
+		this.package_desc = desc;
 	}
 
 	/**
-	 * 
-	 * @param price
+	 * setPrice() method from abstract class MenuItem
+	 * set price of promotional set package
+	 * @param price Promotional set package price
 	 */
 	public void setPrice(double price) {
-		// TODO - implement PromotionPackage.setPrice
-		throw new UnsupportedOperationException();
+		this.package_price = price;
 	}
 
-	public ArrayList<Food> getSet() {
-		// TODO - implement PromotionPackage.getSet
-		throw new UnsupportedOperationException();
+	/**
+	 * getPackage() overwrites method from MenuItem
+	 * @return ArrayList of food items in package
+	 */
+	public ArrayList<Food> getPackage() {
+		return this.setpackage;
+	}
+	
+	/**
+	 * Allows user to add a food item to the promotion package
+	 * @param food Food Item to be added to promotion package
+	 */
+	public void addFood(Food food) {
+		setpackage.add(food);
+		System.out.println(food.getName()+" successfully added to promotion package.");
+	}
+	
+	
+	/**
+	 * Allows user to remove a food item from the promotion package
+	 * @param food Food Item to be removed from promotion package
+	 */
+	public void removeFood(Food food) {
+		for (int j = 0; j< setpackage.size();j++) {
+			if (food == getPackage().get(j)) {
+				setpackage.remove(j);
+				System.out.println(food.getName()+" successfully removed from promotion package.");
+			}
+		}
+		
 	}
 
 }

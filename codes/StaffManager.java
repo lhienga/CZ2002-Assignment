@@ -18,7 +18,7 @@ public class StaffManager {
 	 * @param id staff's ID
 	 * @param title staff's title
 	 */
-	public void addStaff(String name, char gender, int id, String title) {
+	public void addStaff(String name, char gender, int id, Staff.JOB title) {
 		// TODO - implement StaffManager.addStaff
 		Staff curStaff = this.getStaffByID(id);
 		if (curStaff!=null){
@@ -91,6 +91,7 @@ public class StaffManager {
 		// TODO - implement StaffManager.printAllStaffs
 		for (int i = 0; i<staffs.size(); i++){
 			this.printStaffByID(staffs.get(i).getID());
+			System.out.println();
 		}
 	}
 
@@ -99,28 +100,27 @@ public class StaffManager {
 	 * @param id ID of staff whose info we want to update
 	 */
 	public void updateStaffInfo(int id) {
-		// TODO - implement StaffManager.updateStaffInfo
 		Staff curStaff = getStaffByID(id);
 		if (curStaff==null){
 			System.out.println("Staff ID does not exist!");
 			return;
 		}
-		System.out.println("Choose staff information to update: ");
+		System.out.println("\nChoose staff information to update: ");
 		System.out.println("(1) Staff name");
 		System.out.println("(2) Staff gender");
 		System.out.println("(3) Staff title");
-		int choice = UserInput.nextInt("Enter your choice", 1, 3);
+		int choice = UserInput.nextInt("\nEnter your choice ", 1, 3);
 		switch(choice){
 			case 1:
-			String newName = UserInput.getString("Enter staff's new name:");
+			String newName = UserInput.getString("\nEnter staff's new name:");
 			curStaff.setName(newName);
 			break;
 			case 2:
-			char gender = UserInput.getGender("Enter staff's new gender:");
+			char gender = UserInput.getGender("\nEnter staff's new gender:");
 			curStaff.setGender(gender);
 			break;
 			case 3: 
-			String newTitle = UserInput.getString("Enter staff's new title");
+			Staff.JOB newTitle = UserInput.getJobTitle("\nEnter staff's new title");
 			curStaff.setJobTitle(newTitle);
 			break;
 		}
