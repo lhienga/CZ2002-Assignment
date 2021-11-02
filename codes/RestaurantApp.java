@@ -11,6 +11,7 @@ public class RestaurantApp {
 
 		Menu menu = new Menu();
 		StaffManager staff = new StaffManager();
+		TableManager tables = new TableManager();
 
 		int choice = 0;
 
@@ -32,7 +33,7 @@ public class RestaurantApp {
 					manageMenu(menu);
 					break;
 				case 2:
-					//manageTable(tableManager);
+					manageTable(tables);
 					break;
 				case 3:
 					//manageOrder(orderManger, menu, tableManager, staffManager,reservationManager);
@@ -54,7 +55,7 @@ public class RestaurantApp {
 	
 
 	/**
-	 * 
+	 * manage menu
 	 * @param menu
 	 */
 	public static void manageMenu(Menu menu) {
@@ -74,7 +75,7 @@ public class RestaurantApp {
 							"2. Add Item to Menu\n"+
 							"3. Remove Item from Menu\n" +
 							"4. Update Item\n" +
-							"ENTER 0 TO QUIT Menu Manager\n",0,4);
+							"ENTER 0 to return to main menu\n",0,4);
 					System.out.println();
 					switch (choice) {
 					case 1:
@@ -180,6 +181,85 @@ public class RestaurantApp {
 			} while (choice != 0);
 
 	}
+	
+	/**
+	 * manage tables
+	 * @param table
+	 */
+	public static void manageTable(TableManager tables) {
+		
+		int choice;
+		
+		int numOfPax;
+		int tableId;
+		Table table;
+		
+		
+		do {
+			System.out.println();
+
+			choice = UserInput.nextInt("Select a choice:\n" +
+					"1. Find available table for group\n"+
+					"2. List occupied tables only\n" +
+					"3. List reserved tables only\n" +
+					"4. List available tables only\n"+
+					"5. List all tables\n" +
+					"ENTER 0 to return to main menu\n",0,5);
+			System.out.println();
+			switch (choice) {
+				case 1:
+					//this function is for checking table availability, no updating of table status
+					
+					numOfPax = UserInput.nextInt("Enter number of pax (or 0 to cancel) \n(We only have tables for 1 to 10 people.)\n",0,10);
+					if (numOfPax == 0) {
+						break;
+					}
+					table = tables.findAvailableTable(numOfPax);
+					if (table == null) {
+						System.out.println("No tables available");
+					} else {
+						tableId = table.getTableId();
+						System.out.printf("Table %d is available.%n", tableId);
+					}
+					
+					break;
+				case 2:
+					
+					int numOfOccupiedTables = 0;
+					for (Table tb : tables.getOccupiedTables()) {
+						tb.printTable(1);
+						numOfOccupiedTables++;						
+					}
+					System.out.println("There are "+numOfOccupiedTables+" out of 20 tables that are occupied");
+					break;
+				case 3:
+					int numOfReservedTables = 0;
+					for (Table tb : tables.getReservedTables()) {
+						tb.printTable(1);
+						numOfReservedTables++;						
+					}
+					System.out.println("There are "+numOfReservedTables+" out of 20 tables that are reserved");
+					break;
+				case 4:
+					int numOfAvailableTables = 0;
+					for (Table tb : tables.getAvailableTables()) {
+						tb.printTable(1);
+						numOfAvailableTables++;						
+					}
+					System.out.println("There are "+numOfAvailableTables+" out of 20 tables that are available");
+				
+					break;
+				case 5:
+					
+					for (Table tb : tables.getAllTables()) {
+						tb.printTable(0);					
+					}
+					break;
+				
+			}
+			
+		}while (choice != 0);
+	}
 	/**
 	 * 
 	 * @param order
@@ -189,17 +269,8 @@ public class RestaurantApp {
 		// TODO - implement RestaurantApp.manageOrder
 		throw new UnsupportedOperationException();
 	}
-
-	/**
-	 * 
-	 * @param table
-	 */
 	
-	/*
-	public void manageTable(TableManager table) {
-		// TODO - implement RestaurantApp.manageTable
-		throw new UnsupportedOperationException();
-	}*/
+	
 
 	/**
 	 * 
@@ -223,8 +294,6 @@ public void manageReservation(ReservationManager reserve) {
 		
 		int choice;
 		
-
-		
 		do {
 			System.out.println();
 
@@ -234,7 +303,7 @@ public void manageReservation(ReservationManager reserve) {
 					"3. Print Staff Details\n" +
 					"4. Print All Staff Details\n"+
 					"5. Update Staff Details\n" +
-					"ENTER 0 TO QUIT Staff Manager\n",0,5);
+					"ENTER 0 to return to main menu\n",0,5);
 			System.out.println();
 			switch (choice) {
 			case 1:
