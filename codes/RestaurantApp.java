@@ -12,7 +12,7 @@ public class RestaurantApp {
 		Menu menu = new Menu();
 		StaffManager staff = new StaffManager();
 		TableManager tables = new TableManager();
-		ReservationManager reserve = new ReservationManager();
+		ReservationManager reserve = new ReservationManager(tables);
 		int choice = 0;
 
 		do {

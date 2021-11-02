@@ -9,7 +9,7 @@ public class ReservationManager {
 	 * constructor of reservation manager
 	 * @param tableManager
 	 */
-	public void ReversationManager(TableManager tableManager) {
+	public ReservationManager(TableManager tableManager) {
 		this.tableManager = tableManager;
 		reservations = new ArrayList<Reservation>();
 	}
