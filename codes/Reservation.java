@@ -9,6 +9,7 @@ public class Reservation {
 	private Calendar expiryTime;
 	public int EXPIRYDURATION = 30;
 	private int tableid;
+	public int RESERVATIONDURATION=3; 
 
 	/**
 	 * constructor of reservation - 1 contact number can only book 1 reservation
@@ -25,6 +26,8 @@ public class Reservation {
 		this.name = name;
 		this.contact = contact;
 		this.tableid = tableid;
+		this.bookingTime.add(Calendar.HOUR_OF_DAY, RESERVATIONDURATION);
+		this.expiryTime = bookingTime;
 	}
 
 
