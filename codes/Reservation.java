@@ -26,8 +26,9 @@ public class Reservation {
 		this.name = name;
 		this.contact = contact;
 		this.tableid = tableid;
-		this.bookingTime.add(Calendar.HOUR_OF_DAY, RESERVATIONDURATION);
-		this.expiryTime = bookingTime;
+		Calendar expiryTime = (Calendar) bookTime.clone();
+		expiryTime.add(Calendar.HOUR_OF_DAY, +RESERVATIONDURATION);
+		this.expiryTime = expiryTime;
 	}
 
 

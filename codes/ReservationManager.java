@@ -36,8 +36,8 @@ public class ReservationManager {
 						   	   "Customer name: "+reservation.getName()+"\n"+
 						       "Number of customers: "+reservation.getNumOfPax()+"\n"+						   
 						       "Reserved table ID: "+reservation.getTableID()+"\n"+
-							   "Reservation Time:"+ reservation.getBookingTime()+"\n"+
-							   "Reservation Expiry Time: "+ reservation.getExpiryTime());
+							   "Reservation Time:"+ reservation.getBookingTime().getTime()+"\n"+
+							   "Reservation Expiry Time: "+ reservation.getExpiryTime().getTime());
 		return;
 		}
 		System.out.println("There is no reservation for this contact");
@@ -62,29 +62,30 @@ public class ReservationManager {
 	 * @param smoking
 	 */
 	public ArrayList<Integer> findAvailableTables(Calendar bookTime, boolean smoking, int numOfPax){
+		System.out.println("call findavai");
 		ArrayList<Table> tables = tableManager.getAvailableTables();
 		ArrayList<Integer> possibleTables = new ArrayList<Integer>();
+		Calendar bookingTime = bookTime;
 		for (int i=0; i<tables.size(); i++){
 			possibleTables.add(tables.get(i).getTableId());
+			System.out.println("id added"+possibleTables.get(i));
 		}
 		
 		for (int i = 0; i<reservations.size(); i++){
 			int tableid = reservations.get(i).getTableID();
 			Calendar reservedTime = reservations.get(i).getBookingTime();
-			bookTime.add(Calendar.HOUR_OF_DAY, -RESERVATIONDURATION);
+			bookingTime.add(Calendar.HOUR_OF_DAY, -RESERVATIONDURATION);
 			int lower = bookTime.get(Calendar.HOUR_OF_DAY);
-			bookTime.add(Calendar.HOUR_OF_DAY,+RESERVATIONDURATION*2);
+			bookingTime.add(Calendar.HOUR_OF_DAY,+RESERVATIONDURATION*2);
 			int upper = bookTime.get(Calendar.HOUR_OF_DAY);
+			bookingTime.add(Calendar.HOUR_OF_DAY,-RESERVATIONDURATION);
 			int reservedHour = reservedTime.get(Calendar.HOUR_OF_DAY);
+			System.out.println(upper+" "+ lower+" "+reservedHour);
 			if (reservedHour<= upper && reservedHour>=lower){
-				possibleTables.remove(tableid);
+				possibleTables.remove(possibleTables.indexOf(tableid));
+				System.out.println("remove " + tableid);
 			}
-			else if (tables.get(i).getCapacity()!= tableManager.calculateTableCapacity(numOfPax)){
-				possibleTables.remove(tableid);
-			}
-			else if (smoking && !tables.get(i).getSmoking()){
-				possibleTables.remove(tableid);
-			}
+			
 		}
 		return possibleTables;
 	}
@@ -99,16 +100,45 @@ public class ReservationManager {
 	 */
 	public Reservation createReservation(Calendar bookingTime) {
 		//find a table with suitable capacity and smoking option
-		int numOfPax = UserInput.nextInt("Please enter number of customers: ");
-		String name = UserInput.getString("Please enter customer's name: ");
+		System.out.println("call create reser");
 		int contact = UserInput.getContact("Please enter customer's contact number: ");
+		if (getReservationByContact(contact)!=null){
+			System.out.println("This contact number has already booked a reservation!");
+			return null;
+		}
+		String name = UserInput.getString("Please enter customer's name: ");
+		int numOfPax = UserInput.nextInt("Please enter number of customers: ");
 		boolean smoking = UserInput.getSmoking("Please choose Smoking option: ");
+		ArrayList<Table> tables = tableManager.getAvailableTables();
 		ArrayList<Integer> availableTableIDs = findAvailableTables(bookingTime, smoking, numOfPax);
+		for (int i = 0; i< availableTableIDs.size(); i++){
+			System.out.println("id "+ availableTableIDs.get(i));
+		}
 		if (availableTableIDs.size()==0){
 			return null;
 		}
 		//assign to the first table on the list
-		int tableid = availableTableIDs.get(0);
+		boolean found = false;
+		int i = 0;
+		int tableid =0;
+		while (!found){
+			if (i>=availableTableIDs.size()){
+				return null;
+			}
+			tableid = availableTableIDs.get(i);
+			if (tables.get(tableid-1).getCapacity()!= tableManager.calculateTableCapacity(numOfPax)){
+				i+=1;
+			}
+			else if (smoking && !tables.get(tableid-1).getSmoking()){
+				i+=1;
+			}
+			else if (!smoking && tables.get(tableid-1).getSmoking()){
+				i+=1;
+			}
+			else found = true;
+
+		}
+		//int tableid = availableTableIDs.get(i);
 		Reservation reservation = new Reservation(bookingTime, numOfPax, name, contact, tableid);
 		this.reservations.add(reservation);
 		return reservation;

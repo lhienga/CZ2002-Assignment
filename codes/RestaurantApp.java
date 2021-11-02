@@ -299,18 +299,22 @@ public static void manageReservation(ReservationManager reserve) {
 					if (reservation==null){
 						System.out.println("Cannot make reservation");
 					}
-					System.out.println("Reservation created:");
-					reserve.printReservation(reservation.getContact());
+					else {
+						System.out.println("Reservation created:");
+						reserve.printReservation(reservation.getContact());
+					}
                     break;
                 case 2:
-				Calendar walkInTime = Calendar.getInstance();
-				Reservation walkInReservation = reserve.createReservation(walkInTime);
-				if (walkInReservation==null){
-					System.out.println("Cannot make reservation");
-				}
-				System.out.println("Walk in Reservation created:");
-				reserve.printReservation(walkInReservation.getContact());
-                		break;
+					Calendar walkInTime = Calendar.getInstance();
+					Reservation walkInReservation = reserve.createReservation(walkInTime);
+					if (walkInReservation==null){
+						System.out.println("Cannot make reservation");
+					}
+					else {
+						System.out.println("Walk in Reservation created:");
+						reserve.printReservation(walkInReservation.getContact());
+					}
+						break;
                 case 3:
 					int removeContact = UserInput.getContact("Enter reservation's contact number to remove");
 					reserve.removeReservationByContact(removeContact);
