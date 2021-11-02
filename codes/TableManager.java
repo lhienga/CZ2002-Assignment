@@ -160,10 +160,12 @@ public class TableManager {
 	 * @param numOfPax
 	 */
 	public int calculateTableCapacity(int numOfPax) {
-		if (numOfPax <= 10) {
-			return (int) Math.ceil(numOfPax);
+		if (numOfPax >10){
+			return 0;
 		}
-		return 0;
+		if (numOfPax%2!=0){
+			return numOfPax +1;
+		}
+		return numOfPax;
 	}
-
 }

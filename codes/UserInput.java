@@ -161,6 +161,35 @@ public class UserInput {
 		return n;
 		
 	}
+	/**
+	 * Get input for Smoking or Not from user
+	 * Error message if input is not Y or N
+	 * @param inMsg Prompt displayed for users
+	 * @return Entered Boolean
+	 */
+	public static boolean getSmoking(String inMsg){
+		
+		char n = 0;
+		boolean valid = true;
+		
+		do{
+			valid = true;
+			System.out.print(inMsg);
+			n = sc.next().charAt(0);
+			if (Character.compare(n, 'Y') != 0 && Character.compare(n, 'N') != 0) {
+				valid = false;
+				System.out.println("Error: expected Y for smoking and N for not smoking\n");
+			} else {
+				break;
+			}
+				
+		}while(!valid);
+		
+		sc.nextLine();	// get dummy line
+		if (n=='Y') return true;
+		return false;
+		
+	}
 	
 	/**
 	 * Get input String from user
@@ -311,7 +340,10 @@ public class UserInput {
 		        continue;
 		    }
 		    time.setTime(inputDate);
-			validDate = true;
+			if (time.compareTo(Calendar.getInstance())<0){
+				System.out.println("Entered a passed date time!");
+			}
+			else validDate = true;
 		} while(!validDate);
 				
 		return time;

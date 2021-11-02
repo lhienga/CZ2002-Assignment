@@ -79,7 +79,7 @@ public class ReservationManager {
 			if (reservedHour<= upper && reservedHour>=lower){
 				possibleTables.remove(tableid);
 			}
-			else if (tables.get(i).getCapacity()<numOfPax){
+			else if (tables.get(i).getCapacity()!= tableManager.calculateTableCapacity(numOfPax)){
 				possibleTables.remove(tableid);
 			}
 			else if (smoking && !tables.get(i).getSmoking()){
@@ -97,15 +97,19 @@ public class ReservationManager {
 	 * @param smoking
 	 * @return
 	 */
-	public Reservation createReservation(Calendar bookTime, int numOfPax, String name, int contact, boolean smoking) {
+	public Reservation createReservation(Calendar bookingTime) {
 		//find a table with suitable capacity and smoking option
-		ArrayList<Integer> availableTableIDs = findAvailableTables(bookTime, smoking, numOfPax);
+		int numOfPax = UserInput.nextInt("Please enter number of customers: ");
+		String name = UserInput.getString("Please enter customer's name: ");
+		int contact = UserInput.getContact("Please enter customer's contact number: ");
+		boolean smoking = UserInput.getSmoking("Please choose Smoking option: ");
+		ArrayList<Integer> availableTableIDs = findAvailableTables(bookingTime, smoking, numOfPax);
 		if (availableTableIDs.size()==0){
 			return null;
 		}
 		//assign to the first table on the list
 		int tableid = availableTableIDs.get(0);
-		Reservation reservation = new Reservation(bookTime, numOfPax, name, contact, tableid);
+		Reservation reservation = new Reservation(bookingTime, numOfPax, name, contact, tableid);
 		this.reservations.add(reservation);
 		return reservation;
 	}
