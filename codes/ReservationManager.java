@@ -21,6 +21,7 @@ public class ReservationManager {
 		for (int i = 0; i<reservations.size(); i++){
 			int contact = reservations.get(i).getContact();
 			printReservation(contact);
+			System.out.println();
 		}
 	}
 
@@ -36,7 +37,7 @@ public class ReservationManager {
 						   	   "Customer name: "+reservation.getName()+"\n"+
 						       "Number of customers: "+reservation.getNumOfPax()+"\n"+						   
 						       "Reserved table ID: "+reservation.getTableID()+"\n"+
-							   "Reservation Time:"+ reservation.getBookingTime().getTime()+"\n"+
+							   "Reservation Time: "+ reservation.getBookingTime().getTime()+"\n"+
 							   "Reservation Expiry Time: "+ reservation.getExpiryTime().getTime());
 		return;
 		}
@@ -89,26 +90,25 @@ public class ReservationManager {
 		}
 		return possibleTables;
 	}
+
+	
 	/**
 	 * create new reservation
-	 * @param bookTime
-	 * @param numOfPax
-	 * @param name
-	 * @param contact
-	 * @param smoking
-	 * @return
+	 * @param bookingTime
+	 * @param choice - 0 if normal reservation, 1 if walk-in reservation
+	 * @return reservation
 	 */
-	public Reservation createReservation(Calendar bookingTime) {
+	public Reservation createReservation(Calendar bookingTime, int choice) {
 		//find a table with suitable capacity and smoking option
 		System.out.println("call create reser");
-		int contact = UserInput.getContact("Please enter customer's contact number: ");
+		int contact = UserInput.getContact("Please enter customer's contact number (format = 8 digit number): ");
 		if (getReservationByContact(contact)!=null){
 			System.out.println("This contact number has already booked a reservation!");
 			return null;
 		}
 		String name = UserInput.getString("Please enter customer's name: ");
 		int numOfPax = UserInput.nextInt("Please enter number of customers: ");
-		boolean smoking = UserInput.getSmoking("Please choose Smoking option: ");
+		boolean smoking = UserInput.getSmoking("Please choose Smoking option: (Y for smoking, N for non-smoking)\n");
 		ArrayList<Table> tables = tableManager.getAvailableTables();
 		ArrayList<Integer> availableTableIDs = findAvailableTables(bookingTime, smoking, numOfPax);
 		for (int i = 0; i< availableTableIDs.size(); i++){
@@ -120,7 +120,7 @@ public class ReservationManager {
 		//assign to the first table on the list
 		boolean found = false;
 		int i = 0;
-		int tableid =0;
+		int tableid = 0;
 		while (!found){
 			if (i>=availableTableIDs.size()){
 				return null;
@@ -139,6 +139,11 @@ public class ReservationManager {
 
 		}
 		//int tableid = availableTableIDs.get(i);
+		if (choice == 0) {
+			tableManager.changeTableStatus(tableid, Table.STATUS.RESERVED);
+		} else {
+			tableManager.changeTableStatus(tableid, Table.STATUS.OCCUPIED);
+		}
 		Reservation reservation = new Reservation(bookingTime, numOfPax, name, contact, tableid);
 		this.reservations.add(reservation);
 		return reservation;
@@ -154,11 +159,14 @@ public class ReservationManager {
 	}
 
 	/**
-	 * remove reservation by contact numeber
+	 * remove reservation by contact number
 	 * @param contact
 	 */
 	public void removeReservationByContact(int contact) {
 		Reservation reservation = getReservationByContact(contact);
+		if (reservation == null) {
+			System.out.println("There is no reservation under this contact "+contact);
+		}
 		reservations.remove(reservation);
 	}
 	/**
@@ -240,4 +248,12 @@ public class ReservationManager {
 		}
 	}
 
+	
+	public void releaseTablesWithExpiredReservations() {
+		// TODO - implement ReservationManager.printNotExpiredReservations
+		ArrayList<Reservation> expiredReservations = getExpiredReservations();
+		for (Reservation rv : expiredReservations) {
+			tableManager.changeTableStatus(rv.getTableID(), Table.STATUS.AVAILABLE);
+		}
+	}
 }
