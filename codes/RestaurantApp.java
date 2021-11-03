@@ -33,7 +33,7 @@ public class RestaurantApp {
 					manageMenu(menu);
 					break;
 				case 2:
-					manageTable(tables);
+					manageTable(tables,reserve);
 					break;
 				case 3:
 					//manageOrder(orderManger, menu, tableManager, staffManager,reservationManager);
@@ -186,15 +186,16 @@ public class RestaurantApp {
 	 * manage tables
 	 * @param table
 	 */
-	public static void manageTable(TableManager tables) {
+	public static void manageTable(TableManager tables, ReservationManager reserve) {
 		
 		int choice;
 		
 		int numOfPax;
 		int tableId;
 		Table table;
-		
-		
+
+		//release all table with expired reservation
+				reserve.releaseTablesWithExpiredReservations();
 		do {
 			System.out.println();
 
@@ -271,31 +272,36 @@ public class RestaurantApp {
 	}
 	
 	
-
 	/**
-	 * 
+	 * manage reservations
 	 * @param reserve
 	 */
 
 public static void manageReservation(ReservationManager reserve) {
 		// TODO - implement RestaurantApp.manageReservation
 		int choice;
+		
+		//release all table with expired reservation
+		reserve.releaseTablesWithExpiredReservations();
+		
         do {
-            System.out.println("\nSelect a choice: ");
-            //System.out.println("(1) Show table availability");
-            System.out.println("(1) Make reservation");
-            System.out.println("(2) Walk-in dining");
-            //System.out.println("(3) Accept reservation");
-            System.out.println("(3) Remove reservation");
-            System.out.println("(4) Show reservations");
-            System.out.println("(5) Back");
+
         	System.out.println();
-        	choice = UserInput.nextInt("Enter the number of your choice: ", 1, 5);
+            //System.out.println("(1) Show table availability");
+            //System.out.println("(3) Accept reservation");
+        	choice = UserInput.nextInt("Select a choice:\n" +
+					"1. Make reservation\n"+
+					"2. Walk-in dining\n" +
+					"3. Remove reservation\n" +
+					"4. Show reservations\n"+
+					"ENTER 0 to return to main menu\n",0,5);
+
+        	System.out.println();
             
             switch (choice) {
                 case 1:
 					Calendar bookingTime = UserInput.getDateTime("Please enter the time you want to reserve table");
-					Reservation reservation = reserve.createReservation(bookingTime);
+					Reservation reservation = reserve.createReservation(bookingTime,0);
 					if (reservation==null){
 						System.out.println("Cannot make reservation");
 					}
@@ -306,7 +312,7 @@ public static void manageReservation(ReservationManager reserve) {
                     break;
                 case 2:
 					Calendar walkInTime = Calendar.getInstance();
-					Reservation walkInReservation = reserve.createReservation(walkInTime);
+					Reservation walkInReservation = reserve.createReservation(walkInTime,1);
 					if (walkInReservation==null){
 						System.out.println("Cannot make reservation");
 					}
@@ -316,22 +322,21 @@ public static void manageReservation(ReservationManager reserve) {
 					}
 						break;
                 case 3:
-					int removeContact = UserInput.getContact("Enter reservation's contact number to remove");
+					int removeContact = UserInput.getContact("Enter reservation's contact number to remove: ");
 					reserve.removeReservationByContact(removeContact);
                         break;
                 case 4:
                 	reserve.printAllReservation();
                     break;
-             
-                case 5:
+
             }
-        } while (choice < 5);
+        } while (choice != 0);
 
 	}
 
 
 	/**
-	 * 
+	 * manage staff
 	 * @param staff
 	 */
 	public static void manageStaff(StaffManager staff) {
