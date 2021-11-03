@@ -136,7 +136,7 @@ public class OrderManager {
 					System.out.println("Membership discount 10%\t" + totalPrice*0.1);
 				}
 				System.out.println("GST 7%\t" + totalPrice*0.07);
-				System.out.println("Service charge 10%\t" + totalPrice*0.07);
+				System.out.println("Service charge 10%\t" + totalPrice*0.1);
 				System.out.println("TOTAL PAYABLE\t" + totalPriceMember*1.1*1.07);
 				System.out.println();
 				return;
