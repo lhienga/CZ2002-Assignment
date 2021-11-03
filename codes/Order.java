@@ -16,10 +16,9 @@ public class Order {
 	 * @param staffName
 	 * @param menuItem
 	 */
-	public Order(int tableNum, Date timeStamp, int staffID, String staffName, ArrayList<MenuItem> menuItem) {
+	public Order(int tableNum, int staffID, String staffName, ArrayList<MenuItem> menuItem) {
 		// TODO - implement Order.Order
 		this.tableNum = tableNum;
-		this.timeStamp = timeStamp;
 		this.staffID = staffID;
 		this.staffName = staffName;
 		this.menuItem = menuItem;
