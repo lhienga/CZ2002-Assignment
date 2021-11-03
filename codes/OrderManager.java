@@ -90,7 +90,7 @@ public class OrderManager {
 	 * print the invoice of the table
 	 * @param tableid of the table
 	 */
-	public void printInvoice(int tableid, Menu menu) {
+	public double printInvoice(int tableid, Menu menu) {
 		// TODO - implement OrderManager.printInvoice
 		ArrayList<Reservation> reservations = (ArrayList<Reservation>)reservationManager.getAllReservations().clone();
 		int contactNo = -1;
@@ -106,7 +106,7 @@ public class OrderManager {
 		if (contactNo == -1) {
 			System.out.println("The table " + tableid + " is not reserved! Fail to print invoice!");
 			System.out.println();
-			return;
+			return 0;
 		}
 		// print invoice
 		for (int j=0; j<orders.size(); j++) {
@@ -133,18 +133,18 @@ public class OrderManager {
 					System.out.println("Yes");
 					memberBool = true;
 					totalPriceMember *= 0.9;
-					System.out.println("Membership discount 10%\t" + totalPrice*0.1);
+					System.out.format("Membership discount 10%\t%.2f%n" + totalPrice*0.1);
 				}
-				System.out.println("GST 7%\t" + totalPrice*0.07);
-				System.out.println("Service charge 10%\t" + totalPrice*0.1);
-				System.out.println("TOTAL PAYABLE\t" + totalPriceMember*1.1*1.07);
+				System.out.format("GST 7%\t%.2f%n" + totalPrice*0.07);
+				System.out.format("Service charge 10%\t%.2f%n" + totalPrice*0.1);
+				System.out.format("TOTAL PAYABLE\t%.2f%n" + totalPriceMember*1.1*1.07);
 				System.out.println();
-				return;
+				return totalPrice;
 			}
 		}
 		System.out.println("The table" + tableid + "has not created an order!\nFail to print invoice!");
 		System.out.println();
-		return;
+		return 0;
 	}
 
 }
