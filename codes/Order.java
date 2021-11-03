@@ -46,6 +46,10 @@ public class Order {
 				return;
 			}
 		}
+		// If the item to be removed was not in the order
+		System.out.println("The item was not in the order!");
+		System.out.println();
+		return;
 		
 	}
 
