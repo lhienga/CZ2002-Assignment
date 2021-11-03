@@ -40,7 +40,7 @@ public class Order {
 	 */
 	public void removeFromOrder(MenuItem item) {
 		// TODO - implement Order.removeFromOrder
-		for (int i = 0; i< getNumItems; i++) {
+		for (int i = 0; i< getNumItems(); i++) {
 			if (item == this.menuItem.get(i)) {
 				this.menuItem.remove(i);
 				return;
@@ -67,7 +67,7 @@ public class Order {
 	public double getItemPrice(MenuItem item, Menu menu) {
 		// TODO - implement Order.getItemPrice
 		ArrayList<MenuItem> menuItems = (ArrayList<MenuItem>)menu.getMenuItems().clone();
-		for (int i = 0; i< menu.getMenuSize(); i++) {
+		for (int i = 0; i< menu.getMenuSize(1); i++) {
 			MenuItem currItem = menuItems.get(i);
 			if (item == currItem) {
 				return currItem.getPrice();
