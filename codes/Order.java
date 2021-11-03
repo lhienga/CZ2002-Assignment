@@ -10,7 +10,7 @@ public class Order {
 	private boolean membership;
 
 	/**
-	 * 
+	 * constructor for Order
 	 * @param tableNum
 	 * @param timeStamp
 	 * @param staffID
@@ -20,67 +20,112 @@ public class Order {
 	 */
 	public Order(int tableNum, Date timeStamp, int staffID, String staffName, ArrayList<MenuItem> menuItem, boolean membership) {
 		// TODO - implement Order.Order
-		throw new UnsupportedOperationException();
+		this.tableNum = tableNum;
+		this.timeStamp = timeStamp;
+		this.staffID = staffID;
+		this.staffName = staffName;
+		this.menuItem = menuItem;
+		this.membership = membership;
 	}
 
 	/**
-	 * 
-	 * @param item
+	 * add menu item to the order
+	 * @param item MenuItem to be added to the order
 	 */
 	public void addToOrder(MenuItem item) {
 		// TODO - implement Order.addToOrder
-		throw new UnsupportedOperationException();
+		this.menuItem.add(item);
+		System.out.println("Item successfully added to order!");
 	}
 
 	/**
-	 * 
-	 * @param item
+	 * remove a menu item from the order
+	 * @param item MenuItem to be removed from order
 	 */
 	public void removeFromOrder(MenuItem item) {
 		// TODO - implement Order.removeFromOrder
-		throw new UnsupportedOperationException();
+		for (int i = 0; i< getNumItems; i++) {
+			if (item == this.menuItem.get(i)) {
+				this.menuItem.remove(i);
+				return;
+			}
+		}
+		
 	}
 
+	/**
+	 * get number of items in the order
+	 * @return the number of items in the order
+	 */
 	public int getNumItems() {
 		// TODO - implement Order.getNumItems
-		throw new UnsupportedOperationException();
+		return this.menuItem.size();
 	}
 
+	/**
+	 * get item price
+	 * @return the price of an item in the order
+	 */
 	public double getItemPrice() {
 		// TODO - implement Order.getItemPrice
-		throw new UnsupportedOperationException();
+		for (int i = 0; i< getMenuSize; i++) {
+			if (item == this.menuItem.get(i)) {
+				this.menuItem.remove(i);
+				return;
+			}
+		}
 	}
 
+	/**
+	 * get total price
+	 * @return the total price of the order
+	 */
 	public double getTotalPrice() {
 		// TODO - implement Order.getTotalPrice
-		throw new UnsupportedOperationException();
+		
 	}
 
+	/**
+	 * get table number
+	 * @return the table number making the order
+	 */
 	public int getTableNum() {
 		return this.tableNum;
 	}
 
+	/**
+	 * get order time
+	 * @return time and date the order is made
+	 */
 	public Date getOrderTime() {
 		// TODO - implement Order.getOrderTime
-		throw new UnsupportedOperationException();
+		return this.timeStamp;
 	}
 
+	/**
+	 * get staff's ID
+	 * @return the ID of staff taking the order
+	 */
 	public int getStaffID() {
 		return this.staffID;
 	}
 
+	/**
+	 * get staff's name
+	 * @return the name of staff taking the order
+	 */
 	public String getStaffName() {
 		return this.staffName;
 	}
 
+	/**
+	 * get all items in the order
+	 * @return a list of menu items in the order
+	 */
 	public ArrayList<MenuItem> getOrder() {
 		// TODO - implement Order.getOrder
-		throw new UnsupportedOperationException();
+		return this.menuItem;
 	}
 
-	public boolean getMember() {
-		// TODO - implement Order.getMember
-		throw new UnsupportedOperationException();
-	}
 
 }
