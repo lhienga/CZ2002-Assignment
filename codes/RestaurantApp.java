@@ -427,8 +427,7 @@ public static void manageReservation(ReservationManager reserve) {
 				break;
 			case 3:
 				name = UserInput.getString("Please enter name: ");
-				contact = UserInput.nextInt("Please enter contact number: ");
-				member = members.getMembership(name,contact);
+				member = members.getMembershipByName(name);
 				if (member == null) 
 					break;
 				members.printMembership(member);
