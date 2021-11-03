@@ -7,7 +7,6 @@ public class Order {
 	private int staffID;
 	private String staffName;
 	private ArrayList<MenuItem> menuItem;
-	private boolean membership;
 
 	/**
 	 * constructor for Order
@@ -16,16 +15,14 @@ public class Order {
 	 * @param staffID
 	 * @param staffName
 	 * @param menuItem
-	 * @param membership
 	 */
-	public Order(int tableNum, Date timeStamp, int staffID, String staffName, ArrayList<MenuItem> menuItem, boolean membership) {
+	public Order(int tableNum, Date timeStamp, int staffID, String staffName, ArrayList<MenuItem> menuItem) {
 		// TODO - implement Order.Order
 		this.tableNum = tableNum;
 		this.timeStamp = timeStamp;
 		this.staffID = staffID;
 		this.staffName = staffName;
 		this.menuItem = menuItem;
-		this.membership = membership;
 	}
 
 	/**
@@ -35,12 +32,11 @@ public class Order {
 	public void addToOrder(MenuItem item) {
 		// TODO - implement Order.addToOrder
 		this.menuItem.add(item);
-		System.out.println("Item successfully added to order!");
 	}
 
 	/**
 	 * remove a menu item from the order
-	 * @param item MenuItem to be removed from order
+	 * @param item MenuItem to be removed from the order
 	 */
 	public void removeFromOrder(MenuItem item) {
 		// TODO - implement Order.removeFromOrder
@@ -64,25 +60,35 @@ public class Order {
 
 	/**
 	 * get item price
+	 * @param item MenuItem in the order
+	 * @param menu Menu of the restaurant
 	 * @return the price of an item in the order
 	 */
-	public double getItemPrice() {
+	public double getItemPrice(MenuItem item, Menu menu) {
 		// TODO - implement Order.getItemPrice
-		for (int i = 0; i< getMenuSize; i++) {
-			if (item == this.menuItem.get(i)) {
-				this.menuItem.remove(i);
-				return;
+		ArrayList<MenuItem> menuItems = (ArrayList<MenuItem>)menu.getMenuItems().clone();
+		for (int i = 0; i< menu.getMenuSize(); i++) {
+			MenuItem currItem = menuItems.get(i);
+			if (item == currItem) {
+				return currItem.getPrice();
 			}
 		}
+		return 0;
 	}
 
 	/**
 	 * get total price
+	 * @param menu Menu of the restaurant
 	 * @return the total price of the order
 	 */
-	public double getTotalPrice() {
+	public double getTotalPrice(Menu menu) {
 		// TODO - implement Order.getTotalPrice
-		
+		double totalPrice = 0;
+		ArrayList<MenuItem> orderItems = getOrder();
+		for (int i=0; i<getNumItems(); i++) {
+			totalPrice += getItemPrice(orderItems.get(i), menu);
+		}
+		return totalPrice;
 	}
 
 	/**
