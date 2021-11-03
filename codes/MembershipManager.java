@@ -65,6 +65,21 @@ public class MembershipManager {
 	}
 	
 	/**
+	 * Get a membership by name
+	 * @param contact Member's name
+	 * @return membership
+	 */
+	public Membership getMembershipByName(String name) {
+		for (int i = 0; i<memberships.size(); i++){
+			if (name.equals(memberships.get(i).getName())){
+				return memberships.get(i);
+			}
+		}
+		System.out.println("Membership does not exist.");
+		return null;
+	}
+	
+	/**
 	 * Check if contact has a membership
 	 * @param contact
 	 * @return true if is a member, false if not a member
