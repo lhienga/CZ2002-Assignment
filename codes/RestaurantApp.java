@@ -13,6 +13,7 @@ public class RestaurantApp {
 		StaffManager staff = new StaffManager();
 		TableManager tables = new TableManager();
 		ReservationManager reserve = new ReservationManager(tables);
+		MembershipManager members = new MembershipManager();
 		int choice = 0;
 
 		do {
@@ -25,7 +26,8 @@ public class RestaurantApp {
 					"4. Reservation Manager\n" +
 					"5. Report Manager\n" +
 					"6. Staff Manager\n" +
-					"Enter 0 TO QUIT main menu\n",0, 6);
+					"7. Membership Manager\n" +
+					"Enter 0 TO QUIT main menu\n",0, 7);
 
 
 			switch (choice){
@@ -47,6 +49,8 @@ public class RestaurantApp {
 				case 6:
 					manageStaff(staff);
 					break;
+				case 7:
+					manageMembers(members);
 			}
 		}while(choice != 0);
 
@@ -383,6 +387,61 @@ public static void manageReservation(ReservationManager reserve) {
 			case 5:
 				staffID = UserInput.nextInt("Please enter staff's ID: ");
 				staff.updateStaffInfo(staffID);
+				break;
+				
+			}
+			
+		}while (choice != 0);
+
+	}
+	
+	public static void manageMembers(MembershipManager members) {
+		String name;
+		int contact;
+		Membership member;
+		int choice;
+		
+		do {
+			System.out.println();
+
+			choice = UserInput.nextInt("Select a choice:\n" +
+					"1. Add Member\n"+
+					"2. Remove Member\n" +
+					"3. Print Member Details\n" +
+					"4. Print All Member Details\n"+
+					"5. Update Member Details\n" +
+					"ENTER 0 to return to main menu\n",0,5);
+			System.out.println();
+			switch (choice) {
+			case 1:
+				name = UserInput.getString("Please enter name: ");
+				contact = UserInput.nextInt("Please enter contact number: ");
+				
+				members.createMembership(name,contact);
+
+				break;
+			case 2:
+				name = UserInput.getString("Please enter name: ");
+				contact = UserInput.nextInt("Please enter contact number: ");
+				members.removeMembership(name, contact);
+				break;
+			case 3:
+				name = UserInput.getString("Please enter name: ");
+				contact = UserInput.nextInt("Please enter contact number: ");
+				member = members.getMembership(name,contact);
+				if (member == null) 
+					break;
+				members.printMembership(member);
+				
+				break;
+			case 4:
+				System.out.println("Details of all members:\n");
+				members.printAllMembers();
+				break;
+			case 5:
+				name = UserInput.getString("Please enter name: ");
+				contact = UserInput.nextInt("Please enter contact number: ");
+				members.updateMembership(name, contact);
 				break;
 				
 			}
