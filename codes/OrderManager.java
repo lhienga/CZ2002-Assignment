@@ -1,12 +1,31 @@
-package cz2002GroupAssignment;
-
 import java.util.ArrayList;
+import java.util.Calendar;
 public class OrderManager {
 
 	private ArrayList<Order> orders;
 	private MembershipManager membershipManager;
 	private ReservationManager reservationManager;
 
+	public OrderManager(ReservationManager reservationManager,MembershipManager membershipManager) {
+		if (orders == null) {
+			orders = new ArrayList<Order>();
+		}
+		this.reservationManager = reservationManager;
+		this.membershipManager = membershipManager;
+	}
+	
+	/**
+	 * create a new Order
+	 * @param tableId
+	 * @param staffID
+	 * @param staffName
+	 * @param menuItem
+	 */
+	public void createOrder(int tableId, int staffID, String staffName, ArrayList<MenuItem> menuItem) {
+		Order order = new Order(tableId,staffID,staffName,menuItem);
+		orders.add(order);
+		System.out.println("New Order "+"for table "+tableId+ "successfully created");
+	}
 	/**
 	 * get the order made by the table of that ID
 	 * @param tableid of the table
@@ -21,7 +40,7 @@ public class OrderManager {
 				return order;
 			}
 		}
-		System.out.println("There is no order under the table ID " + tableid +" !");
+		//System.out.println("There is no order under the table ID " + tableid +" !");
 		System.out.println();
 		return null;
 	}
@@ -32,16 +51,16 @@ public class OrderManager {
 	 * @param tableid of the table
 	 */
 	public void clearTableIdOrder(int tableid) {
-		// TODO - implement OrderManager.clearTableIdOrder
-		for (int i=0; i<orders.size(); i++) {
-			Order order = orders.get(i);
-			if (tableid == order.getTableNum()) {
-				orders.remove(order);
-				return;
-			}
+		
+		Order order = getTableIdOrder(tableid);
+		if (order == null) {
+			System.out.println("There is no order under the table ID " + tableid +" !");
+			System.out.println();
+			return;
 		}
-		System.out.println("There is no order under the table ID " + tableid +" !");
-		System.out.println();
+		orders.remove(order);
+
+		
 		return;
 	}
 
@@ -72,7 +91,7 @@ public class OrderManager {
 	 * @param menuitem to be removed from the order of the table
 	 */
 	public void removeFromOrder(int tableid, MenuItem menuitem) {
-		// TODO - implement OrderManager.removeFromOrder
+		
 		for (int i=0; i<orders.size(); i++) {
 			Order order = orders.get(i);
 			if (tableid == order.getTableNum()) {
@@ -90,11 +109,17 @@ public class OrderManager {
 	 * print the invoice of the table
 	 * @param tableid of the table
 	 */
-	public double printInvoice(int tableid, Menu menu) {
-		// TODO - implement OrderManager.printInvoice
-		ArrayList<Reservation> reservations = (ArrayList<Reservation>)reservationManager.getAllReservations().clone();
+	public Invoice printInvoice(int tableid, Menu menu) {
+		
+		Order order = getTableIdOrder(tableid);
+		if (order == null) {
+			System.out.println("The table " + tableid + " has not created an order!\nFail to print invoice!");
+			System.out.println();
+			return null;
+		}
+		ArrayList<Reservation> reservations = reservationManager.getAllReservations();
 		int contactNo = -1;
-		Boolean memberBool = false;
+
 		// get the contact number of the customer on that table
 		for (int i=0; i<reservations.size(); i++) {
 			Reservation reservation = reservations.get(i);
@@ -102,49 +127,63 @@ public class OrderManager {
 				contactNo = reservation.getContact();
 			}
 		}
+	
+		/*
 		// if the table is currently not reserved
 		if (contactNo == -1) {
 			System.out.println("The table " + tableid + " is not reserved! Fail to print invoice!");
 			System.out.println();
 			return 0;
-		}
+		}*/
+		
 		// print invoice
-		for (int j=0; j<orders.size(); j++) {
-			Order order = orders.get(j);
-			if (tableid == order.getTableNum()) {
-				ArrayList<MenuItem> orderitems = (ArrayList<MenuItem>)order.getOrder().clone();
-				double totalPrice = order.getTotalPrice(menu);
-				double totalPriceMember = totalPrice;
-				// print order information
-				System.out.println(
-						"Table number: " + tableid + "\n" +
-						"Date and time: " + order.getOrderTime() + "\n" +
-						"Staff name, ID: " + order.getStaffName() + ", " + order.getStaffID() + "\n" +
-						"Item\t\t\tPrice"
-						);
-				// print all order items and each price
-				for (int k=0; k<order.getNumItems(); k++) {
-					MenuItem orderitem = orderitems.get(k);
-					System.out.format("%s\t%.2f%n", orderitem.getName(), orderitem.getPrice());
-				}
-				// print membership status and discount amount
-				System.out.print("Membership: ");
-				if (membershipManager.getMembershipByContact(contactNo) != null) {
-					System.out.println("Yes");
-					memberBool = true;
-					totalPriceMember *= 0.9;
-					System.out.format("Membership discount 10%\t%.2f%n" + totalPrice*0.1);
-				}
-				System.out.format("GST 7%\t%.2f%n" + totalPrice*0.07);
-				System.out.format("Service charge 10%\t%.2f%n" + totalPrice*0.1);
-				System.out.format("TOTAL PAYABLE\t%.2f%n" + totalPriceMember*1.1*1.07);
-				System.out.println();
-				return totalPrice;
+		ArrayList<MenuItem> orderitems = order.getOrder();
+		double totalPrice = order.getTotalPrice(menu);
+		double totalPriceMember = totalPrice;
+		boolean isMember = false;
+		
+		order.setPaymentTime(Calendar.getInstance());
+		// print order information
+		System.out.println(
+				"Table number: " + tableid + "\n" +
+				"Date and time: " + order.getPaymentTime().getTime() + "\n" +
+				"Staff name, ID: " + order.getStaffName() + ", " + order.getStaffID() + "\n" +
+				"Item Name\t\t\tType\t\t\t\tPrice"
+				);
+		// print all order items and each price
+
+		int k=1;
+		for (MenuItem item : order.getOrder()) {
+			if(item instanceof AlaCarte) {
+				System.out.printf("%d. %-28s %s $%.2f\n",k,
+						item.getName(), "(AlaCarte - "+item.getType()+")\t\t", item.getPrice());
+			} else if(item instanceof PromotionPackage){
+				System.out.printf("%d. %-28s %s $%.2f\n",k,
+						item.getName(), "(Promotion Set)\t\t\t", item.getPrice());
+	
 			}
+			k++;
 		}
-		System.out.println("The table" + tableid + "has not created an order!\nFail to print invoice!");
+		System.out.print("\nSubtotal: \t");
+	    System.out.printf("%.2f\n", totalPrice);
+	    
+	    // print membership status and discount amount
+		if (membershipManager.getMembershipByContact(contactNo) != null) {
+			System.out.print("Membership: ");
+			System.out.println("Yes");
+			totalPriceMember *= 0.9;
+			System.out.printf("Membership discount: 10%\t%.2f%n", totalPrice*0.1);
+		}
+		System.out.print("GST 7% \t");
+	    System.out.printf("%.2f\n", totalPrice*0.07);
+	    System.out.print("Service charge 10% \t");
+	    System.out.printf("%.2f\n", totalPrice*0.1);
+		System.out.print("TOTAL PAYABLE: \t");
+		System.out.printf("%.2f\n", totalPriceMember*1.1*1.07);
 		System.out.println();
-		return 0;
+		
+		return new Invoice(order,isMember,totalPrice);
+			
 	}
 
 }
