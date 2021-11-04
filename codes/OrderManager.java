@@ -135,12 +135,13 @@ public class OrderManager {
 		}
 
 		for (MenuItem item: order.getOrderLineItems()){
+			int n = numOfProductSold[menu.getMenuItems().indexOf(item)];
 			if(item instanceof AlaCarte) {
-				System.out.printf("%d X %-28s %s %10s%.2f\n",numOfProductSold[menu.getMenuItems().indexOf(item)],
-						item.getName(), "(AlaCarte - "+item.getType()+")","$", item.getPrice());
+				System.out.printf("%d X %-28s %s %10s%.2f\n",n,
+						item.getName(), "(AlaCarte - "+item.getType()+")","$", n*item.getPrice());
 			}  else if(item instanceof PromotionPackage){
-				System.out.printf("%d X %-28s %s %18s%.2f\n",numOfProductSold[menu.getMenuItems().indexOf(item)],
-						item.getName(), "(Promotion Set)", "$",item.getPrice());
+				System.out.printf("%d X %-28s %s %18s%.2f\n",n,
+						item.getName(), "(Promotion Set)", "$",n*item.getPrice());
 			}
 		}
 		
