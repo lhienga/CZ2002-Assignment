@@ -115,26 +115,35 @@ public class OrderManager {
 		
 		Calendar paymentDate = Calendar.getInstance();
 		// print order information
+		System.out.println();
 		System.out.println(
-				"Table number: " + order.getTableId() + "\n" +
-				"Date and time: " + paymentDate.getTime() + "\n" +
 				"Staff name, ID: " + order.getStaff().getName() + ", " + order.getStaff().getID() + "\n" +
-				"Item Name\t\t\tType\t\t\t\tPrice"
+				"Date and time: " + paymentDate.getTime() + "\n" +
+				"Table number: " + order.getTableId() + "\n\n" +
+				
+				"Item Name\t\t\tType\t\t\t\tPrice\n"+
+				"-------------------------------------------------------------------------\n"
 				);
 		// print all order items and each price
 
-		int k=1;
-		for (MenuItem item : order.getOrder()) {
-			if(item instanceof AlaCarte) {
-				System.out.printf("%d. %-28s %s $%.2f\n",k,
-						item.getName(), "(AlaCarte - "+item.getType()+")\t\t", item.getPrice());
-			} else if(item instanceof PromotionPackage){
-				System.out.printf("%d. %-28s %s $%.2f\n",k,
-						item.getName(), "(Promotion Set)\t\t\t", item.getPrice());
-	
-			}
-			k++;
+
+		int[] numOfProductSold = new int[menu.getMenuSize(0)];
+		
+		order.getOrder();
+		for (MenuItem m: order.getOrder()){
+			numOfProductSold[menu.getMenuItems().indexOf(m)] += 1;
 		}
+
+		for (MenuItem item: order.getOrderLineItems()){
+			if(item instanceof AlaCarte) {
+				System.out.printf("%d X %-28s %s %10s%.2f\n",numOfProductSold[menu.getMenuItems().indexOf(item)],
+						item.getName(), "(AlaCarte - "+item.getType()+")","$", item.getPrice());
+			}  else if(item instanceof PromotionPackage){
+				System.out.printf("%d X %-28s %s %18s%.2f\n",numOfProductSold[menu.getMenuItems().indexOf(item)],
+						item.getName(), "(Promotion Set)", "$",item.getPrice());
+			}
+		}
+		
 		System.out.print("\nSubtotal: \t");
 	    System.out.printf("%.2f\n", totalPrice);
 	    
@@ -156,5 +165,6 @@ public class OrderManager {
 		return new Invoice(order,paymentDate,isMember,totalPrice);
 			
 	}
+	
 
 }
