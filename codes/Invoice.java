@@ -9,17 +9,17 @@ public class Invoice {
 	private double serviceCharge;
 	private double membershipDiscount=0;
 	private Calendar dateCreated;
-	private boolean isMember;
+
 	
-	public Invoice(Order order,boolean isMember,double subtotal) {
+	public Invoice(Order order, Calendar paymentDate, boolean isMember,double subtotal) {
 		this.paidOrder = order;
-		this.dateCreated = order.getPaymentTime();
+		this.dateCreated = paymentDate;
 		this.invoiceID = Calendar.getInstance().hashCode();
-		this.subtotal = totalPrice;
-		this.gst = 0.07*totalPrice;
-		this.serviceCharge = 0.1*totalPrice;
+		this.subtotal = subtotal;
+		this.gst = 0.07*subtotal;
+		this.serviceCharge = 0.1*subtotal;
 		if (isMember) {
-			membershipDiscount = 0.1*totalPrice;
+			membershipDiscount = 0.1*subtotal;
 		}
 		this.totalPrice = subtotal + gst + serviceCharge +membershipDiscount;
 		
@@ -36,15 +36,16 @@ public class Invoice {
 		return totalPrice;
 	}
 	
-	//printInvoice use ORDERMANAGER ONE!!!
+	
 	public void printInvoice(){
-		System.out.println("Date & Time: " + this.paidOrder.getPaymentTime());
+		System.out.println("Date & Time: " + dateCreated.getTime());
 		System.out.println("Invoice Number: " + this.invoiceID);
-		paidOrder.printOrder();
-		System.out.println("Subtotal: " + this.paidOrder);
-		System.out.println("Membership Discount: " + membershipDiscount);
-		System.out.println("Service Charge : " + serviceCharge);
-		System.out.println("Total Payable: " + totalPrice);
+		System.out.printf("Subtotal: $%.2f\n",subtotal);
+		if (membershipDiscount != 0) {
+			System.out.printf("Membership Discount: $%.2f\n",membershipDiscount);
+		}
+		System.out.printf("Service Charge : $%.2f\n", serviceCharge);
+		System.out.printf("Total Payable: $%.2f\n",totalPrice);
 
 	}
 }
