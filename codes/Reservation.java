@@ -129,5 +129,4 @@ public class Reservation {
 		// TODO - implement Reservation.setTableID
 		this.tableid = tableid;
 	}
-
 }
