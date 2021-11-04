@@ -1,5 +1,8 @@
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class RestaurantApp {
 
@@ -12,8 +15,10 @@ public class RestaurantApp {
 		Menu menu = new Menu();
 		StaffManager staff = new StaffManager();
 		TableManager tables = new TableManager();
+		ReportManager reports = new ReportManager(menu);
 		ReservationManager reserve = new ReservationManager(tables);
 		MembershipManager members = new MembershipManager();
+		OrderManager orders = new OrderManager(reserve,members);
 		int choice = 0;
 
 		do {
@@ -38,13 +43,13 @@ public class RestaurantApp {
 					manageTable(tables,reserve);
 					break;
 				case 3:
-					//manageOrder(orderManger, menu, tableManager, staffManager,reservationManager);
+					manageOrder(orders, tables, staff, menu,reports);
 					break;
 				case 4:
 					manageReservation(reserve);
 					break;
 				case 5:
-					//managingReport(reportManager, menu);
+					managingReport(reports, menu);
 					break;
 				case 6:
 					manageStaff(staff);
@@ -269,10 +274,172 @@ public class RestaurantApp {
 	 * 
 	 * @param order
 	 */
-	/*
-	public void manageOrder(OrderManager order) {
-		// TODO - implement RestaurantApp.manageOrder
-		throw new UnsupportedOperationException();
+	
+	public static void manageOrder(OrderManager orders, TableManager tables, StaffManager staff, Menu menu,ReportManager reports) {
+		int i;
+		int choice;
+		int tableId;
+		int staffId = staff.getCurrentStaff().getID();
+		String staffName = staff.getCurrentStaff().getName();
+		Order order;
+		
+		do {
+			System.out.println();
+
+			choice = UserInput.nextInt("Select a choice:\n" +
+					"1. Create an order for table\n"+
+					"2. Cancel an order for table\n" +
+					"3. Add items to order\n" +
+					"4. Remove items from order\n"+
+					"5. View order for table\n"+
+					"6. Print current invoice for table\n" +
+					"ENTER 0 to return to main menu\n",0,6);
+			System.out.println();
+			switch (choice) {
+				case 1:
+					//this function is for checking table availability, no updating of table status
+					
+					tableId = UserInput.nextInt("Enter tableId (or 0 to cancel) \n",0,20);
+					if (tableId == 0) {
+						break;
+					}
+					
+					if (tables.getStatusByTableId(tableId)!=Table.STATUS.OCCUPIED) {
+						System.out.println("Table is not occupied by any customers!");
+						break;
+					}
+					order = orders.getTableIdOrder(tableId);
+					if (order!=null) {
+						System.out.println("Order has already been created, would you like to add on order instead (Enter choice 3) instead");
+						break;
+					}
+					orders.createOrder(tableId, staffId, staffName,  new ArrayList<MenuItem>());
+					order = orders.getTableIdOrder(tableId);
+					do {
+						System.out.println("Currently, there are "+order.getNumItems()+" items in order.\n");
+						menu.printMenu(0);
+						i = UserInput.nextInt("Which Menu Item do you want to add?\nENTER 0 to QUIT\n",0,menu.getMenuSize(0));
+						if (i==0) {
+							break;
+						}
+						orders.addToOrder(tableId, menu.getMenuItems().get(i-1)); 
+						System.out.println("Item has been added to order:");
+						menu.printMenuItem(menu.getMenuItems().get(i-1));
+					} while (i!=0);
+					System.out.println("Items in order:");
+					order.printOrder();
+
+					break;
+				case 2:
+					tableId = UserInput.nextInt("Enter tableId (or 0 to cancel) \n",0,20);
+					if (tableId == 0) {
+						break;
+					}
+					orders.clearTableIdOrder(tableId);
+					break;
+				case 3:
+
+					tableId = UserInput.nextInt("Enter tableId (or 0 to cancel) \n",0,20);
+					if (tableId == 0) {
+						break;
+					}
+					
+					if (tables.getStatusByTableId(tableId)!=Table.STATUS.OCCUPIED) {
+						System.out.println("Table is not occupied by any customers!");
+						break;
+					}
+					order = orders.getTableIdOrder(tableId);
+					if (order==null) {
+						System.out.println("There is no order under the table ID " + tableId +" !");
+						break;
+					}
+					do {
+						System.out.println("Currently, there are "+order.getNumItems()+" items in order.\n");
+						menu.printMenu(0);
+						i = UserInput.nextInt("Which Menu Item do you want to add?\nENTER 0 to QUIT\n",0,menu.getMenuSize(0));
+						if (i==0) {
+							break;
+						}
+						orders.addToOrder(tableId, menu.getMenuItems().get(i-1)); 
+						System.out.println("Item has been added to order:");
+						menu.printMenuItem(menu.getMenuItems().get(i-1));
+					} while (i!=0);
+					System.out.println("Items in order:");
+					order.printOrder();
+
+					break;
+				case 4:
+					tableId = UserInput.nextInt("Enter tableId (or 0 to cancel) \n",0,20);
+					if (tableId == 0) {
+						break;
+					}
+					
+					if (tables.getStatusByTableId(tableId)!=Table.STATUS.OCCUPIED) {
+						System.out.println("Table is not occupied by any customers!");
+						break;
+					}
+					order = orders.getTableIdOrder(tableId);
+					if (order==null) {
+						System.out.println("There is no order under the table ID " + tableId +" !");
+						break;
+					}
+					do {
+						System.out.println("Currently, there are "+order.getNumItems()+" items in order.\n");
+						order.printOrder();
+						i = UserInput.nextInt("Which Menu Item do you want to remove?\nENTER 0 to QUIT\n",0,order.getNumItems());
+						if (i==0) {
+							break;
+						}
+						
+						orders.removeFromOrder(tableId, order.getOrder().get(i-1)); 
+						System.out.println("Item has been removed from order:");
+					} while (i!=0);
+					System.out.println("Remaining Items in order:");
+					order.printOrder();
+
+					break;
+				case 5:
+					tableId = UserInput.nextInt("Enter tableId (or 0 to cancel) \n",0,20);
+					if (tableId == 0) {
+						break;
+					}
+					
+					if (tables.getStatusByTableId(tableId)!=Table.STATUS.OCCUPIED) {
+						System.out.println("Table is not occupied by any customers!");
+						break;
+					}
+					order = orders.getTableIdOrder(tableId);
+					if (order==null) {
+						System.out.println("There is no order under the table ID " + tableId +" !");
+						break;
+					}
+			
+					System.out.println("Items in order:\n");
+					order.printOrder();
+					break;
+				case 6:
+					tableId = UserInput.nextInt("Enter tableId (or 0 to cancel) \n",0,20);
+					if (tableId == 0) {
+						break;
+					}
+					if (tables.getStatusByTableId(tableId)!=Table.STATUS.OCCUPIED) {
+						System.out.println("Table is not occupied by any customers!");
+						break;
+					}
+					order = orders.getTableIdOrder(tableId);
+					Invoice invoice = orders.printInvoice(tableId, menu);
+					if (invoice == null) {
+						break;
+					}
+					reports.addOrderToReport(invoice);
+					tables.changeTableStatus(tableId, Table.STATUS.AVAILABLE);
+					orders.clearTableIdOrder(tableId);
+					
+					break;
+				
+			}
+			
+		}while (choice != 0);
 	}
 	
 	
@@ -281,7 +448,7 @@ public class RestaurantApp {
 	 * @param reserve
 	 */
 
-public static void manageReservation(ReservationManager reserve) {
+	public static void manageReservation(ReservationManager reserve) {
 		// TODO - implement RestaurantApp.manageReservation
 		int choice;
 		
@@ -447,5 +614,37 @@ public static void manageReservation(ReservationManager reserve) {
 			
 		}while (choice != 0);
 
+	}
+	
+	public static void managingReport(ReportManager reports, Menu menu) {
+		int choice = 0;
+
+		Calendar date = Calendar.getInstance();
+
+		do {
+			
+			
+			choice = UserInput.nextInt("[Report management]\n" +
+					"Which do you wish to do?\n" +
+					"1. Generate Revenue Report For a Day\n" +
+					"2. Generate Revenue Report For a period\n" +
+					"Enter 0 to return to main menu\n",0, 2);
+			System.out.println();
+			
+			switch (choice) {
+			case 1:
+				date = UserInput.getDateForReport("Please choose date to display report for");
+				reports.printReportByDay(date);
+				break;
+			case 2:
+				date = UserInput.getMonthYearForReport("Please choose month and year to display report for");
+				int year = date.get(Calendar.YEAR);
+				int month = date.get(Calendar.MONTH)+1;
+				reports.printReportByMonth(month,year);
+				break;
+	
+	
+			}
+		}while (choice != 0);
 	}
 }
