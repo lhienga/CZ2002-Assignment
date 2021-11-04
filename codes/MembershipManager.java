@@ -60,7 +60,6 @@ public class MembershipManager {
 				return memberships.get(i);
 			}
 		}
-		System.out.println("Membership does not exist.");
 		return null;
 	}
 	
