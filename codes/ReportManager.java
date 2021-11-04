@@ -1,7 +1,9 @@
 import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
 public class ReportManager {
 
 	private ArrayList<Invoice> report;
@@ -27,31 +29,69 @@ public class ReportManager {
 	}
 
 	/**
+	 * print Report for specified month and year
+	 * @param report
+	 */
+	public void printReportByDay(Calendar specifiedDate) {
+		
+		double totalRevenue = getTotalRevenueByDay(specifiedDate);
+		int[] numOfProductSold = getIndividualSaleItemsByDay(specifiedDate);
+		
+		
+		System.out.println("\nSales Revenue Report for " + specifiedDate.getTime());
+		System.out.printf("Total Sales Revenue: %.2f\n", totalRevenue);
+		
+		System.out.println("Total Number of Food Products sold: ");
+		for (MenuItem m: menu.getMenuItems()){
+			if (m instanceof AlaCarte) {
+				System.out.println("Ala Carte :");
+				System.out.println(m.getFood().getName() + ": " + numOfProductSold[menu.getMenuItems().indexOf(m)]);
+			}
+			else {
+				System.out.println("Promotion Package :");
+				System.out.println(m.getName() + ": " + numOfProductSold[menu.getMenuItems().indexOf(m)]);
+			}
+		
+			System.out.println();
+		}
+
+	}
+	/**
 	 * 
 	 * @param date
 	 */
-	public ArrayList<Order> getReportByDay(Date date) {
+	public double getTotalRevenueByDay(Calendar date) {
 		// TODO - implement ReportManager.getReportByDay
-		throw new UnsupportedOperationException();
+		Date specifiedDate = date.getTime();  
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy"); 
+		String strDate =  dateFormat.format(specifiedDate);
+		double total = 0;
+		for (Invoice iv: report) {
+			if ((dateFormat.format(iv.getDateCreated().getTime()).equals(strDate)))
+				total += iv.getTotalPrice();
+		}
+		return total;
+	}
+	
+	private int[] getIndividualSaleItemsByDay(Calendar date){
+		
+		int[] numOfProductSold = new int[menu.getMenuSize(0)];
+
+		Date specifiedDate = date.getTime();  
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy"); 
+		String strDate =  dateFormat.format(specifiedDate);
+		for (Invoice iv: report) {
+			if ((dateFormat.format(iv.getDateCreated().getTime()).equals(strDate)))
+				for (MenuItem m: iv.getPaidOrder().getOrder()){
+					numOfProductSold[menu.getMenuItems().indexOf(m)] += 1;
+				}
+			
+		}
+		
+		return numOfProductSold;
+		
 	}
 
-	/**
-	 * 
-	 * @param date
-	 */
-	public ArrayList<Order> getTotalReportByWeek(Date date) {
-		// TODO - implement ReportManager.getTotalReportByWeek
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * 
-	 * @param date
-	 */
-	public ArrayList<Order> getTotalReportByMonth(Date date) {
-		// TODO - implement ReportManager.getTotalReportByMonth
-		throw new UnsupportedOperationException();
-	}
 
 	/**
 	 * print Report for specified month and year
@@ -64,16 +104,19 @@ public class ReportManager {
 		
 		
 		System.out.println("\nSales Revenue Report for " + monthName + " of Year " + year);
-		System.out.printf("Total Sales Revenue: %. 2f", totalRevenue);
+		System.out.printf("Total Sales Revenue: %.2f", totalRevenue);
 		
 		System.out.println("Total Number of Food Products sold: ");
 		for (MenuItem m: menu.getMenuItems()){
-			if (m instanceof AlaCarte)
+			if (m instanceof AlaCarte) {
 				System.out.println("Ala Carte :");
+				System.out.println(m.getFood().getName() + ": " + numOfProductSold[menu.getMenuItems().indexOf(m)]);
+			}
 			else {
 				System.out.println("Promotion Package :");
+				System.out.println(m.getName() + ": " + numOfProductSold[menu.getMenuItems().indexOf(m)]);
 			}
-			System.out.println(m.getFood().getName() + ": " + numOfProductSold[menu.getMenuItems().indexOf(m)]);
+		
 			System.out.println();
 		}
 
