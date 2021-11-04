@@ -3,7 +3,6 @@ import java.util.ArrayList;
 public class StaffManager {
 
 	private ArrayList<Staff> staffs;
-	private Staff currentStaff;
 	/**
 	 * construct staff manager
 	 */
@@ -16,27 +15,10 @@ public class StaffManager {
 		staffs.add(new Staff("Emma",'F',3,Staff.JOB.PART_TIME));
 		staffs.add(new Staff("Noah",'M',4,Staff.JOB.FULL_TIME));
 		
-		//default staff
-		currentStaff = getStaffByID(1);
-	}
-	
-	/**
-	 * get Current Staff
-	 * @return staff
-	 */
-	public Staff getCurrentStaff() {
 		
-		return currentStaff;
 	}
 	
-	/**
-	 * set Current Staff
-	 * @param staff
-	 */
-	public void setCurrentStaff(Staff staff) {
-		currentStaff = staff;
-	}
-	
+
 	/**
 	 * add new staff
 	 * @param name staff's name
