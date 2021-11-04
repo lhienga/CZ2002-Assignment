@@ -59,12 +59,20 @@ public class ReservationManager {
 	/**
 	 * find a table
 	 * @param bookTime
-	 * @param numOfPax
 	 * @param smoking
+	 * @param numOfPax
+	 * @param choice choice - 0 if normal reservation, 1 if walk-in
+	 * @return
 	 */
-	public ArrayList<Integer> findAvailableTables(Calendar bookTime, boolean smoking, int numOfPax){
+	public ArrayList<Integer> findAvailableTables(Calendar bookTime, boolean smoking, int numOfPax, int choice){
 		System.out.println("call findavai");
-		ArrayList<Table> tables = tableManager.getAvailableTables();
+		ArrayList<Table> tables;
+		if (choice == 0) {
+			tables = tableManager.getAllTables();
+		} else {
+			tables = tableManager.getUnoccupiedTables();
+		}
+
 		ArrayList<Integer> possibleTables = new ArrayList<Integer>();
 		Calendar bookingTime = bookTime;
 		for (int i=0; i<tables.size(); i++){
@@ -95,7 +103,7 @@ public class ReservationManager {
 	/**
 	 * create new reservation
 	 * @param bookingTime
-	 * @param choice - 0 if normal reservation, 1 if walk-in reservation
+	 * @param choice - 0 if normal reservation, 1 if walk-in
 	 * @return reservation
 	 */
 	public Reservation createReservation(Calendar bookingTime, int choice) {
@@ -110,7 +118,7 @@ public class ReservationManager {
 		int numOfPax = UserInput.nextInt("Please enter number of customers: ");
 		boolean smoking = UserInput.getSmoking("Please choose Smoking option: (Y for smoking, N for non-smoking)\n");
 		ArrayList<Table> tables = tableManager.getAvailableTables();
-		ArrayList<Integer> availableTableIDs = findAvailableTables(bookingTime, smoking, numOfPax);
+		ArrayList<Integer> availableTableIDs = findAvailableTables(bookingTime, smoking, numOfPax,choice);
 		for (int i = 0; i< availableTableIDs.size(); i++){
 			System.out.println("id "+ availableTableIDs.get(i));
 		}
@@ -167,7 +175,16 @@ public class ReservationManager {
 		if (reservation == null) {
 			System.out.println("There is no reservation under this contact "+contact);
 		}
+		int tableId = reservation.getTableID();
 		reservations.remove(reservation);
+		// if there are other reservations under same table, change status to reserved
+		for (Reservation r: reservations) {
+			if (r.getTableID() == tableId) {
+				tableManager.changeTableStatus(tableId, Table.STATUS.RESERVED);
+				return;
+			}
+		}
+		tableManager.changeTableStatus(reservation.getTableID(), Table.STATUS.AVAILABLE);
 	}
 	/**
 	 * get expired reservations
