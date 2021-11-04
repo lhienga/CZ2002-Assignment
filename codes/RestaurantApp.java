@@ -415,7 +415,7 @@ public class RestaurantApp {
 						break;
 					}
 			
-					System.out.println("Total Items in order arranged from earliest to latest added:\n");
+					System.out.println("\nTotal Items in order arranged from earliest to latest added:\n");
 					order.printOrder();
 					break;
 				case 6:
@@ -473,7 +473,7 @@ public class RestaurantApp {
 						System.out.println("Cannot make reservation");
 					}
 					else {
-						System.out.println("Reservation created:");
+						System.out.println("Reservation has been successfully created!\n");
 						reserve.printReservation(reservation.getContact());
 					}
                     break;
@@ -625,7 +625,7 @@ public class RestaurantApp {
 			
 			
 			choice = UserInput.nextInt("[Report management]\n" +
-					"Which do you wish to do?\n" +
+					"Select a choice:\n" +
 					"1. Generate Revenue Report For a Day\n" +
 					"2. Generate Revenue Report For a period\n" +
 					"3. Print all invoices\n"+
