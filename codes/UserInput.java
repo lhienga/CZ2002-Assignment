@@ -328,6 +328,7 @@ public class UserInput {
 	    SimpleDateFormat dateFormat = null;
 		boolean validDate = false;		
 		Calendar time = Calendar.getInstance();
+		System.out.println(inMsg);
 		
 		do{
 		    System.out.print("Enter reservation date and time in the correct format (dd/MM/yyyy HH:mm): ");	
@@ -364,8 +365,10 @@ public class UserInput {
 		boolean validDate = false;		
 		Calendar time = Calendar.getInstance();
 		
+		
 		do{
-		    System.out.print("Enter reservation date and time in the correct format (dd/MM/yyyy): ");	
+			System.out.println(inMsg);
+		    System.out.print("Enter date and time in the correct format (dd/MM/yyyy): ");	
 			date  = sc.nextLine();
 		    dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		    try {
@@ -397,7 +400,8 @@ public class UserInput {
 		Calendar time = Calendar.getInstance();
 		
 		do{
-		    System.out.print("Enter Month and Date in the correct format (MM/yyyy):");	
+			System.out.println(inMsg);
+		    System.out.print("Enter Month and Date in the correct format (MM/yyyy): ");	
 			date  = sc.nextLine();
 		    dateFormat = new SimpleDateFormat("MM/yyyy");
 		    try {
