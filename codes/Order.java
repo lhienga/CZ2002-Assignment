@@ -3,25 +3,25 @@ import java.util.Calendar;
 
 public class Order {
 
-	private int tableNum;
-	private Calendar timeStampOfSettledPayment;
-	private int staffID;
-	private String staffName;
+	private int tableId;
+	private int contactNum;
+	//private Calendar timeStampOfSettledPayment;
+	private Staff staff;
 	private ArrayList<MenuItem> menuItem;
+
 
 	/**
 	 * constructor for Order
-	 * @param tableNum
-	 * @param timeStamp
-	 * @param staffID
-	 * @param staffName
+	 * @param tableId
+	 * @param contactNum
+	 * @param staff
 	 * @param menuItem
 	 */
-	public Order(int tableNum, int staffID, String staffName, ArrayList<MenuItem> menuItem) {
+	public Order(int tableId, int contactNum, Staff staff, ArrayList<MenuItem> menuItem) {
 		// TODO - implement Order.Order
-		this.tableNum = tableNum;
-		this.staffID = staffID;
-		this.staffName = staffName;
+		this.tableId = tableId;
+		this.contactNum = contactNum;
+		this.staff = staff;
 		this.menuItem = menuItem;
 	}
 
@@ -99,43 +99,26 @@ public class Order {
 	 * get table number
 	 * @return the table number making the order
 	 */
-	public int getTableNum() {
-		return this.tableNum;
+	public int getTableId() {
+		return this.tableId;
+	}
+	
+	/**
+	 * get contact number
+	 * @return contact number of customer making the order
+	 */
+	public int getContactNum() {
+		return this.contactNum;
 	}
 
+	
 	/**
-	 * get time of settled payment
-	 * @return time and date the order is paid
+	 * get staff who created order
+	 * @return Staff
 	 */
-	public Calendar getPaymentTime() {
-		// TODO - implement Order.getOrderTime
-		return this.timeStampOfSettledPayment;
+	public Staff getStaff() {
+		return staff;
 	}
-
-	/**
-	 * set  time of settled payment
-	 * @param settledPaymenttime
-	 * @return
-	 */
-	public void setPaymentTime(Calendar settledPaymenttime) {
-		this.timeStampOfSettledPayment = settledPaymenttime;
-	}
-	/**
-	 * get staff's ID
-	 * @return the ID of staff taking the order
-	 */
-	public int getStaffID() {
-		return this.staffID;
-	}
-
-	/**
-	 * get staff's name
-	 * @return the name of staff taking the order
-	 */
-	public String getStaffName() {
-		return this.staffName;
-	}
-
 	/**
 	 * get all items in the order
 	 * @return a list of menu items in the order
