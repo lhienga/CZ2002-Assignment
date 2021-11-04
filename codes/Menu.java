@@ -6,7 +6,6 @@ public class Menu {
 
 	/**
 	 * Default Constructor for Menu
-	 * Empty menu, default menu
 	 */
 	public Menu() {
 		if (this.menu == null) {
