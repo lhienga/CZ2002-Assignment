@@ -129,6 +129,20 @@ public class Order {
 	}
 	
 	/**
+	 * get the different items ordered by customer
+	 * @return a list of menu items
+	 */
+	public ArrayList<MenuItem> getOrderLineItems() {
+		ArrayList<MenuItem> OrderLineItems = new ArrayList<MenuItem>();
+		for (MenuItem item: getOrder()) {
+			if (!OrderLineItems.contains(item)) {
+				OrderLineItems.add(item);
+			}
+		}
+		return OrderLineItems;
+	}
+	
+	/**
 	 * print order
 	 */
 	public void printOrder() {
