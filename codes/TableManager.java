@@ -77,6 +77,18 @@ public class TableManager {
 		return reservedTables;
 	}
 	
+	/**
+	 * get list of occupied tables
+	 * @return ArrayList of unoccupied tables
+	 */
+	public ArrayList<Table> getUnoccupiedTables() {
+		ArrayList<Table> unOccupiedTables = new ArrayList<Table>();
+		for (Table tb : this.getAllTables()) {
+			if (tb.getStatus() != Table.STATUS.OCCUPIED)
+				unOccupiedTables.add(tb);
+		}
+		return unOccupiedTables;
+	}
 
 	/**
 	 * find table by id
