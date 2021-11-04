@@ -44,7 +44,8 @@ public class Invoice {
 		if (membershipDiscount != 0) {
 			System.out.printf("Membership Discount: $%.2f\n",membershipDiscount);
 		}
-		System.out.printf("Service Charge : $%.2f\n", serviceCharge);
+		System.out.printf("GST:  $%.2f\n", gst);
+		System.out.printf("Service Charge: $%.2f\n", serviceCharge);
 		System.out.printf("Total Payable: $%.2f\n",totalPrice);
 
 	}
