@@ -18,7 +18,7 @@ public class RestaurantApp {
 		ReportManager reports = new ReportManager(menu);
 		ReservationManager reserve = new ReservationManager(tables);
 		MembershipManager members = new MembershipManager();
-		OrderManager orders = new OrderManager(reserve,members);
+		OrderManager orders = new OrderManager(members);
 		int choice = 0;
 
 		do {
@@ -43,7 +43,7 @@ public class RestaurantApp {
 					manageTable(tables,reserve);
 					break;
 				case 3:
-					manageOrder(orders, tables, staff, menu,reports);
+					manageOrder(orders, reserve, staff, menu,reports,tables);
 					break;
 				case 4:
 					manageReservation(reserve);
@@ -275,46 +275,66 @@ public class RestaurantApp {
 	 * @param order
 	 */
 	
-	public static void manageOrder(OrderManager orders, TableManager tables, StaffManager staff, Menu menu,ReportManager reports) {
+	public static void manageOrder(OrderManager orders, ReservationManager reservations, StaffManager staff, Menu menu,ReportManager reports,TableManager tables) {
 		int i;
 		int choice;
-		int tableId;
-		int staffId = staff.getCurrentStaff().getID();
-		String staffName = staff.getCurrentStaff().getName();
+		int contactNum;
+		int staffId;
+		Staff currentStaff;
 		Order order;
+		Reservation reservation;
+		int subchoice;
 		
 		do {
 			System.out.println();
 
 			choice = UserInput.nextInt("Select a choice:\n" +
-					"1. Create an order for table\n"+
-					"2. Cancel an order for table\n" +
+					"1. Create an order\n"+
+					"2. Cancel an order\n" +
 					"3. Add items to order\n" +
 					"4. Remove items from order\n"+
-					"5. View order for table\n"+
-					"6. Print current invoice for table\n" +
+					"5. View an order\n"+
+					"6. Print invoice/receipt for order\n" +
 					"ENTER 0 to return to main menu\n",0,6);
 			System.out.println();
 			switch (choice) {
 				case 1:
-					//this function is for checking table availability, no updating of table status
+					do {
+						staffId = UserInput.nextInt("Enter Staff ID to create the order in (-1 to cancel): ");
+						
+						currentStaff = staff.getStaffByID(staffId);
+						if (currentStaff == null) {
+							System.out.println("Invalid staff ID!");
+						} else {
+							break;
+						}
+					} while (staffId != -1);
 					
-					tableId = UserInput.nextInt("Enter tableId (or 0 to cancel) \n",0,20);
-					if (tableId == 0) {
+					if (staffId == -1) {
+						System.out.println("Create Order Operation Cancelled");
+			            System.out.println();
+			            break;
+					} 
+					contactNum = UserInput.getContact("Enter contact number of customer making order: ");
+					reservation = reservations.getReservationByContact(contactNum);
+					if (reservation == null) {
+						System.out.println("Reservation or walk in not found\n Please create a reservation or walk in under customer with contact number "+contactNum + " first!");
 						break;
 					}
-					
-					if (tables.getStatusByTableId(tableId)!=Table.STATUS.OCCUPIED) {
-						System.out.println("Table is not occupied by any customers!");
-						break;
+
+					subchoice = UserInput.nextInt("Is order a 1. pre-order or a 2. walk-in order? ",1,2);
+					//If walk-in-order, table status changed to occupied if at first reservation was made since customer has arrived
+					if (subchoice == 2) {
+						tables.changeTableStatus(reservation.getTableID(), Table.STATUS.OCCUPIED);
 					}
-					order = orders.getTableIdOrder(tableId);
+					
+					order = orders.getOrderByContact(contactNum);
 					if (order!=null) {
 						System.out.println("Order has already been created, would you like to add on order instead (Enter choice 3) instead");
 						break;
 					}
-					orders.createOrder(tableId, staffId, staffName,  new ArrayList<MenuItem>());
-					order = orders.getTableIdOrder(tableId);
+					orders.createOrder(reservation.getTableID(), contactNum, currentStaff, new ArrayList<MenuItem>());
+					order = orders.getOrderByContact(contactNum);
 					do {
 						System.out.println("Currently, there are "+order.getNumItems()+" items in order.\n");
 						menu.printMenu(0);
@@ -322,7 +342,7 @@ public class RestaurantApp {
 						if (i==0) {
 							break;
 						}
-						orders.addToOrder(tableId, menu.getMenuItems().get(i-1)); 
+						orders.addToOrder(contactNum, menu.getMenuItems().get(i-1)); 
 						System.out.println("Item has been added to order:");
 						menu.printMenuItem(menu.getMenuItems().get(i-1));
 					} while (i!=0);
@@ -331,28 +351,23 @@ public class RestaurantApp {
 
 					break;
 				case 2:
-					tableId = UserInput.nextInt("Enter tableId (or 0 to cancel) \n",0,20);
-					if (tableId == 0) {
+					contactNum = UserInput.getContact("Enter contact number of customer removing order: ");
+					order = orders.getOrderByContact(contactNum);
+					if (order == null) {
+						System.out.println("There is no order under customer with contact number "+contactNum);
 						break;
 					}
-					orders.clearTableIdOrder(tableId);
+					orders.clearOrder(contactNum);
 					break;
 				case 3:
 
-					tableId = UserInput.nextInt("Enter tableId (or 0 to cancel) \n",0,20);
-					if (tableId == 0) {
+					contactNum = UserInput.getContact("Enter contact number of customer adding items to order: ");
+					order = orders.getOrderByContact(contactNum);
+					if (order == null) {
+						System.out.println("There is no order under customer with contact number "+contactNum);
 						break;
 					}
 					
-					if (tables.getStatusByTableId(tableId)!=Table.STATUS.OCCUPIED) {
-						System.out.println("Table is not occupied by any customers!");
-						break;
-					}
-					order = orders.getTableIdOrder(tableId);
-					if (order==null) {
-						System.out.println("There is no order under the table ID " + tableId +" !");
-						break;
-					}
 					do {
 						System.out.println("Currently, there are "+order.getNumItems()+" items in order.\n");
 						menu.printMenu(0);
@@ -360,7 +375,7 @@ public class RestaurantApp {
 						if (i==0) {
 							break;
 						}
-						orders.addToOrder(tableId, menu.getMenuItems().get(i-1)); 
+						orders.addToOrder(contactNum, menu.getMenuItems().get(i-1));  
 						System.out.println("Item has been added to order:");
 						menu.printMenuItem(menu.getMenuItems().get(i-1));
 					} while (i!=0);
@@ -369,20 +384,14 @@ public class RestaurantApp {
 
 					break;
 				case 4:
-					tableId = UserInput.nextInt("Enter tableId (or 0 to cancel) \n",0,20);
-					if (tableId == 0) {
+					contactNum = UserInput.getContact("Enter contact number of customer removing order: ");
+					order = orders.getOrderByContact(contactNum);
+					if (order == null) {
+						System.out.println("There is no order under customer with contact number "+contactNum);
 						break;
 					}
 					
-					if (tables.getStatusByTableId(tableId)!=Table.STATUS.OCCUPIED) {
-						System.out.println("Table is not occupied by any customers!");
-						break;
-					}
-					order = orders.getTableIdOrder(tableId);
-					if (order==null) {
-						System.out.println("There is no order under the table ID " + tableId +" !");
-						break;
-					}
+					
 					do {
 						System.out.println("Currently, there are "+order.getNumItems()+" items in order.\n");
 						order.printOrder();
@@ -391,7 +400,7 @@ public class RestaurantApp {
 							break;
 						}
 						
-						orders.removeFromOrder(tableId, order.getOrder().get(i-1)); 
+						orders.removeFromOrder(contactNum, order.getOrder().get(i-1)); 
 						System.out.println("Item has been removed from order:");
 					} while (i!=0);
 					System.out.println("Remaining Items in order:");
@@ -399,18 +408,10 @@ public class RestaurantApp {
 
 					break;
 				case 5:
-					tableId = UserInput.nextInt("Enter tableId (or 0 to cancel) \n",0,20);
-					if (tableId == 0) {
-						break;
-					}
-					
-					if (tables.getStatusByTableId(tableId)!=Table.STATUS.OCCUPIED) {
-						System.out.println("Table is not occupied by any customers!");
-						break;
-					}
-					order = orders.getTableIdOrder(tableId);
-					if (order==null) {
-						System.out.println("There is no order under the table ID " + tableId +" !");
+					contactNum = UserInput.getContact("Enter contact number of customer whom order is under: ");
+					order = orders.getOrderByContact(contactNum);
+					if (order == null) {
+						System.out.println("There is no order under customer with contact number "+contactNum);
 						break;
 					}
 			
@@ -418,22 +419,23 @@ public class RestaurantApp {
 					order.printOrder();
 					break;
 				case 6:
-					tableId = UserInput.nextInt("Enter tableId (or 0 to cancel) \n",0,20);
-					if (tableId == 0) {
+					contactNum = UserInput.getContact("Enter contact number of customer whom order is under: ");
+					order = orders.getOrderByContact(contactNum);
+					if (order == null) {
+						System.out.println("There is no order under customer with contact number "+contactNum);
 						break;
 					}
-					if (tables.getStatusByTableId(tableId)!=Table.STATUS.OCCUPIED) {
-						System.out.println("Table is not occupied by any customers!");
-						break;
+					/*
+					if (tables.getStatusByTableId(order.getTableId()) != Table.STATUS.OCCUPIED) {
+					
 					}
-					order = orders.getTableIdOrder(tableId);
-					Invoice invoice = orders.printInvoice(tableId, menu);
-					if (invoice == null) {
-						break;
-					}
+					DO WE NEED TO CHECK IF TABLE IS OCCUPIED FIRST BEFORE WE GENERATE INVOICE???
+					PLEASE HAVE AN UPDATE RESERVATION STATUS IN RESERVATION MANAGER: when customer arrives, change status from reserved to occupied!
+					*/
+					Invoice invoice = orders.printInvoice(contactNum, menu);
+					reservations.removeReservationByContact(contactNum);
+					orders.clearOrder(contactNum);
 					reports.addOrderToReport(invoice);
-					tables.changeTableStatus(tableId, Table.STATUS.AVAILABLE);
-					orders.clearTableIdOrder(tableId);
 					
 					break;
 				
@@ -628,7 +630,8 @@ public class RestaurantApp {
 					"Which do you wish to do?\n" +
 					"1. Generate Revenue Report For a Day\n" +
 					"2. Generate Revenue Report For a period\n" +
-					"Enter 0 to return to main menu\n",0, 2);
+					"3. Print all invoices\n"+
+					"Enter 0 to return to main menu\n",0, 3);
 			System.out.println();
 			
 			switch (choice) {
@@ -641,6 +644,10 @@ public class RestaurantApp {
 				int year = date.get(Calendar.YEAR);
 				int month = date.get(Calendar.MONTH)+1;
 				reports.printReportByMonth(month,year);
+				break;
+	
+			case 3:
+				reports.printAllInvoices();
 				break;
 	
 	
