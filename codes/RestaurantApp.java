@@ -485,6 +485,10 @@ public class RestaurantApp {
                     break;
                 case 2:
 					Calendar walkInTime = Calendar.getInstance();
+					if (walkInTime.get(Calendar.HOUR_OF_DAY)<9 || walkInTime.get(Calendar.HOUR_OF_DAY)>18) {
+						System.out.println("Restaurant opens from 9 am to 6 pm!");
+						break;
+					}
 					Reservation walkInReservation = reserve.createReservation(walkInTime,1);
 					if (walkInReservation==null){
 						System.out.println("Cannot make reservation");
