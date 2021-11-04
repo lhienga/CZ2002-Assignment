@@ -351,4 +351,68 @@ public class UserInput {
 				
 		return time;
 	}
+	
+	/**
+	 * get date for generating report
+	 * @param inMsg
+	 * @return
+	 */
+	public static Calendar getDateForReport(String inMsg) {
+		String date = "";
+	    Date inputDate = null;
+	    SimpleDateFormat dateFormat = null;
+		boolean validDate = false;		
+		Calendar time = Calendar.getInstance();
+		
+		do{
+		    System.out.print("Enter reservation date and time in the correct format (dd/MM/yyyy): ");	
+			date  = sc.nextLine();
+		    dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		    try {
+		    	inputDate = dateFormat.parse(date);
+		    } catch (ParseException e) {
+		        System.out.println("Entered date and time is not in the correct format!");
+		        continue;
+		    }
+		    time.setTime(inputDate);
+			if (time.compareTo(Calendar.getInstance())>0){
+				System.out.println("Entered a date after current date!");
+			}
+			else validDate = true;
+		} while(!validDate);
+				
+		return time;
+	}
+	
+	/**
+	 * get date for generating report
+	 * @param inMsg
+	 * @return
+	 */
+	public static Calendar getMonthYearForReport(String inMsg) {
+		String date = "";
+	    Date inputDate = null;
+	    SimpleDateFormat dateFormat = null;
+		boolean validDate = false;		
+		Calendar time = Calendar.getInstance();
+		
+		do{
+		    System.out.print("Enter Month and Date in the correct format (MM/yyyy):");	
+			date  = sc.nextLine();
+		    dateFormat = new SimpleDateFormat("MM/yyyy");
+		    try {
+		    	inputDate = dateFormat.parse(date);
+		    } catch (ParseException e) {
+		        System.out.println("Entered date and time is not in the correct format!");
+		        continue;
+		    }
+		    time.setTime(inputDate);
+			if (time.compareTo(Calendar.getInstance())>0){
+				System.out.println("Entered a date after current date!");
+			}
+			else validDate = true;
+		} while(!validDate);
+				
+		return time;
+	}
 }
