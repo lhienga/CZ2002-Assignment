@@ -39,9 +39,10 @@ public class ReportManager {
 		
 		
 		System.out.println("\nSales Revenue Report for " + specifiedDate.getTime());
-		System.out.printf("Total Sales Revenue: %.2f\n", totalRevenue);
+		System.out.printf("\n\nTotal Sales Revenue: $%.2f\n\n", totalRevenue);
 		
-		System.out.println("Total Number of Food Products sold: ");
+		
+		System.out.println("Total Number of Food Products sold: \n");
 		for (MenuItem m: menu.getMenuItems()){
 			if (m instanceof AlaCarte) {
 				System.out.println("Ala Carte :");
@@ -104,9 +105,9 @@ public class ReportManager {
 		
 		
 		System.out.println("\nSales Revenue Report for " + monthName + " of Year " + year);
-		System.out.printf("Total Sales Revenue: %.2f", totalRevenue);
+		System.out.printf("\n\nTotal Sales Revenue: $%.2f\n\n", totalRevenue);
 		
-		System.out.println("Total Number of Food Products sold: ");
+		System.out.println("Total Number of Food Products sold: \n");
 		for (MenuItem m: menu.getMenuItems()){
 			if (m instanceof AlaCarte) {
 				System.out.println("Ala Carte :");
@@ -158,6 +159,12 @@ public class ReportManager {
 		
 		return numOfProductSold;
 		
+	}
+	
+	public void printAllInvoices() {
+		for (Invoice iv: report) {
+			iv.printInvoice();
+		}
 	}
 
 }
