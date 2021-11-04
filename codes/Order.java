@@ -71,7 +71,7 @@ public class Order {
 	public double getItemPrice(MenuItem item, Menu menu) {
 		// TODO - implement Order.getItemPrice
 		ArrayList<MenuItem> menuItems = menu.getMenuItems();
-		for (int i = 0; i< menu.getMenuSize(1); i++) {
+		for (int i = 0; i< menu.getMenuSize(0); i++) {
 			MenuItem currItem = menuItems.get(i);
 			if (item == currItem) {
 				return currItem.getPrice();
