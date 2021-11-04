@@ -415,7 +415,7 @@ public class RestaurantApp {
 						break;
 					}
 			
-					System.out.println("Items in order:\n");
+					System.out.println("Total Items in order arranged from earliest to latest added:\n");
 					order.printOrder();
 					break;
 				case 6:
@@ -425,13 +425,7 @@ public class RestaurantApp {
 						System.out.println("There is no order under customer with contact number "+contactNum);
 						break;
 					}
-					/*
-					if (tables.getStatusByTableId(order.getTableId()) != Table.STATUS.OCCUPIED) {
 					
-					}
-					DO WE NEED TO CHECK IF TABLE IS OCCUPIED FIRST BEFORE WE GENERATE INVOICE???
-					PLEASE HAVE AN UPDATE RESERVATION STATUS IN RESERVATION MANAGER: when customer arrives, change status from reserved to occupied!
-					*/
 					Invoice invoice = orders.printInvoice(contactNum, menu);
 					reservations.removeReservationByContact(contactNum);
 					orders.clearOrder(contactNum);
