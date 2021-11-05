@@ -10,7 +10,6 @@ public class Reservation implements Serializable {
 	private Calendar expiryTime;
 	public int EXPIRYDURATION = 30;
 	private int tableid;
-	public int RESERVATIONDURATION=3; 
 
 	/**
 	 * constructor of reservation - 1 contact number can only book 1 reservation
@@ -28,7 +27,7 @@ public class Reservation implements Serializable {
 		this.contact = contact;
 		this.tableid = tableid;
 		Calendar expiryTime = (Calendar) bookTime.clone();
-		expiryTime.add(Calendar.HOUR_OF_DAY, +RESERVATIONDURATION);
+		expiryTime.add(Calendar.MINUTE, +EXPIRYDURATION);
 		this.expiryTime = expiryTime;
 	}
 
