@@ -111,7 +111,7 @@ public class OrderManager {
 
 		
 		// print invoice
-		ArrayList<MenuItem> orderitems = order.getOrder();
+		//ArrayList<MenuItem> orderitems = order.getOrder();
 		double totalPrice = order.getTotalPrice(menu);
 		double totalPriceMember = totalPrice;
 		boolean isMember = false;

@@ -1,7 +1,6 @@
 
 import java.util.ArrayList;
-import java.io.Serializable;
-public class PromotionPackage extends MenuItem implements Serializable {
+public class PromotionPackage extends MenuItem{
 
 	private ArrayList<Food> setpackage = new ArrayList<Food>();
 	private String package_desc;

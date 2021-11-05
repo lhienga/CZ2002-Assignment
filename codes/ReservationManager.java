@@ -68,7 +68,7 @@ public class ReservationManager {
 	 * @return
 	 */
 	public ArrayList<Integer> findAvailableTables(Calendar bookTime, boolean smoking, int numOfPax, int choice){
-		System.out.println("call findavai");
+		//System.out.println("call findavai");
 		ArrayList<Table> tables;
 		if (choice == 0) {
 			tables = tableManager.getAllTables();
@@ -80,7 +80,7 @@ public class ReservationManager {
 		Calendar bookingTime = bookTime;
 		for (int i=0; i<tables.size(); i++){
 			possibleTables.add(tables.get(i).getTableId());
-			System.out.println("id added"+possibleTables.get(i));
+			//System.out.println("id added"+possibleTables.get(i));
 		}
 		
 		for (int i = 0; i<reservations.size(); i++){
@@ -92,10 +92,10 @@ public class ReservationManager {
 			int upper = bookTime.get(Calendar.HOUR_OF_DAY);
 			bookingTime.add(Calendar.HOUR_OF_DAY,-RESERVATIONDURATION);
 			int reservedHour = reservedTime.get(Calendar.HOUR_OF_DAY);
-			System.out.println(upper+" "+ lower+" "+reservedHour);
+			//System.out.println(upper+" "+ lower+" "+reservedHour);
 			if (reservedHour<= upper && reservedHour>=lower){
 				possibleTables.remove(possibleTables.indexOf(tableid));
-				System.out.println("remove " + tableid);
+				//System.out.println("remove " + tableid);
 			}
 			
 		}
@@ -109,15 +109,13 @@ public class ReservationManager {
 	 * @param choice - 0 if normal reservation, 1 if walk-in
 	 * @return reservation
 	 */
-	public Reservation createReservation(Calendar bookingTime, int choice) {
+	public Reservation createReservation(int contact, String name, Calendar bookingTime, int choice) {
 		//find a table with suitable capacity and smoking option
 		System.out.println("call create reser");
-		int contact = UserInput.getContact("Please enter customer's contact number (format = 8 digit number): ");
 		if (getReservationByContact(contact)!=null){
 			System.out.println("This contact number has already booked a reservation!");
 			return null;
 		}
-		String name = UserInput.getString("Please enter customer's name: ");
 		int numOfPax = UserInput.nextInt("Please enter number of customers: ");
 		boolean smoking = UserInput.getSmoking("Please choose Smoking option: (Y for smoking, N for non-smoking)\n");
 		ArrayList<Table> tables = tableManager.getAvailableTables();
@@ -164,9 +162,52 @@ public class ReservationManager {
 	 * 
 	 * @param contact
 	 */
-	public void updateReservationDetails(int contact) {
-		
-		throw new UnsupportedOperationException();
+	public Reservation updateReservationDetails(int contact) {
+		int reservationType = UserInput.nextInt("Is it (1) pre-order or (2) walk-in reservation? ", 1, 2)-1;
+		Reservation reservation = getReservationByContact(contact);
+		if (reservation == null){
+			System.out.println("There is no reservation under this contact number!");
+			return null;
+		}
+		System.out.println("What do you want to update?");
+		System.out.println("1.Update customer personal information"+ '\n'+
+							"2.Update reservation information");
+		int choice = UserInput.nextInt("Enter your choice", 1, 2);
+		switch(choice){
+			case 1:
+				int newContact = UserInput.getContact("Enter new contact number: ");
+				Reservation exist = getReservationByContact(newContact);
+				if (exist!=null){
+					System.out.println("This contact number has existing reservation");
+					return null;
+				}
+				String newName = UserInput.getString("Enter new name: ");
+				reservation.setContact(newContact);
+				reservation.setName(newName);
+				System.out.println("Reservation updated!");
+				return reservation;
+				
+			case 2:
+				Calendar newBookingTime;
+				if (reservationType == 0){
+					newBookingTime = UserInput.getDateTime("Enter new booking time: ");
+				}
+				else {
+					newBookingTime = reservation.getBookingTime();
+				}
+				removeReservationByContact(contact);
+				Reservation updated = createReservation(contact, reservation.getName(), newBookingTime, reservationType);
+				if (updated==null){
+					System.out.println("Cannot find any table!");
+					reservations.add(reservation);
+					return null;
+				}
+				
+				System.out.println("Reservation updated!");
+				return updated;
+		}
+		return null;
+
 	}
 
 	/**

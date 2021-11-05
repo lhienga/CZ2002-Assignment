@@ -1,8 +1,6 @@
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+
 
 public class RestaurantApp {
 
@@ -447,30 +445,32 @@ public class RestaurantApp {
 	 */
 
 	public static void manageReservation(ReservationManager reserve) {
-		// TODO - implement RestaurantApp.manageReservation
+		
 		int choice;
 		
 		//release all table with expired reservation
 		reserve.releaseTablesWithExpiredReservations();
+		int contactNum = UserInput.getContact("Enter customer's contact number: ");
+		
 		
         do {
 
         	System.out.println();
-            //System.out.println("(1) Show table availability");
-            //System.out.println("(3) Accept reservation");
         	choice = UserInput.nextInt("Select a choice:\n" +
 					"1. Make reservation\n"+
 					"2. Walk-in dining\n" +
 					"3. Remove reservation\n" +
 					"4. Show reservations\n"+
+					"5. Update reservation\n"+
 					"ENTER 0 to return to main menu\n",0,5);
 
         	System.out.println();
             
             switch (choice) {
                 case 1:
+					String name = UserInput.getString("Enter customer's name: ");
 					Calendar bookingTime = UserInput.getDateTime("Please enter the time you want to reserve table");
-					Reservation reservation = reserve.createReservation(bookingTime,0);
+					Reservation reservation = reserve.createReservation(contactNum, name, bookingTime, 0);
 					if (reservation==null){
 						System.out.println("Cannot make reservation");
 					}
@@ -480,12 +480,13 @@ public class RestaurantApp {
 					}
                     break;
                 case 2:
+					String cusName = UserInput.getString("Enter customer's name: ");
 					Calendar walkInTime = Calendar.getInstance();
 					if (walkInTime.get(Calendar.HOUR_OF_DAY)<9 || walkInTime.get(Calendar.HOUR_OF_DAY)>18) {
 						System.out.println("Restaurant opens from 9 am to 6 pm!");
 						break;
 					}
-					Reservation walkInReservation = reserve.createReservation(walkInTime,1);
+					Reservation walkInReservation = reserve.createReservation(contactNum, cusName, walkInTime,1);
 					if (walkInReservation==null){
 						System.out.println("Cannot make reservation");
 					}
@@ -495,12 +496,17 @@ public class RestaurantApp {
 					}
 						break;
                 case 3:
-					int removeContact = UserInput.getContact("Enter reservation's contact number to remove: ");
-					reserve.removeReservationByContact(removeContact);
+					reserve.removeReservationByContact(contactNum);
                         break;
                 case 4:
                 	reserve.printAllReservation();
                     break;
+				case 5:
+					Reservation updated = reserve.updateReservationDetails(contactNum);
+					if (updated!=null){
+						contactNum = updated.getContact();
+					}
+					break;
 
             }
         } while (choice != 0);
