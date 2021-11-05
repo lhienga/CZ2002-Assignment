@@ -103,6 +103,16 @@ public class OrderManager {
 		System.out.println();
 
 	}
+	
+	public void moveOrderToSettledOrders(int contact) {
+		Order order = getOrderByContact(contact);
+		if (order == null) {
+			System.out.println("There is no order made by customer with contact number "+contact);
+			return;
+		}
+		settledOrders.add(order);
+		orders.remove(order);
+	}
 
 	/**
 	 * print the invoice of the table
