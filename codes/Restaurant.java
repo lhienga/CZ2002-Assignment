@@ -18,12 +18,6 @@ import java.util.ArrayList;
  * @since 2016-11-09
  */
 public class Restaurant {
-
-	public static final int		BOOKING_MTHINADVANCE		= 1;
-	public static final	int		AMSTARTTIME					= 11;
-	public static final	int		AMENDTIME					= 15;
-	public static final	int		PMSTARTTIME					= 18;
-	public static final	int		PMENDTIME					= 22;
 	
 	public static final Path 	DATAPATH 					= Paths.get(System.getProperty("user.dir"), "data");
 	public static final String 	RESTAURANT_FILE_NAME		= "restaurant.dat";	
@@ -35,6 +29,8 @@ public class Restaurant {
 	public static ArrayList<Order> 				orders;
 	public static ArrayList<Reservation>		reservations;
     public static ArrayList<Membership>         members;
+	public static ArrayList<Order> 				settledOrders;
+	public static ArrayList<Reservation>		settledReservations;
 
 	
 	/**
@@ -56,7 +52,9 @@ public class Restaurant {
 										invoices, 
 										orders, 
 										reservations,
-                                        members};
+                                        members,
+										settledOrders,
+										settledReservations};
 		
 		Path 				saveFileName 	= Paths.get(DATAPATH.toString(), RESTAURANT_FILE_NAME);
 		FileOutputStream   	fos 			= null;
@@ -94,9 +92,10 @@ public class Restaurant {
 				foodMenu = (ArrayList<MenuItem>) restaurantMember[2];
 				invoices = (ArrayList<Invoice>) restaurantMember[3];
 				orders = (ArrayList<Order>) restaurantMember[4];
-				
 				reservations = (ArrayList<Reservation>) restaurantMember[5];
                 members = (ArrayList<Membership>) restaurantMember[6];
+				settledOrders = (ArrayList<Order>) restaurantMember[7];
+				settledReservations = (ArrayList<Reservation>) restaurantMember[8];
 			}
 			ois.close();
 		} catch (IOException ex) {
@@ -119,9 +118,10 @@ public class Restaurant {
 		initFoodMenu();
 		initInvoices();
 		initOrders();
-		
 		initReservations();
-		
+		initMembers();
+		initSettledOrders();
+		initSettledReservations();
 	}
 	
 	/**
@@ -211,66 +211,6 @@ public class Restaurant {
 			menu.add(new PromotionPackage(set1, "Chicken Burger set","Easy Combo",7.0 ));
 			menu.add(new PromotionPackage(set2, "Cheese buddy set", "Easy Combo",14.0));
             Restaurant.foodMenu = menu;
-		
-        /*
-		ArrayList<MenuItem> menuItems = new ArrayList<MenuItem>();
-		
-		Food food1 = new Food("Burger", "Juicy American burger", 3.50, Food.TYPE.MAINCOURSE);
-		Food food2 = new Food("Nuggets", "Nuggets - halal", 1.00, Food.TYPE.MAINCOURSE);
-		Food food3 = new Food("Oreo McFlurry", "Ice cream dessert filled with crushed oreos", 3.85, Food.TYPE.DESSERT);
-		Food food4 = new Food("Apple Ice Cream", "Apple flavoured ice cream dessert", 8.00, Food.TYPE.DESSERT);
-		Food food5 = new Food("Ice Lemon Tea", "Homemade Ice Lemon Tea", 1.50, Food.TYPE.DRINK);
-		Food food6 = new Food("Plain Water", "On the house", 0.00, Food.TYPE.DRINK);
-		Food food7 = new Food("Healthy Fruit Juice", "Mixed fruit juice", 2.00, Food.TYPE.DRINK);
-		
-        ArrayList<MenuItem>set1 = new ArrayList<MenuItem>();
-			set1.add(menuItems.get(0));
-			set1.add(menuItems.get(8));
-			set1.add(menuItems.get(12));
-			set1.add(menuItems.get(14));
-
-			ArrayList<MenuItem>set2 = new ArrayList<MenuItem>();
-			set2.add(menuItems.get(5));
-			set2.add(menuItems.get(6));
-			set2.add(menuItems.get(10));
-			set2.add(menuItems.get(11));
-			set2.add(menuItems.get(14));
-			set2.add(menuItems.get(15));
-
-			menuItems.add(new PromotionPackage(set1, "Chicken Burger set","Easy Combo",7.0 ));
-			menuItems.add(new PromotionPackage(set2, "Cheese buddy set", "Easy Combo",14.0));
-
-		PromotionPackage promo1 = new PromotionPackage("McNugget Meal", "6pc nuggets in 1", 3.00);
-		promo1.addFood(food2);
-		promo1.addFood(food2);
-		promo1.addFood(food2);
-		promo1.addFood(food2);
-		promo1.addFood(food2);
-		promo1.addFood(food2);
-
-		PromotionPackage promo2 = new PromotionPackage("Burger set meal", "Burger set at cheaper price", 5.00);
-		promo2.addFood(food1);
-		promo2.addFood(food2);
-		promo2.addFood(food7);
-
-		PromotionPackage promo3 = new PromotionPackage("Healthy set meal", "Very healthy meal", 2.00);
-		promo3.addFood(food7);
-		promo3.addFood(food6);
-		promo3.addFood(food4);
-
-		menuItems.add((MenuItem) food1);
-		menuItems.add((MenuItem) food2);
-		menuItems.add((MenuItem) food3);
-		menuItems.add((MenuItem) food4);
-		menuItems.add((MenuItem) food5);
-		menuItems.add((MenuItem) food6);
-		menuItems.add((MenuItem) food7);
-		menuItems.add((MenuItem) promo1);
-		menuItems.add((MenuItem) promo2);
-		menuItems.add((MenuItem) promo3);
-		
-		Restaurant.foodMenu = menuItems;
-		*/
 	}
 	
 	/**
@@ -286,13 +226,19 @@ public class Restaurant {
 	public static void initOrders(){
 		Restaurant.orders = new ArrayList<Order>();
 	}
-
+	public static void initSettledOrders(){
+		Restaurant.settledOrders = new ArrayList<Order>();
+	}
 
 	/**
 	 * Initialise restaurant reservations
 	 */
 	public static void initReservations(){
         Restaurant.reservations = new ArrayList<Reservation>();
+	}
+
+	public static void initSettledReservations(){
+        Restaurant.settledReservations = new ArrayList<Reservation>();
 	}
 
     public static void initMembers(){

@@ -16,9 +16,9 @@ public class RestaurantApp {
 		StaffManager staff = new StaffManager(Restaurant.staffs);
 		TableManager tables = new TableManager(Restaurant.tables);
 		ReportManager reports = new ReportManager(menu, Restaurant.invoices);
-		ReservationManager reserve = new ReservationManager(tables, Restaurant.reservations);
+		ReservationManager reserve = new ReservationManager(tables, Restaurant.reservations, Restaurant.settledReservations);
 		MembershipManager members = new MembershipManager(Restaurant.members);
-		OrderManager orders = new OrderManager(members, Restaurant.orders);
+		OrderManager orders = new OrderManager(members, Restaurant.orders, Restaurant.settledOrders);
 		int choice = 0;
 
 		do {
@@ -284,10 +284,11 @@ public class RestaurantApp {
 		Order order;
 		Reservation reservation;
 		int subchoice;
-		
+		contactNum = UserInput.getContact("Enter contact number of customer: (-1 to cancel)");
+		while (contactNum!=-1){
 		do {
 			System.out.println();
-
+			
 			choice = UserInput.nextInt("Select a choice:\n" +
 					"1. Create an order\n"+
 					"2. Cancel an order\n" +
@@ -315,7 +316,7 @@ public class RestaurantApp {
 			            System.out.println();
 			            break;
 					} 
-					contactNum = UserInput.getContact("Enter contact number of customer making order: ");
+					//contactNum = UserInput.getContact("Enter contact number of customer making order: ");
 					reservation = reservations.getReservationByContact(contactNum);
 					if (reservation == null) {
 						System.out.println("Reservation or walk in not found\n Please create a reservation or walk in under customer with contact number "+contactNum + " first!");
@@ -351,7 +352,7 @@ public class RestaurantApp {
 
 					break;
 				case 2:
-					contactNum = UserInput.getContact("Enter contact number of customer removing order: ");
+					//contactNum = UserInput.getContact("Enter contact number of customer removing order: ");
 					order = orders.getOrderByContact(contactNum);
 					if (order == null) {
 						System.out.println("There is no order under customer with contact number "+contactNum);
@@ -361,7 +362,7 @@ public class RestaurantApp {
 					break;
 				case 3:
 
-					contactNum = UserInput.getContact("Enter contact number of customer adding items to order: ");
+					//contactNum = UserInput.getContact("Enter contact number of customer adding items to order: ");
 					order = orders.getOrderByContact(contactNum);
 					if (order == null) {
 						System.out.println("There is no order under customer with contact number "+contactNum);
@@ -384,7 +385,7 @@ public class RestaurantApp {
 
 					break;
 				case 4:
-					contactNum = UserInput.getContact("Enter contact number of customer removing order: ");
+					//contactNum = UserInput.getContact("Enter contact number of customer removing order: ");
 					order = orders.getOrderByContact(contactNum);
 					if (order == null) {
 						System.out.println("There is no order under customer with contact number "+contactNum);
@@ -408,7 +409,7 @@ public class RestaurantApp {
 
 					break;
 				case 5:
-					contactNum = UserInput.getContact("Enter contact number of customer whom order is under: ");
+					//contactNum = UserInput.getContact("Enter contact number of customer whom order is under: ");
 					order = orders.getOrderByContact(contactNum);
 					if (order == null) {
 						System.out.println("There is no order under customer with contact number "+contactNum);
@@ -419,8 +420,9 @@ public class RestaurantApp {
 					order.printOrder();
 					break;
 				case 6:
-					contactNum = UserInput.getContact("Enter contact number of customer whom order is under: ");
+					//contactNum = UserInput.getContact("Enter contact number of customer whom order is under: ");
 					order = orders.getOrderByContact(contactNum);
+					orders.settledOrders.add(order);
 					if (order == null) {
 						System.out.println("There is no order under customer with contact number "+contactNum);
 						break;
@@ -432,10 +434,12 @@ public class RestaurantApp {
 					reports.addOrderToReport(invoice);
 					
 					break;
-				
+			
 			}
+			contactNum = -1;
 			
 		}while (choice != 0);
+	}
 	}
 	
 	
@@ -491,6 +495,9 @@ public class RestaurantApp {
 						System.out.println("Cannot make reservation");
 					}
 					else {
+						reserve.settledReservations.add(walkInReservation);
+						int tableid = walkInReservation.getTableID();
+						reserve.tableManager.changeTableStatus(tableid, Table.STATUS.OCCUPIED);
 						System.out.println("Walk in Reservation created:");
 						reserve.printReservation(walkInReservation.getContact());
 					}

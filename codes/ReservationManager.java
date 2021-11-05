@@ -3,7 +3,8 @@ import java.util.Calendar;
 public class ReservationManager {
 
 	private ArrayList<Reservation> reservations;
-	private TableManager tableManager;
+	public ArrayList<Reservation> settledReservations;
+	public TableManager tableManager;
 	public int RESERVATIONDURATION=3; 
 	/**
 	 * constructor of reservation manager
@@ -13,9 +14,10 @@ public class ReservationManager {
 		this.tableManager = tableManager;
 		reservations = new ArrayList<Reservation>();
 	}
-	public ReservationManager(TableManager tableManager, ArrayList<Reservation> reservations) {
+	public ReservationManager(TableManager tableManager, ArrayList<Reservation> reservations, ArrayList<Reservation> settledReservations) {
 		this.tableManager = tableManager;
 		this.reservations = reservations;
+		this.settledReservations = settledReservations;
 	}
 	/**
 	 * print all reservation
@@ -97,7 +99,6 @@ public class ReservationManager {
 				possibleTables.remove(possibleTables.indexOf(tableid));
 				//System.out.println("remove " + tableid);
 			}
-			
 		}
 		return possibleTables;
 	}
@@ -118,7 +119,7 @@ public class ReservationManager {
 		}
 		int numOfPax = UserInput.nextInt("Please enter number of customers: ");
 		boolean smoking = UserInput.getSmoking("Please choose Smoking option: (Y for smoking, N for non-smoking)\n");
-		ArrayList<Table> tables = tableManager.getAvailableTables();
+		ArrayList<Table> tables = tableManager.getAllTables();
 		ArrayList<Integer> availableTableIDs = findAvailableTables(bookingTime, smoking, numOfPax,choice);
 		for (int i = 0; i< availableTableIDs.size(); i++){
 			System.out.println("id "+ availableTableIDs.get(i));
@@ -218,8 +219,10 @@ public class ReservationManager {
 		Reservation reservation = getReservationByContact(contact);
 		if (reservation == null) {
 			System.out.println("There is no reservation under this contact "+contact);
+			return;
 		}
 		int tableId = reservation.getTableID();
+		
 		reservations.remove(reservation);
 		// if there are other reservations under same table, change status to reserved
 		for (Reservation r: reservations) {
