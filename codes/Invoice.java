@@ -1,6 +1,6 @@
 import java.util.Calendar;
-
-public class Invoice {
+import java.io.Serializable;
+public class Invoice implements Serializable{
 	private Order paidOrder;
 	private int invoiceID;
 	private double subtotal;

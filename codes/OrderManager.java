@@ -3,6 +3,7 @@ import java.util.Calendar;
 public class OrderManager {
 
 	private ArrayList<Order> orders;
+	public ArrayList<Order> settledOrders;
 	private MembershipManager membershipManager;
 
 	public OrderManager(MembershipManager membershipManager) {
@@ -11,9 +12,11 @@ public class OrderManager {
 		}
 		this.membershipManager = membershipManager;
 	}
-	public OrderManager(MembershipManager membershipManager, ArrayList<Order> orders) {
+	public OrderManager(MembershipManager membershipManager, ArrayList<Order> orders, ArrayList<Order> settledOrders) {
 		this.orders = orders;
 		this.membershipManager = membershipManager;
+		this.settledOrders = settledOrders;
+
 	}
 	/**
 	 * create a new Order

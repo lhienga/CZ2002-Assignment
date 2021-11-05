@@ -3,7 +3,8 @@ import java.util.Calendar;
 public class ReservationManager {
 
 	private ArrayList<Reservation> reservations;
-	private TableManager tableManager;
+	public ArrayList<Reservation> settledReservations;
+	public TableManager tableManager;
 	public int RESERVATIONDURATION=3; 
 	/**
 	 * constructor of reservation manager
@@ -13,9 +14,10 @@ public class ReservationManager {
 		this.tableManager = tableManager;
 		reservations = new ArrayList<Reservation>();
 	}
-	public ReservationManager(TableManager tableManager, ArrayList<Reservation> reservations) {
+	public ReservationManager(TableManager tableManager, ArrayList<Reservation> reservations, ArrayList<Reservation> settledReservations) {
 		this.tableManager = tableManager;
 		this.reservations = reservations;
+		this.settledReservations = settledReservations;
 	}
 	/**
 	 * print all reservation
@@ -68,7 +70,7 @@ public class ReservationManager {
 	 * @return
 	 */
 	public ArrayList<Integer> findAvailableTables(Calendar bookTime, boolean smoking, int numOfPax, int choice){
-		System.out.println("call findavai");
+		//System.out.println("call findavai");
 		ArrayList<Table> tables;
 		if (choice == 0) {
 			tables = tableManager.getAllTables();
@@ -92,12 +94,11 @@ public class ReservationManager {
 			int upper = bookTime.get(Calendar.HOUR_OF_DAY);
 			bookingTime.add(Calendar.HOUR_OF_DAY,-RESERVATIONDURATION);
 			int reservedHour = reservedTime.get(Calendar.HOUR_OF_DAY);
-			System.out.println(upper+" "+ lower+" "+reservedHour);
+			//System.out.println(upper+" "+ lower+" "+reservedHour);
 			if (reservedHour<= upper && reservedHour>=lower){
 				possibleTables.remove(possibleTables.indexOf(tableid));
-				System.out.println("remove " + tableid);
+				//System.out.println("remove " + tableid);
 			}
-			
 		}
 		return possibleTables;
 	}
@@ -120,7 +121,7 @@ public class ReservationManager {
 		String name = UserInput.getString("Please enter customer's name: ");
 		int numOfPax = UserInput.nextInt("Please enter number of customers: ");
 		boolean smoking = UserInput.getSmoking("Please choose Smoking option: (Y for smoking, N for non-smoking)\n");
-		ArrayList<Table> tables = tableManager.getAvailableTables();
+		ArrayList<Table> tables = tableManager.getAllTables();
 		ArrayList<Integer> availableTableIDs = findAvailableTables(bookingTime, smoking, numOfPax,choice);
 		for (int i = 0; i< availableTableIDs.size(); i++){
 			System.out.println("id "+ availableTableIDs.get(i));
@@ -165,7 +166,41 @@ public class ReservationManager {
 	 * @param contact
 	 */
 	public void updateReservationDetails(int contact) {
-		
+		int reservationType = UserInput.nextInt("Is it (1) pre-order or (2) walk-in reservation?", 1, 2);
+		Reservation reservation = getReservationByContact(contact);
+		if (reservation == null){
+			System.out.println("There is no reservation under this contact number");
+			return;
+		}
+		System.out.println("What do you want to update?");
+		System.out.println("1.Update customer personal inforamtion"+ '\n'+
+							"2.Update reservation information");
+		int choice = UserInput.nextInt("Enter your choice", 1, 2);
+		switch(choice){
+			case 1:
+			int newContact = UserInput.getContact("Enter new contact number");
+			Reservation exist = getReservationByContact(newContact);
+			if (exist!=null){
+				System.out.println("This contact number exists!");
+				return;
+			}
+			String newName = UserInput.getString("Enter new name");
+			reservation.setContact(contact);
+			reservation.setName(newName);
+			break;
+			case 2:
+			int newNumPax = UserInput.nextInt("Enter new number of guests", 1, 10);
+			boolean newSmoking = UserInput.getSmoking("Enter new smoking option");
+			Calendar newBookingTime = UserInput.getDateTime("Enter new booking time");
+			Reservation updated = createReservation(newBookingTime, reservationType);
+			if (updated==null){
+				System.out.println("Cannot find any table");
+				return;
+			}
+			reservations.remove(reservation);
+			reservations.add(updated);
+			
+		}
 		throw new UnsupportedOperationException();
 	}
 
@@ -177,8 +212,10 @@ public class ReservationManager {
 		Reservation reservation = getReservationByContact(contact);
 		if (reservation == null) {
 			System.out.println("There is no reservation under this contact "+contact);
+			return;
 		}
 		int tableId = reservation.getTableID();
+		
 		reservations.remove(reservation);
 		// if there are other reservations under same table, change status to reserved
 		for (Reservation r: reservations) {
