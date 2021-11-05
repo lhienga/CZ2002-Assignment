@@ -3,7 +3,7 @@ import java.util.Calendar;
 public class ReservationManager {
 
 	private ArrayList<Reservation> reservations;
-	public ArrayList<Reservation> settledReservations;
+	private ArrayList<Reservation> settledReservations;
 	public TableManager tableManager;
 	public int RESERVATIONDURATION=3; 
 	/**
@@ -60,6 +60,15 @@ public class ReservationManager {
 		}
 		return null;
 	}
+	
+	public Reservation getSettledReservationByContact(int contact) {
+		for (int i = 0; i<settledReservations.size(); i++){
+			if (contact == settledReservations.get(i).getContact()){
+				return settledReservations.get(i);
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * find a table
@@ -75,7 +84,7 @@ public class ReservationManager {
 		if (choice == 0) {
 			tables = tableManager.getAllTables();
 		} else {
-			tables = tableManager.getUnoccupiedTables();
+			tables = tableManager.getAvailableTables();
 		}
 
 		ArrayList<Integer> possibleTables = new ArrayList<Integer>();
@@ -120,6 +129,7 @@ public class ReservationManager {
 		int numOfPax = UserInput.nextInt("Please enter number of customers: ");
 		boolean smoking = UserInput.getSmoking("Please choose Smoking option: (Y for smoking, N for non-smoking)\n");
 		ArrayList<Table> tables = tableManager.getAllTables();
+		//choice is used to get suitable tables
 		ArrayList<Integer> availableTableIDs = findAvailableTables(bookingTime, smoking, numOfPax,choice);
 		for (int i = 0; i< availableTableIDs.size(); i++){
 			System.out.println("id "+ availableTableIDs.get(i));
@@ -148,14 +158,9 @@ public class ReservationManager {
 			else found = true;
 
 		}
-		//int tableid = availableTableIDs.get(i);
-		if (choice == 0) {
-			tableManager.changeTableStatus(tableid, Table.STATUS.RESERVED);
-		} else {
-			tableManager.changeTableStatus(tableid, Table.STATUS.OCCUPIED);
-		}
 		Reservation reservation = new Reservation(bookingTime, numOfPax, name, contact, tableid);
 		this.reservations.add(reservation);
+		tableManager.changeTableReservedStatus(tableid, true);
 		return reservation;
 	}
 
@@ -224,15 +229,29 @@ public class ReservationManager {
 		int tableId = reservation.getTableID();
 		
 		reservations.remove(reservation);
-		// if there are other reservations under same table, change status to reserved
+		// if there are no other reservations under same table, change reserved status to not reserved
 		for (Reservation r: reservations) {
 			if (r.getTableID() == tableId) {
-				tableManager.changeTableStatus(tableId, Table.STATUS.RESERVED);
-				return;
+				break;
 			}
 		}
-		tableManager.changeTableStatus(reservation.getTableID(), Table.STATUS.AVAILABLE);
+		tableManager.changeTableReservedStatus(tableId, false);
+		//tableManager.changeTableStatus(reservation.getTableID(), Table.STATUS.AVAILABLE);
 	}
+	
+	public void moveReservationToSettledReservations(int contact) {
+		Reservation reservation = getReservationByContact(contact);
+		if (reservation == null) {
+			System.out.println("There is no reservation under this contact "+contact);
+			return;
+		}
+		
+		settledReservations.add(reservation);
+		removeReservationByContact(contact);
+
+	}
+	
+	
 	/**
 	 * get expired reservations
 	 * @return
@@ -313,11 +332,11 @@ public class ReservationManager {
 	}
 
 	
-	public void releaseTablesWithExpiredReservations() {
+	public void removeExpiredReservations() {
 		// TODO - implement ReservationManager.printNotExpiredReservations
 		ArrayList<Reservation> expiredReservations = getExpiredReservations();
 		for (Reservation rv : expiredReservations) {
-			tableManager.changeTableStatus(rv.getTableID(), Table.STATUS.AVAILABLE);
+			removeReservationByContact(rv.getContact());
 		}
 	}
 }
