@@ -148,13 +148,21 @@ public class UserInput {
 			valid = true;
 			System.out.print(inMsg);
 			n = sc.next().charAt(0);
-			if (Character.compare(n, 'M') != 0 && Character.compare(n, 'F') != 0) {
-				valid = false;
-				System.out.println("Error: expected M or F for Gender\n");
-			} else {
-				break;
+			switch (n){
+				case 'M':
+				case 'm':
+					n = 'M';
+					break;
+				case 'F':
+				case 'f':
+					n = 'F';
+					break;
+				default:
+					valid = false;
+					System.out.println("Error: expected M or F for Gender\n");
+					break;
 			}
-				
+
 		}while(!valid);
 		
 		sc.nextLine();	// get dummy line
