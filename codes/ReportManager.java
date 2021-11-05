@@ -19,7 +19,10 @@ public class ReportManager {
 		}
 		this.menu = menu;
 	}
-	
+	public ReportManager(Menu menu, ArrayList<Invoice> invoices) {
+		this.report = invoices;
+		this.menu = menu;
+	}
 	/**
 	 * 
 	 * @param report

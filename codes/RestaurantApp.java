@@ -12,13 +12,15 @@ public class RestaurantApp {
 	 */
 	public static void main(String[] args) {
 		
-		Menu menu = new Menu();
-		StaffManager staff = new StaffManager();
-		TableManager tables = new TableManager();
-		ReportManager reports = new ReportManager(menu);
-		ReservationManager reserve = new ReservationManager(tables);
-		MembershipManager members = new MembershipManager();
-		OrderManager orders = new OrderManager(members);
+		Restaurant.loadRestaurant();
+
+		Menu menu = new Menu(Restaurant.foodMenu);
+		StaffManager staff = new StaffManager(Restaurant.staffs);
+		TableManager tables = new TableManager(Restaurant.tables);
+		ReportManager reports = new ReportManager(menu, Restaurant.invoices);
+		ReservationManager reserve = new ReservationManager(tables, Restaurant.reservations);
+		MembershipManager members = new MembershipManager(Restaurant.members);
+		OrderManager orders = new OrderManager(members, Restaurant.orders);
 		int choice = 0;
 
 		do {
@@ -59,7 +61,7 @@ public class RestaurantApp {
 			}
 		}while(choice != 0);
 
-	
+		Restaurant.saveRestaurant();
 	}
 	
 

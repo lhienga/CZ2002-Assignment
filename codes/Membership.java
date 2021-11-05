@@ -1,5 +1,5 @@
-
-public class Membership {
+import java.io.Serializable;
+public class Membership implements Serializable{
 	
 	private String name;
 	private int contact;

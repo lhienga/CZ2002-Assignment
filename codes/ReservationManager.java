@@ -13,7 +13,10 @@ public class ReservationManager {
 		this.tableManager = tableManager;
 		reservations = new ArrayList<Reservation>();
 	}
-
+	public ReservationManager(TableManager tableManager, ArrayList<Reservation> reservations) {
+		this.tableManager = tableManager;
+		this.reservations = reservations;
+	}
 	/**
 	 * print all reservation
 	 */

@@ -22,6 +22,10 @@ public class MembershipManager {
 			memberships.add(new Membership("Phillip",82357203));
 		}
 	}
+
+	public MembershipManager(ArrayList<Membership> members) {
+		this.memberships = members;
+	}
 	
 	/**
 	 * Create a membership

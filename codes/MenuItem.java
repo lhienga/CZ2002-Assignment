@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
-public abstract class MenuItem {
+import java.io.Serializable;
+public abstract class MenuItem implements Serializable{
 
 	/**
 	 * default constructor for abstract class MenuItem

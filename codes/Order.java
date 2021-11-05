@@ -1,7 +1,6 @@
 import java.util.ArrayList; // import the ArrayList class
-import java.util.Calendar;
-
-public class Order {
+import java.io.Serializable;
+public class Order implements Serializable{
 
 	private int tableId;
 	private int contactNum;
@@ -24,6 +23,7 @@ public class Order {
 		this.staff = staff;
 		this.menuItem = menuItem;
 	}
+
 
 	/**
 	 * add menu item to the order

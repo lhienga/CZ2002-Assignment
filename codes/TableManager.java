@@ -29,6 +29,9 @@ public class TableManager {
 			}
 		}
 	}
+	public TableManager(ArrayList<Table> tables) {
+		this.tables = tables;
+	}
 
 	/**
 	 * get list of all tables

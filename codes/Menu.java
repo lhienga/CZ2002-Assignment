@@ -58,7 +58,9 @@ public class Menu {
 		
 	}
 
-
+	public Menu(ArrayList<MenuItem> menu){
+		this.menu = menu;
+	}
 	/**
 	 * Print the Menu
 	 * @param choice 0 to print full Menu, 1 to print only AlaCarte items, 2 to print only Promotion Package items

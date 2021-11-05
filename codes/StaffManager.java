@@ -17,7 +17,13 @@ public class StaffManager {
 		
 		
 	}
-	
+	public StaffManager(ArrayList<Staff> staffs) {
+		
+		// TODO - implement StaffManager.StaffManager
+		this.staffs = staffs;
+		
+		
+	}
 
 	/**
 	 * add new staff

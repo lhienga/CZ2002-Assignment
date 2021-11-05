@@ -1,6 +1,7 @@
 import java.util.Calendar;
 
-public class Reservation {
+import java.io.Serializable;
+public class Reservation implements Serializable {
 
 	private Calendar bookingTime;
 	private int numOfPax;

@@ -11,7 +11,10 @@ public class OrderManager {
 		}
 		this.membershipManager = membershipManager;
 	}
-	
+	public OrderManager(MembershipManager membershipManager, ArrayList<Order> orders) {
+		this.orders = orders;
+		this.membershipManager = membershipManager;
+	}
 	/**
 	 * create a new Order
 	 * @param tableId

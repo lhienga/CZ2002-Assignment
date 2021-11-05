@@ -1,4 +1,5 @@
-public class Table {
+import java.io.Serializable;
+public class Table implements Serializable {
 
 	private int tableid;
 	private int capacity;

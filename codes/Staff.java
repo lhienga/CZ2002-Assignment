@@ -1,5 +1,5 @@
-
-public class Staff {
+import java.io.Serializable;
+public class Staff implements Serializable{
 
 	private String name;
 	private char gender;
