@@ -3,14 +3,10 @@ public class Table implements Serializable {
 
 	private int tableid;
 	private int capacity;
-	private STATUS status;
 	private boolean smokingOrNot;
+	private boolean occupied;
+	private boolean reserved;
 	
-	public enum STATUS {
-		AVAILABLE,
-		OCCUPIED,
-		RESERVED
-	}
 
 	/**
 	 * Table constructor
@@ -19,11 +15,12 @@ public class Table implements Serializable {
 	 * @param status Table's status
 	 * @param smoking If Table is a smoking table or not
 	 */
-	public Table(int id, int capacity, STATUS status, boolean smoking) {
+	public Table(int id, int capacity, boolean smoking) {
 		this.tableid = id;
 		this.capacity = capacity;
-		this.status = status;
 		this.smokingOrNot = smoking;
+		occupied = false;
+		reserved = false;
 	}
 
 	/**
@@ -42,13 +39,6 @@ public class Table implements Serializable {
 		return this.capacity;
 	}
 
-	/**
-	 * get table's status
-	 * @return
-	 */
-	public STATUS getStatus() {
-		return this.status;
-	}
 
 	/**
 	 * set table ID
@@ -67,13 +57,6 @@ public class Table implements Serializable {
 		this.capacity = capacity;
 	}
 
-	/**
-	 * set table's status
-	 * @param status table status
-	 */
-	public void setStatus(STATUS status) {
-		this.status = status;
-	}
 
 	/**
 	 * get result of table being smoking or not
@@ -91,15 +74,40 @@ public class Table implements Serializable {
 		smokingOrNot = smoking;
 	}
 	
+	public boolean getOccupied() {
+		return occupied;
+	}
+
+
+	public void setOccupied(boolean occupied) {
+		this.occupied = occupied;
+	}
+	
+	public boolean getReserved() {
+		return reserved;
+	}
+
+
+	public void setReserved(boolean reserved) {
+		this.reserved = reserved;
+	}
 	/**
 	 * print out details of table
 	 */
 	public void printTable(int choice) {
+		String o = "occupied";
+		String r = "reserved";
+		if (!occupied) {
+			o = "not occupied";
+		} 
+		if (!reserved) {
+			r = "not reserved";
+		}
 		
 		if (choice == 0) {
-			System.out.printf("Table[id=%d, status=%s, capacity=%d]\n",
+			System.out.printf("Table[id=%d, %s, %s, capacity=%d]\n",
 					this.getTableId(),
-					this.getStatus(),
+					o,r,
 					this.getCapacity());
 		} else {
 			System.out.printf("Table[id=%d, capacity=%d]\n",
