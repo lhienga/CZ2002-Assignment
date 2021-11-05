@@ -189,8 +189,6 @@ public class ReservationManager {
 			reservation.setName(newName);
 			break;
 			case 2:
-			int newNumPax = UserInput.nextInt("Enter new number of guests", 1, 10);
-			boolean newSmoking = UserInput.getSmoking("Enter new smoking option");
 			Calendar newBookingTime = UserInput.getDateTime("Enter new booking time");
 			Reservation updated = createReservation(newBookingTime, reservationType);
 			if (updated==null){
@@ -198,7 +196,6 @@ public class ReservationManager {
 				return;
 			}
 			reservations.remove(reservation);
-			reservations.add(updated);
 			
 		}
 		throw new UnsupportedOperationException();
