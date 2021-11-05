@@ -91,7 +91,7 @@ public class RestaurantApp {
 						menu.printMenu(0);
 						break;
 					case 2:
-						int subchoice = UserInput.nextInt("Do you want to \n1. Add Ala Carte Item or \n2. Add Promotional Item\n",0,1);
+						int subchoice = UserInput.nextInt("Do you want to \n1. Add Ala Carte Item or \n2. Add Promotional Item\n",1,2);
 						switch (subchoice) {
 						case 1:
 							name = UserInput.getString("\nWhat is the name of your food? ");
