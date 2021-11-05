@@ -285,10 +285,11 @@ public class RestaurantApp {
 		Order order;
 		Reservation reservation;
 		int subchoice;
-		
+		contactNum = UserInput.getContact("Enter contact number of customer: (-1 to cancel)");
+		while (contactNum!=-1){
 		do {
 			System.out.println();
-			contactNum = UserInput.getContact("Enter contact number of customer");
+			
 			choice = UserInput.nextInt("Select a choice:\n" +
 					"1. Create an order\n"+
 					"2. Cancel an order\n" +
@@ -434,10 +435,12 @@ public class RestaurantApp {
 					reports.addOrderToReport(invoice);
 					
 					break;
-				
+			
 			}
+			contactNum = -1;
 			
 		}while (choice != 0);
+	}
 	}
 	
 	
