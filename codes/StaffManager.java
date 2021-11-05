@@ -126,15 +126,15 @@ public class StaffManager {
 		int choice = UserInput.nextInt("\nEnter your choice ", 1, 3);
 		switch(choice){
 			case 1:
-			String newName = UserInput.getString("\nEnter staff's new name:");
+			String newName = UserInput.getString("\nEnter staff's new name: ");
 			curStaff.setName(newName);
 			break;
 			case 2:
-			char gender = UserInput.getGender("\nEnter staff's new gender:");
+			char gender = UserInput.getGender("\nEnter staff's new gender: ");
 			curStaff.setGender(gender);
 			break;
 			case 3: 
-			Staff.JOB newTitle = UserInput.getJobTitle("\nEnter staff's new title");
+			Staff.JOB newTitle = UserInput.getJobTitle("\nEnter staff's new title: ");
 			curStaff.setJobTitle(newTitle);
 			break;
 		}
