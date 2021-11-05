@@ -195,7 +195,7 @@ public class RestaurantApp {
 	 * manage tables
 	 * @param table
 	 */
-	public static void manageTable(TableManager tables, ReservationManager reserve) {
+	public static void manageTable(TableManager tables, ReservationManager reservations) {
 		
 		int choice;
 		
@@ -204,7 +204,7 @@ public class RestaurantApp {
 		Table table;
 
 		//release all table with expired reservation
-				reserve.releaseTablesWithExpiredReservations();
+		reservations.removeExpiredReservations();
 		do {
 			System.out.println();
 
@@ -276,9 +276,13 @@ public class RestaurantApp {
 	 */
 	
 	public static void manageOrder(OrderManager orders, ReservationManager reservations, StaffManager staff, Menu menu,ReportManager reports,TableManager tables) {
+		
+		//release all table with expired reservation
+		reservations.removeExpiredReservations();
 		int i;
 		int choice;
 		int contactNum;
+		int tableId;
 		int staffId;
 		Staff currentStaff;
 		Order order;
@@ -317,23 +321,28 @@ public class RestaurantApp {
 			            break;
 					} 
 					//contactNum = UserInput.getContact("Enter contact number of customer making order: ");
-					reservation = reservations.getReservationByContact(contactNum);
-					if (reservation == null) {
-						System.out.println("Reservation or walk in not found\n Please create a reservation or walk in under customer with contact number "+contactNum + " first!");
-						break;
-					}
-
-					subchoice = UserInput.nextInt("Is order a 1. pre-order or a 2. walk-in order? ",1,2);
-					//If walk-in-order, table status changed to occupied if at first reservation was made since customer has arrived
-					if (subchoice == 2) {
-						tables.changeTableStatus(reservation.getTableID(), Table.STATUS.OCCUPIED);
-					}
-					
+					//check if contactNum has alr created an order
 					order = orders.getOrderByContact(contactNum);
 					if (order!=null) {
 						System.out.println("Order has already been created, would you like to add on order instead (Enter choice 3) instead");
 						break;
 					}
+					
+					reservation = reservations.getReservationByContact(contactNum);
+					if (reservation == null) {
+						System.out.println("Reservation or walk in not found\n Please create a reservation or walk in under customer with contact number "+contactNum + " first!");
+						break;
+					}
+					tableId = reservation.getTableID();
+					subchoice = UserInput.nextInt("Is order a 1. pre-order for reservation or a 2. walk-in order? ",1,2);
+					//If walk-in-order, walk in reservation is moved to settled
+					//table status changed to occupied if at first reservation was made since customer has arrived
+					if (subchoice == 2) {
+						//tables.changeTableStatus(reservation.getTableID(), Table.STATUS.OCCUPIED);
+						reservations.moveReservationToSettledReservations(contactNum);
+						tables.changeTableOccupiedStatus(tableId, true);
+					}
+
 					orders.createOrder(reservation.getTableID(), contactNum, currentStaff, new ArrayList<MenuItem>());
 					order = orders.getOrderByContact(contactNum);
 					do {
@@ -427,11 +436,20 @@ public class RestaurantApp {
 						System.out.println("There is no order under customer with contact number "+contactNum);
 						break;
 					}
-					
+					tableId = order.getTableId();
 					Invoice invoice = orders.printInvoice(contactNum, menu);
-					reservations.removeReservationByContact(contactNum);
-					orders.clearOrder(contactNum);
+					orders.moveOrderToSettledOrders(contactNum);
+					tables.changeTableOccupiedStatus(tableId, false);
+					//reservations.removeReservationByContact(contactNum);
+					//orders.clearOrder(contactNum);
 					reports.addOrderToReport(invoice);
+					
+					
+					//check again if reservation not moved to settled reservations
+					reservation = reservations.getReservationByContact(contactNum);
+					if (reservation!=null) {
+						reservations.moveReservationToSettledReservations(contactNum);
+					}
 					
 					break;
 			
@@ -453,7 +471,7 @@ public class RestaurantApp {
 		int choice;
 		
 		//release all table with expired reservation
-		reserve.releaseTablesWithExpiredReservations();
+		reserve.removeExpiredReservations();
 		int contactNum = UserInput.getContact("Enter customer's contact number: ");
 		
 		
@@ -476,11 +494,12 @@ public class RestaurantApp {
 					Calendar bookingTime = UserInput.getDateTime("Please enter the time you want to reserve table");
 					Reservation reservation = reserve.createReservation(contactNum, name, bookingTime, 0);
 					if (reservation==null){
-						System.out.println("Cannot make reservation");
+						System.out.println("Cannot make reservation, unavailable tables");
 					}
 					else {
 						System.out.println("Reservation has been successfully created!\n");
 						reserve.printReservation(reservation.getContact());
+						
 					}
                     break;
                 case 2:
@@ -495,10 +514,7 @@ public class RestaurantApp {
 						System.out.println("Cannot make reservation");
 					}
 					else {
-						reserve.settledReservations.add(walkInReservation);
-						int tableid = walkInReservation.getTableID();
-						reserve.tableManager.changeTableStatus(tableid, Table.STATUS.OCCUPIED);
-						System.out.println("Walk in Reservation created:");
+						System.out.println("Walk in created:");
 						reserve.printReservation(walkInReservation.getContact());
 					}
 						break;
