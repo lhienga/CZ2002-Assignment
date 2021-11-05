@@ -17,10 +17,10 @@ public class TableManager {
 			for (int i=2;i<=10;i+=2) {
 				for (int k=1;k<=4;k++) {
 					if (k%2==0) {
-						tables.add(new Table(j,i,Table.STATUS.AVAILABLE,true));
+						tables.add(new Table(j,i,true));
 					}
 					else {
-						tables.add(new Table(j,i,Table.STATUS.AVAILABLE,false));
+						tables.add(new Table(j,i,false));
 					}
 					
 					j++;
@@ -42,13 +42,13 @@ public class TableManager {
 	}
 
 	/**
-	 * get list of available tables
+	 * get list of available/unoccupied tables
 	 * @return ArrayList of available tables
 	 */
 	public ArrayList<Table> getAvailableTables() {
 		ArrayList<Table> availableTables = new ArrayList<Table>();
 		for (Table tb : this.getAllTables()) {
-			if (tb.getStatus() == Table.STATUS.AVAILABLE)
+			if (!tb.getOccupied())
 				availableTables.add(tb);
 		}
 		return availableTables;
@@ -61,7 +61,7 @@ public class TableManager {
 	public ArrayList<Table> getOccupiedTables() {
 		ArrayList<Table> occupiedTables = new ArrayList<Table>();
 		for (Table tb : this.getAllTables()) {
-			if (tb.getStatus() == Table.STATUS.OCCUPIED)
+			if (tb.getOccupied())
 				occupiedTables.add(tb);
 		}
 		return occupiedTables;
@@ -74,24 +74,12 @@ public class TableManager {
 	public ArrayList<Table> getReservedTables() {
 		ArrayList<Table> reservedTables = new ArrayList<Table>();
 		for (Table tb : this.getAllTables()) {
-			if (tb.getStatus() == Table.STATUS.RESERVED)
+			if (tb.getReserved())
 				reservedTables.add(tb);
 		}
 		return reservedTables;
 	}
 	
-	/**
-	 * get list of occupied tables
-	 * @return ArrayList of unoccupied tables
-	 */
-	public ArrayList<Table> getUnoccupiedTables() {
-		ArrayList<Table> unOccupiedTables = new ArrayList<Table>();
-		for (Table tb : this.getAllTables()) {
-			if (tb.getStatus() != Table.STATUS.OCCUPIED)
-				unOccupiedTables.add(tb);
-		}
-		return unOccupiedTables;
-	}
 
 	/**
 	 * find table by id
@@ -108,27 +96,13 @@ public class TableManager {
 		return null;
 	}
 
-	/**
-	 * change Table Status
-	 * @param tableid Table ID
-	 * @param status new Status
-	 */
-	public void changeTableStatus(int tableid, Table.STATUS status) {
-		Table curTable = getTableByID(tableid);
-		if (curTable==null){
-			System.out.println("Table ID does not exist!");
-			return;
-		}
-		Table.STATUS prevStatus = curTable.getStatus();
-		curTable.setStatus(status);
-		System.out.println("Table Status of "+ tableid +" has been changed from "+prevStatus+" to "+status);
-	}
 
 	/**
 	 * find an available table according to capacity
 	 * @param numofpax capacity
 	 * @return available table or null if there are no available tables
 	 */
+	
 	public Table findAvailableTable(int numOfPax) {
 		ArrayList<Table> availableTables = getAvailableTables();
 		for (Table tb : availableTables) {
@@ -144,6 +118,7 @@ public class TableManager {
 	 * @param tableid
 	 * @return status of table or null if table ID does not exist
 	 */
+	/*
 	public Table.STATUS getStatusByTableId(int tableid) {
 		Table curTable = getTableByID(tableid);
 		if (curTable==null){
@@ -157,19 +132,21 @@ public class TableManager {
 		}
 		return null;
 	}
-
+*/
 
 	/**
 	 * 
 	 * @param reservation
 	 * @return 1 if reserved successfully
 	 */
+	
+	/*
 	public int reserveTable(Reservation reservation) {
 		int id = reservation.getTableID();
 		changeTableStatus(id, Table.STATUS.RESERVED);
 		return 1;
 	}
-
+*/
 	/**
 	 * 
 	 * @param numOfPax
@@ -182,5 +159,27 @@ public class TableManager {
 			return numOfPax +1;
 		}
 		return numOfPax;
+	}
+	
+	public void changeTableOccupiedStatus(int tableid, boolean occupied) {
+		Table curTable = getTableByID(tableid);
+		if (curTable==null){
+			System.out.println("Table ID does not exist!");
+			return;
+		}
+		boolean prevStatus = curTable.getOccupied();
+		curTable.setOccupied(occupied);
+		System.out.println("Occupied Status of "+ tableid +" has been changed from "+prevStatus+" to "+occupied);
+	}
+	
+	public void changeTableReservedStatus(int tableid, boolean reserved) {
+		Table curTable = getTableByID(tableid);
+		if (curTable==null){
+			System.out.println("Table ID does not exist!");
+			return;
+		}
+		boolean prevStatus = curTable.getReserved();
+		curTable.setReserved(reserved);
+		System.out.println("Reserved Status of "+ tableid +" has been changed from "+prevStatus+" to "+reserved);
 	}
 }
