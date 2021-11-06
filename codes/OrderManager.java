@@ -32,15 +32,15 @@ public class OrderManager {
 	}
 
 	/**
-	 * get the order made by customer of that contactNum
-	 * @param contactNum contact number of customer
+	 * get the order for a table
+	 * @param tableId 
 	 * @return the order made by customer
 	 */
-	public Order getOrderByContact(int contactNum) {
+	public Order getOrderByTableId(int tableId) {
 		// TODO - implement OrderManager.getTableIdOrder
 		for (int i=0; i<orders.size(); i++) {
 			Order order = orders.get(i);
-			if (contactNum == order.getContactNum()) {
+			if (tableId == order.getTableId()) {
 				return order;
 			}
 		}
@@ -49,34 +49,35 @@ public class OrderManager {
 	}
 
 	/**
-	 * clear the entire order made by customer of that contact Number
-	 * @param contact Number of customer
+	 * clear the entire order made by table
+	 * @param tableId tableId of table
 	 */
-	public void clearOrder(int contactNum) {
+	public void clearOrder(int tableId) {
 		
-		Order order = getOrderByContact(contactNum);
+		Order order = getOrderByTableId(tableId);
 		if (order == null) {
-			System.out.println("There is no order made by customer with contact number " + contactNum +" !");
+			System.out.println("There is no order for table " + tableId +" !");
 			System.out.println();
 			return;
 		}
 		orders.remove(order);
-		System.out.println("Order for customer with contact number "+contactNum+ " has been successfully removed");
+		System.out.println("Order for table "+tableId+ " has been successfully removed");
 
 		
 		return;
 	}
 
+
 	/**
-	 * add an item to the order made by customer
-	 * @param contact number of the customer
-	 * @param menuitem to be added to the order
+	 * add an item to the order made by table
+	 * @param tableId tableId of table
+	 * @param menuitem menuitem added to order
 	 */
-	public void addToOrder(int contactNum, MenuItem menuitem) {
+	public void addToOrder(int tableId, MenuItem menuitem) {
 		// TODO - implement OrderManager.addToOrder
-		Order order = getOrderByContact(contactNum);
+		Order order = getOrderByTableId(tableId);
 		if (order == null) {
-			System.out.println("There is no order made by customer with contact number " + contactNum +" !");
+			System.out.println("There is no order for table " + tableId +" !");
 			System.out.println();
 			return;
 		}
@@ -87,14 +88,14 @@ public class OrderManager {
 	}
 
 	/**
-	 * remove an item from the order made by customer
-	 * @param contact number of the customer
-	 * @param menuitem to be removed from the order
+	 * remove an item to the order made by table
+	 * @param tableId tableId of table
+	 * @param menuitem menuitem removed from order
 	 */
-	public void removeFromOrder(int contactNum, MenuItem menuitem) {
-		Order order = getOrderByContact(contactNum);
+	public void removeFromOrder(int tableId, MenuItem menuitem) {
+		Order order = getOrderByTableId(tableId);
 		if (order == null) {
-			System.out.println("There is no order made by customer with contact number " + contactNum +" !");
+			System.out.println("There is no order for table " + tableId +" !");
 			System.out.println();
 			return;
 		}
@@ -104,10 +105,10 @@ public class OrderManager {
 
 	}
 	
-	public void moveOrderToSettledOrders(int contact) {
-		Order order = getOrderByContact(contact);
+	public void moveOrderToSettledOrders(int tableId) {
+		Order order = getOrderByTableId(tableId);
 		if (order == null) {
-			System.out.println("There is no order made by customer with contact number "+contact);
+			System.out.println("There is no order under table "+tableId);
 			return;
 		}
 		settledOrders.add(order);
@@ -116,11 +117,13 @@ public class OrderManager {
 
 	/**
 	 * print the invoice of the table
-	 * @param tableid of the table
+	 * @param tableId tableId of the table
+	 * @param menu
+	 * @return Invoice
 	 */
-	public Invoice printInvoice(int contactNum, Menu menu) {
+	public Invoice printInvoice(int tableId, Menu menu) {
 		
-		Order order = getOrderByContact(contactNum);
+		Order order = getOrderByTableId(tableId);
 
 		
 		// print invoice
@@ -165,7 +168,7 @@ public class OrderManager {
 	    System.out.printf("%.2f\n", totalPrice);
 	    
 	    // print membership status and discount amount
-		if (membershipManager.getMembershipByContact(contactNum) != null) {
+		if (membershipManager.getMembershipByContact(order.getContactNum()) != null) {
 			System.out.print("Membership: ");
 			System.out.println("Yes");
 			totalPriceMember *= 0.9;
