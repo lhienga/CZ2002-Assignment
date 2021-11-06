@@ -214,7 +214,7 @@ public class Restaurant {
 
 			menu.add(new PromotionPackage(set1, "Chicken Burger set","Easy Combo",9.00 ));
 			menu.add(new PromotionPackage(set2, "Cheese buddy set", "Cheese lovers",18.0));
-			menu.add(new PromotionPackage(set3, "Burger Part set", "Many burgers in one meal",15.0));
+			menu.add(new PromotionPackage(set3, "Burger Party set", "Many burgers in one meal",15.0));
             Restaurant.foodMenu = menu;
 	}
 	
