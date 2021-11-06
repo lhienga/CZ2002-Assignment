@@ -167,6 +167,7 @@ public class ReportManager {
 	public void printAllInvoices() {
 		for (Invoice iv: report) {
 			iv.printInvoice();
+			System.out.println();
 		}
 	}
 
