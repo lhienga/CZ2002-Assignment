@@ -472,7 +472,7 @@ public class RestaurantApp {
 		
 		//release all table with expired reservation
 		reserve.removeExpiredReservations();
-		int contactNum = UserInput.getContact("Enter customer's contact number: ");
+		int contactNum;
 		
 		
         do {
@@ -482,11 +482,16 @@ public class RestaurantApp {
 					"1. Make reservation\n"+
 					"2. Walk-in dining\n" +
 					"3. Remove reservation\n" +
-					"4. Show reservations\n"+
+					"4. Print a reservation\n"+
 					"5. Update reservation\n"+
-					"ENTER 0 to return to main menu\n",0,5);
+					"6. Print all reservations\n"+
+					"ENTER 0 to return to main menu\n",0,6);
 
         	System.out.println();
+			if (choice >=1 && choice <=5){
+				contactNum = UserInput.getContact("Enter customer's contact number: ");
+			}
+			else contactNum = -1;
             
             switch (choice) {
                 case 1:
@@ -521,7 +526,7 @@ public class RestaurantApp {
                 case 3:
 					reserve.removeReservationByContact(contactNum);
                         break;
-                case 4:
+                case 6:
                 	reserve.printAllReservation();
                     break;
 				case 5:
@@ -530,7 +535,9 @@ public class RestaurantApp {
 						contactNum = updated.getContact();
 					}
 					break;
-
+				case 4:
+					reserve.printReservation(contactNum);
+					break;
             }
         } while (choice != 0);
 
