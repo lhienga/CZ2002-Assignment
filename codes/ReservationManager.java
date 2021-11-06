@@ -126,7 +126,7 @@ public class ReservationManager {
 			System.out.println("This contact number has already booked a reservation!");
 			return null;
 		}
-		int numOfPax = UserInput.nextInt("Please enter number of customers: ");
+		int numOfPax = UserInput.nextInt("Please enter number of persons: ",1,10);
 		boolean smoking = UserInput.getSmoking("Please choose Smoking option: (Y for smoking, N for non-smoking)\n");
 		ArrayList<Table> tables = tableManager.getAllTables();
 		//choice is used to get suitable tables
