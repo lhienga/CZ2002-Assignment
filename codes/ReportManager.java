@@ -98,21 +98,23 @@ public class ReportManager {
 		
 		
 		System.out.println("\nSales Revenue Report for " + monthName + " of Year " + year);
-		System.out.printf("\n\nTotal Sales Revenue: $%.2f\n\n", totalRevenue);
-		
-		System.out.println("Total Number of Food Products sold: \n");
+		System.out.println("-----------------------------------------------------");
+		System.out.println("--------Total Number of Food Products sold:----------\n");
 		for (MenuItem m: menu.getMenuItems()){
 			if (m instanceof AlaCarte) {
-				System.out.println("Ala Carte :");
-				System.out.println(m.getFood().getName() + ": " + numOfProductSold[menu.getMenuItems().indexOf(m)]);
+		System.out.println("Ala Carte :");
+		System.out.println(m.getFood().getName() + ": " + numOfProductSold[menu.getMenuItems().indexOf(m)]);
 			}
 			else {
-				System.out.println("Promotion Package :");
+		System.out.println("Promotion Package :");
 				System.out.println(m.getName() + ": " + numOfProductSold[menu.getMenuItems().indexOf(m)]);
 			}
 		
 			System.out.println();
 		}
+		System.out.println("-----------------------------------------------------");
+		System.out.printf("\n-------------Total Sales Revenue: $%.2f-------------\n\n", totalRevenue);
+		System.out.println("-----------------------------------------------------");
 
 	}
 	
