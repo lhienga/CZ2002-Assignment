@@ -159,6 +159,12 @@ public class ReservationManager {
 
 		}
 		Reservation reservation = new Reservation(bookingTime, numOfPax, name, contact, tableid);
+		if (choice == 0) { //normal reservation
+			this.reservations.add(reservation);
+			tableManager.changeTableReservedStatus(tableid, true);
+		} else {
+			
+		}
 		this.reservations.add(reservation);
 		tableManager.changeTableReservedStatus(tableid, true);
 		return reservation;
