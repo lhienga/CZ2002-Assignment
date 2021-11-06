@@ -5,7 +5,7 @@ public class ReservationManager {
 	private ArrayList<Reservation> reservations;
 	private ArrayList<Reservation> settledReservations;
 	public TableManager tableManager;
-	public int RESERVATIONDURATION=3; 
+	public int EATINGDURATION=2; 
 
 	/**
 	 * constructor for 
@@ -96,11 +96,11 @@ public class ReservationManager {
 		for (int i = 0; i<reservations.size(); i++){
 			int tableid = reservations.get(i).getTableID();
 			Calendar reservedTime = reservations.get(i).getBookingTime();
-			bookingTime.add(Calendar.HOUR_OF_DAY, -RESERVATIONDURATION);
+			bookingTime.add(Calendar.HOUR_OF_DAY, -EATINGDURATION);
 			int lower = bookTime.get(Calendar.HOUR_OF_DAY);
-			bookingTime.add(Calendar.HOUR_OF_DAY,+RESERVATIONDURATION*2);
+			bookingTime.add(Calendar.HOUR_OF_DAY,+EATINGDURATION*2);
 			int upper = bookTime.get(Calendar.HOUR_OF_DAY);
-			bookingTime.add(Calendar.HOUR_OF_DAY,-RESERVATIONDURATION);
+			bookingTime.add(Calendar.HOUR_OF_DAY,-EATINGDURATION);
 			int reservedHour = reservedTime.get(Calendar.HOUR_OF_DAY);
 			System.out.println(upper+" "+ lower+" "+reservedHour);
 			if (reservedHour<= upper && reservedHour>=lower){
