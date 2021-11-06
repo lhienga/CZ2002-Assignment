@@ -146,10 +146,10 @@ public class Order implements Serializable{
 	 * print order
 	 */
 	public void printOrder() {
-		int j=1;
+		
 		int k=1;
 		for (MenuItem item : menuItem) {
-			j = 1;
+			
 			if(item instanceof AlaCarte) {
 				System.out.printf("%d. %-20s %s\nPrice: $%.2f \nDescription: %s\n\n",k,
 						item.getName(), "(AlaCarte - "+item.getType()+")", item.getPrice(), item.getDesc());
@@ -157,9 +157,9 @@ public class Order implements Serializable{
 				System.out.printf("%d. %-20s %s\n",k,
 						item.getName(), "(Promotion Set)", item.getPrice(), item.getDesc());
 				for (Food food : item.getPackage()) {
-					System.out.printf("%d: %s: %s\n", j,
+					System.out.printf("%s: %s\n",
 							food.getType(), food.getName());
-					j++;
+
 				}
 					
 				System.out.printf("Price: $%.2f\nDescription:%s\n\n",
