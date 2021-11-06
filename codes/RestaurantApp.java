@@ -368,9 +368,9 @@ public class RestaurantApp {
 
 					orders.createOrder(tableId, contactNum, currentStaff, new ArrayList<MenuItem>());
 					order = orders.getOrderByTableId(tableId);
+					System.out.println("Currently, there are "+order.getNumItems()+" items in order.\n");
+					menu.printMenu(0);
 					do {
-						System.out.println("Currently, there are "+order.getNumItems()+" items in order.\n");
-						menu.printMenu(0);
 						i = UserInput.nextInt("Which Menu Item do you want to add?\nENTER 0 to QUIT\n",0,menu.getMenuSize(0));
 						if (i==0) {
 							break;
@@ -399,10 +399,9 @@ public class RestaurantApp {
 						System.out.println();
 						break;
 					}
-					
+					System.out.println("Currently, there are "+order.getNumItems()+" items in order.\n");
+					menu.printMenu(0);
 					do {
-						System.out.println("Currently, there are "+order.getNumItems()+" items in order.\n");
-						menu.printMenu(0);
 						i = UserInput.nextInt("Which Menu Item do you want to add?\nENTER 0 to QUIT\n",0,menu.getMenuSize(0));
 						if (i==0) {
 							break;
