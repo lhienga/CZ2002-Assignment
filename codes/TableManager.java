@@ -7,28 +7,6 @@ public class TableManager {
 	private ArrayList<Table> tables;
 	private int TOTALTABLES = 20;
 	
-	/**
-	 * Default Constructor to create 20 tables
-	 */
-	public TableManager() {
-		if (this.tables == null) {
-			this.tables = new ArrayList<Table>();
-			int j=1;
-			for (int i=2;i<=10;i+=2) {
-				for (int k=1;k<=4;k++) {
-					if (k%2==0) {
-						tables.add(new Table(j,i,true));
-					}
-					else {
-						tables.add(new Table(j,i,false));
-					}
-					
-					j++;
-				}
-				
-			}
-		}
-	}
 	public TableManager(ArrayList<Table> tables) {
 		this.tables = tables;
 	}

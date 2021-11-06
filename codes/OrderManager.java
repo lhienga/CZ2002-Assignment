@@ -6,12 +6,6 @@ public class OrderManager {
 	public ArrayList<Order> settledOrders;
 	private MembershipManager membershipManager;
 
-	public OrderManager(MembershipManager membershipManager) {
-		if (orders == null) {
-			orders = new ArrayList<Order>();
-		}
-		this.membershipManager = membershipManager;
-	}
 	public OrderManager(MembershipManager membershipManager, ArrayList<Order> orders, ArrayList<Order> settledOrders) {
 		this.orders = orders;
 		this.membershipManager = membershipManager;

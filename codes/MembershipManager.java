@@ -4,25 +4,6 @@ public class MembershipManager {
 	
 	private ArrayList<Membership> memberships;
 	
-	/**
-	 * Default constructor for memberships
-	 */
-	public MembershipManager() {
-		if (memberships == null) {
-			memberships = new ArrayList<Membership>();
-			memberships.add(new Membership("Mary",98733789));
-			memberships.add(new Membership("John",81642014));
-			memberships.add(new Membership("Peter",91346100));
-			memberships.add(new Membership("Jane",91841134));
-			memberships.add(new Membership("Matthew",84272922));
-			memberships.add(new Membership("James",92541289));
-			memberships.add(new Membership("Sue",81417013));
-			memberships.add(new Membership("Max",91789534));
-			memberships.add(new Membership("Mark",90245824));
-			memberships.add(new Membership("Phillip",82357203));
-		}
-	}
-
 	public MembershipManager(ArrayList<Membership> members) {
 		this.memberships = members;
 	}

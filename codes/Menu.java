@@ -4,67 +4,6 @@ public class Menu {
 	
 	private ArrayList<MenuItem> menu;
 
-	/**
-	 * Default Constructor for Menu
-	 */
-	public Menu() {
-		if (this.menu == null) {
-			this.menu = new ArrayList<MenuItem>();
-			
-ArrayList<Food>food = new ArrayList<Food>();
-			
-			food.add(new Food("Miniature crab cakes", "Cakes that taste like crab",4, Food.TYPE.APPETIZER));
-			food.add(new Food("Mac and Cheese", "Chessy macaroni", 2.50, Food.TYPE.APPETIZER));
-			food.add(new Food("Caprese salad", "Extremely healthy but yummy", 2.80, Food.TYPE.APPETIZER));
-			food.add(new Food("Chicken Soup", "Old Fashion and simple soup", 2.00, Food.TYPE.APPETIZER));
-			
-			food.add(new Food("Beef Burger", "Freshly grilled beef", 5, Food.TYPE.MAINCOURSE));
-			food.add(new Food("Classic Cheese Burger", "The usual", 3, Food.TYPE.MAINCOURSE));
-			food.add(new Food("Double-up Cheese Burger", "Double the trouble, double the satisfaction", 5.50, Food.TYPE.MAINCOURSE));
-			food.add(new Food("Fish Burger", "Deep fried fish with tartar sauce", 3.50, Food.TYPE.MAINCOURSE));
-			food.add(new Food("Grilled Chicken Burger", "Freshly grilled chicken", 3, Food.TYPE.MAINCOURSE));
-
-			food.add(new Food("Coke", "Just Coke",1.70, Food.TYPE.DRINK));
-			food.add(new Food("Lemon Tea", "A classic favourite tea", 1.50, Food.TYPE.DRINK));
-			food.add(new Food("Mountain Dew", "Love it", 1.80, Food.TYPE.DRINK));
-			food.add(new Food("Water", "H2O", 1.00, Food.TYPE.DRINK));
-
-			food.add(new Food("Ice cream cone", "Two scoops of ice cream on a cone", 2.50, Food.TYPE.DESSERT));
-			food.add(new Food("Chocolate Brownie", "Mouth watering chocolate", 4.50, Food.TYPE.DESSERT));
-			food.add(new Food("Banana Split", "Banana with ice cream", 5.50, Food.TYPE.DESSERT));
-			food.add(new Food("Cheese Cake", "Just Cheese", 4.50, Food.TYPE.DESSERT));
-
-			for(int i=0; i<food.size(); i++)
-				menu.add(new AlaCarte(food.get(i)));
-		
-			ArrayList<Food>set1 = new ArrayList<Food>();
-			set1.add(food.get(0));
-			set1.add(food.get(8));
-			set1.add(food.get(12));
-			set1.add(food.get(14));
-
-			ArrayList<Food>set2 = new ArrayList<Food>();
-			set2.add(food.get(5));
-			set2.add(food.get(6));
-			set2.add(food.get(10));
-			set2.add(food.get(11));
-			set2.add(food.get(14));
-			set2.add(food.get(15));
-			
-			ArrayList<Food>set3 = new ArrayList<Food>();
-			set3.add(food.get(4));
-			set3.add(food.get(5));
-			set3.add(food.get(6));
-			set3.add(food.get(7));
-			set3.add(food.get(8));
-
-			menu.add(new PromotionPackage(set1, "Chicken Burger set","Easy Combo",9.00 ));
-			menu.add(new PromotionPackage(set2, "Cheese buddy set", "Cheese lovers",18.0));
-			menu.add(new PromotionPackage(set3, "Burger Party set", "Many burgers in one meal",15.0));
-		}
-		
-	}
-
 	public Menu(ArrayList<MenuItem> menu){
 		this.menu = menu;
 	}

@@ -9,16 +9,6 @@ public class ReportManager {
 	private ArrayList<Invoice> report;
 	private Menu menu;
 	
-
-	/**
-	 * constructor for report (paid orders)
-	 */
-	public ReportManager(Menu menu) {
-		if (report == null) {
-			report = new ArrayList<Invoice>();
-		}
-		this.menu = menu;
-	}
 	public ReportManager(Menu menu, ArrayList<Invoice> invoices) {
 		this.report = invoices;
 		this.menu = menu;

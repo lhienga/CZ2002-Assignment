@@ -3,20 +3,6 @@ import java.util.ArrayList;
 public class StaffManager {
 
 	private ArrayList<Staff> staffs;
-	/**
-	 * construct staff manager
-	 */
-	public StaffManager() {
-		
-		// TODO - implement StaffManager.StaffManager
-		staffs = new ArrayList<Staff>();
-		staffs.add(new Staff("Robert",'M',1,Staff.JOB.CASHIER));
-		staffs.add(new Staff("Olivia",'F',2,Staff.JOB.MANAGER));
-		staffs.add(new Staff("Emma",'F',3,Staff.JOB.PART_TIME));
-		staffs.add(new Staff("Noah",'M',4,Staff.JOB.FULL_TIME));
-		
-		
-	}
 	public StaffManager(ArrayList<Staff> staffs) {
 		
 		// TODO - implement StaffManager.StaffManager
@@ -72,14 +58,6 @@ public class StaffManager {
 			}
 		}
 		return null;
-	}
-	/**
-	 * get all staff
-	 * @return list of staffs
-	 */
-	public ArrayList<Staff> getAllStaff() {
-		// TODO - implement StaffManager.getAllStaff
-		return this.staffs;
 	}
 
 	/**

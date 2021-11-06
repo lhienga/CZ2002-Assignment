@@ -6,14 +6,7 @@ public class ReservationManager {
 	private ArrayList<Reservation> settledReservations;
 	public TableManager tableManager;
 	public int RESERVATIONDURATION=3; 
-	/**
-	 * constructor of reservation manager
-	 * @param tableManager
-	 */
-	public ReservationManager(TableManager tableManager) {
-		this.tableManager = tableManager;
-		reservations = new ArrayList<Reservation>();
-	}
+
 	public ReservationManager(TableManager tableManager, ArrayList<Reservation> reservations, ArrayList<Reservation> settledReservations) {
 		this.tableManager = tableManager;
 		this.reservations = reservations;
@@ -131,9 +124,6 @@ public class ReservationManager {
 		ArrayList<Table> tables = tableManager.getAllTables();
 		//choice is used to get suitable tables
 		ArrayList<Integer> availableTableIDs = findAvailableTables(bookingTime, smoking, numOfPax,choice);
-		for (int i = 0; i< availableTableIDs.size(); i++){
-			System.out.println("id "+ availableTableIDs.get(i));
-		}
 		if (availableTableIDs.size()==0){
 			return null;
 		}
