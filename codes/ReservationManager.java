@@ -120,13 +120,15 @@ public class ReservationManager {
 	 */
 	public Reservation createReservation(int contact, String name, Calendar bookingTime, int choice) {
 		//find a table with suitable capacity and smoking option
-		System.out.println("call create reser");
+		//System.out.println("call create reser");
+		removeExpiredReservations();
 		if (getReservationByContact(contact)!=null){
 			System.out.println("This contact number has already booked a reservation!");
 			return null;
 		}
-		int numOfPax = UserInput.nextInt("Please enter number of persons: ",1,10);
-		boolean smoking = UserInput.getSmoking("Please choose Smoking option: (Y for smoking, N for non-smoking)\n");
+		int numOfPax = UserInput.nextInt("Please enter number of persons: (Enter -1 to exit) ",1,10);
+		if (numOfPax == -1 ) return null;
+		boolean smoking = UserInput.getSmoking("Please enter Y for smoking, N for non-smoking)\n");
 		ArrayList<Table> tables = tableManager.getAllTables();
 		//choice is used to get suitable tables
 		ArrayList<Integer> availableTableIDs = findAvailableTables(bookingTime, smoking, numOfPax,choice);
@@ -172,7 +174,8 @@ public class ReservationManager {
 	 * @param contact
 	 */
 	public void updateReservationDetails(int contact) {
-		int reservationType = UserInput.nextInt("Is it (1) pre-order or (2) walk-in reservation? ", 1, 2)-1;
+		int reservationType = UserInput.nextInt("Is it (1) pre-order or (2) walk-in reservation? (Enter -1 to exit) ", 1, 2)-1;
+		if (reservationType==-1) return;
 		Reservation reservation = getReservationByContact(contact);
 		if (reservation == null){
 			System.out.println("There is no reservation under this contact number!");
@@ -181,16 +184,19 @@ public class ReservationManager {
 		System.out.println("What do you want to update?");
 		System.out.println("1.Update customer personal information"+ '\n'+
 							"2.Update reservation information");
-		int choice = UserInput.nextInt("Enter your choice", 1, 2);
+		int choice = UserInput.nextInt("Enter your choice (Enter -1 to exit) ", 1, 2);
+		if (choice == -1 ) return;
 		switch(choice){
 			case 1:
-				int newContact = UserInput.getContact("Enter new contact number: ");
+				int newContact = UserInput.getContact("Enter new contact number: (Enter -1 to exit) ");
+				if (newContact == -1) return;
 				Reservation exist = getReservationByContact(newContact);
 				if (exist!=null){
 					System.out.println("This contact number has existing reservation");
 					
 				}
-				String newName = UserInput.getString("Enter new name: ");
+				String newName = UserInput.getString("Enter new name: (Enter -1 to exit) ");
+				if (newName.compareTo("-1")==0) return;
 				reservation.setContact(newContact);
 				reservation.setName(newName);
 				System.out.println("Reservation updated!");
@@ -199,7 +205,8 @@ public class ReservationManager {
 			case 2:
 				Calendar newBookingTime;
 				if (reservationType == 0){
-					newBookingTime = UserInput.getDateTime("Enter new booking time: ");
+					newBookingTime = UserInput.getDateTime("Enter new booking time: (Enter -1 to exit) ");
+					if (newBookingTime == null) return;
 				}
 				else {
 					newBookingTime = reservation.getBookingTime();

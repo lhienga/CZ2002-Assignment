@@ -91,13 +91,17 @@ public class RestaurantApp {
 						menu.printMenu(0);
 						break;
 					case 2:
-						int subchoice = UserInput.nextInt("Do you want to \n1. Add Ala Carte Item or \n2. Add Promotional Item\n",1,2);
+						int subchoice = UserInput.nextInt("Do you want to \n1. Add Ala Carte Item or \n2. Add Promotional Item\n (Enter -1 to exit) ",1,2);
 						switch (subchoice) {
 						case 1:
-							name = UserInput.getString("\nWhat is the name of your food? ");
-							price = UserInput.nextDouble("What is the price of "+ name + "? ");
-							desc = UserInput.getString("What is the description of "+ name + "? ");
+							name = UserInput.getString("\nWhat is the name of your food? (Enter -1 to exit) ");
+							if (name.compareTo("-1")==0) break;
+							price = UserInput.nextDouble("What is the price of "+ name + "? (Enter -1 to exit) ");
+							if (price == -1) break;
+							desc = UserInput.getString("What is the description of "+ name + "? (Enter -1 to exit) ");
+							if (desc.compareTo("-1")==0) break;
 							type = UserInput.nextInt("What is the type for "+name+"?\n1-APPETIZER, 2-MAIN COURSE, 3-DRINK, 4-DESSERT\n");
+							if (type==-1) break;
 							switch (type) {
 							case 1:
 								foodtypes = Food.TYPE.APPETIZER;
@@ -136,14 +140,17 @@ public class RestaurantApp {
 								}
 							}
 							if(include == 0){
-								name = UserInput.getString("What is the name of your promotion package? ");
-								price = UserInput.nextDouble("What is the price of the promotion package? ");
-								desc = UserInput.getString("What is the description of the promotion package? ");
-
+								name = UserInput.getString("What is the name of your promotion package? (Enter -1 to exit) ");
+								if (name.compareTo("-1")==0) continue;
+								price = UserInput.nextDouble("What is the price of the promotion package? (Enter -1 to exit) ");
+								if (price == -1) continue;
 								while (price <= 0) {
 									System.out.println("Price cannot be 0 or negative.");
 									price = UserInput.nextDouble("What is the price of the promotion package? ");
 								}
+								desc = UserInput.getString("What is the description of the promotion package? ");
+
+									
 									
 								item = new PromotionPackage(promotion, name, desc,price);
 								menu.addToMenu(item);
@@ -305,8 +312,8 @@ public class RestaurantApp {
 			switch (choice) {
 				case 1:
 					
-					tableId = UserInput.nextInt("Enter ID of table to create order for: ",1,20);
-					
+					tableId = UserInput.nextInt("Enter ID of table to create order for (Enter -1 to exit): ",1,20);
+					if (tableId == -1) break;
 					//check if table already has an order means walk-in is occupying table now so no need create an order for it
 					
 					order = orders.getOrderByTableId(tableId);
@@ -317,8 +324,8 @@ public class RestaurantApp {
 					
 					// if table has no order means, reserved customer to table can now occupy table so create a table for customer
 					//check if contactNum has already have a reservation under table Id
-					contactNum = UserInput.getContact("Currently it is unoccupied, check if customer has made a reservation.\nEnter contact number of customer making order: ");
-					
+					contactNum = UserInput.getContact("Currently it is unoccupied, check if customer has made a reservation.\nEnter contact number of customer making order: (Enter -1 to exit) ");
+					if (contactNum==-1) break;
 					reservation = reservations.getReservationByContact(contactNum);
 					if (reservation == null) {
 						System.out.println("Reservation not found\n Please create a reservation or walk in under customer with contact number "+contactNum + " first!");
@@ -377,13 +384,15 @@ public class RestaurantApp {
 
 					break;
 				case 2:
-					tableId = UserInput.nextInt("Enter ID of table to remove order for: ",1,20);
+					tableId = UserInput.nextInt("Enter ID of table to remove order for: (Enter -1 to exit) ",1,20);
+					if (tableId==-1) break;
 					orders.clearOrder(tableId);
 					break;
 				case 3:
 
 					//contactNum = UserInput.getContact("Enter contact number of customer adding items to order: ");
-					tableId = UserInput.nextInt("Enter ID of table to add items for: ",1,20);
+					tableId = UserInput.nextInt("Enter ID of table to add items for: (Enter -1 to exit) ",1,20);
+					if (tableId == -1) break;
 					order = orders.getOrderByTableId(tableId);
 					if (order == null) {
 						System.out.println("There is no order for table " + tableId +" !");
@@ -407,7 +416,8 @@ public class RestaurantApp {
 
 					break;
 				case 4:
-					tableId = UserInput.nextInt("Enter ID of table to remove items for: ",1,20);
+					tableId = UserInput.nextInt("Enter ID of table to remove items for: (Enter -1 to exit) ",1,20);
+					if (tableId == -1) break;
 					order = orders.getOrderByTableId(tableId);
 					if (order == null) {
 						System.out.println("There is no order for table " + tableId +" !");
@@ -433,7 +443,8 @@ public class RestaurantApp {
 					break;
 				case 5:
 				
-					tableId = UserInput.nextInt("Enter ID of table to view order for: ",1,20);
+					tableId = UserInput.nextInt("Enter ID of table to view order for: (Enter -1 to exit) ",1,20);
+					if (tableId == -1) break;
 					order = orders.getOrderByTableId(tableId);
 					if (order == null) {
 						System.out.println("There is no order for table " + tableId +" !");
@@ -446,7 +457,8 @@ public class RestaurantApp {
 					break;
 				case 6:
 					
-					tableId = UserInput.nextInt("Enter ID of table to print invoice for: ",1,20);
+					tableId = UserInput.nextInt("Enter ID of table to print invoice for: (Enter -1 to exit) ",1,20);
+					if (tableId == -1) break;
 					order = orders.getOrderByTableId(tableId);
 					if (order == null) {
 						System.out.println("There is no order for table " + tableId +" !");
@@ -504,14 +516,18 @@ public class RestaurantApp {
 
         	System.out.println();
 			if (choice >=1 && choice <=5){
-				contactNum = UserInput.getContact("Enter customer's contact number: ");
+				contactNum = UserInput.getContact("Enter customer's contact number: (Enter -1 to exit) ");
+				if (contactNum == -1) continue;
+
 			}
 			else contactNum = -1;
             
             switch (choice) {
                 case 1:
-					String name = UserInput.getString("Enter customer's name: ");
-					Calendar bookingTime = UserInput.getDateTime("Please enter the time you want to reserve table");
+					String name = UserInput.getString("Enter customer's name: (Enter -1 to exit) ");
+					if (name.compareTo("-1")==0) break;
+					Calendar bookingTime = UserInput.getDateTime("Please enter the time you want to reserve table (Enter -1 to exit) ");
+					if (bookingTime == null) break;
 					Reservation reservation = reserve.createReservation(contactNum, name, bookingTime, 0);
 					if (reservation==null){
 						System.out.println("Cannot make reservation, unavailable tables");
@@ -523,7 +539,8 @@ public class RestaurantApp {
 					}
                     break;
                 case 2:
-					String cusName = UserInput.getString("Enter customer's name: ");
+					String cusName = UserInput.getString("Enter customer's name: (Enter -1 to exit) ");
+					if (cusName.compareTo("-1")==0) break;
 					Calendar walkInTime = Calendar.getInstance();
 					if (walkInTime.get(Calendar.HOUR_OF_DAY)<9 || walkInTime.get(Calendar.HOUR_OF_DAY)>18) {
 						System.out.println("Restaurant opens from 9 am to 6 pm!");
@@ -539,8 +556,8 @@ public class RestaurantApp {
 						
 						//create default order for walk-in
 						while (true) {
-							staffId = UserInput.nextInt("Enter Staff ID to create the order for walk-in");
-							
+							staffId = UserInput.nextInt("Enter Staff ID to create the order for walk-in ");
+
 							currentStaff = staffs.getStaffByID(staffId);
 							if (currentStaff == null) {
 								System.out.println("Invalid staff ID!");
@@ -598,20 +615,25 @@ public class RestaurantApp {
 			System.out.println();
 			switch (choice) {
 			case 1:
-				name = UserInput.getString("Please enter name: ");
-				gender = UserInput.getGender("Please enter M / F for gender: ");
-				staffID = UserInput.nextInt("Please enter staffID: ");
-				jobTitle = UserInput.getJobTitle("Please enter the staff's designation (manager,cashier,part-time,full-time): ");
-				
+				name = UserInput.getString("Please enter name: (Enter -1 to exit) ");
+				if (name.compareTo("-1")==0) break;
+				gender = UserInput.getGender("Please enter M / F for gender: (Enter # to exit) ");
+				if (gender == '#') break;
+				staffID = UserInput.nextInt("Please enter staffID: (Enter -1 to exit) ");
+				if (staffID == -1) break;
+				jobTitle = UserInput.getJobTitle("Please enter the staff's designation (manager,cashier,part-time,full-time): (Enter -1 to exit) ");
+				if (jobTitle == null) break;
 				
 				staff.addStaff(name, gender, staffID, jobTitle);
 				break;
 			case 2:
-				staffID = UserInput.nextInt("Please enter staff's ID: ");
+				staffID = UserInput.nextInt("Please enter staff's ID: (Enter -1 to exit) ");
+				if (staffID == -1) break;
 				staff.removeStaff(staffID);
 				break;
 			case 3:
-				staffID = UserInput.nextInt("Please enter staff's ID: ");
+				staffID = UserInput.nextInt("Please enter staff's ID: (Enter -1 to exit) ");
+				if (staffID == -1) break;
 				staff.printStaffByID(staffID);
 				break;
 			case 4:
@@ -619,7 +641,8 @@ public class RestaurantApp {
 				staff.printAllStaffs();
 				break;
 			case 5:
-				staffID = UserInput.nextInt("Please enter staff's ID: ");
+				staffID = UserInput.nextInt("Please enter staff's ID: (Enter -1 to exit) ");
+				if (staffID == -1) break;
 				staff.updateStaffInfo(staffID);
 				break;
 				
@@ -648,19 +671,23 @@ public class RestaurantApp {
 			System.out.println();
 			switch (choice) {
 			case 1:
-				name = UserInput.getString("Please enter name: ");
-				contact = UserInput.nextInt("Please enter contact number: ");
-				
+				name = UserInput.getString("Please enter name: (Enter -1 to exit) ");
+				if (name.compareTo("-1")==0) break;
+				contact = UserInput.nextInt("Please enter contact number: (Enter -1 to exit) ");
+				if (contact == -1) break;
 				members.createMembership(name,contact);
 
 				break;
 			case 2:
-				name = UserInput.getString("Please enter name: ");
-				contact = UserInput.nextInt("Please enter contact number: ");
+				name = UserInput.getString("Please enter name: (Enter -1 to exit) ");
+				if (name.compareTo("-1")==0) break;
+				contact = UserInput.nextInt("Please enter contact number: (Enter -1 to exit) ");
+				if (contact == -1) break;
 				members.removeMembership(name, contact);
 				break;
 			case 3:
-				name = UserInput.getString("Please enter name: ");
+				name = UserInput.getString("Please enter name: (Enter -1 to exit) ");
+				if (name.compareTo("-1")==0) break;
 				member = members.getMembershipByName(name);
 				if (member == null) 
 					break;
@@ -672,8 +699,10 @@ public class RestaurantApp {
 				members.printAllMembers();
 				break;
 			case 5:
-				name = UserInput.getString("Please enter name: ");
-				contact = UserInput.nextInt("Please enter contact number: ");
+				name = UserInput.getString("Please enter name: (Enter -1 to exit) ");
+				if (name.compareTo("-1")==0) break;
+				contact = UserInput.nextInt("Please enter contact number: (Enter -1 to exit) ");
+				if (contact == -1) break;
 				members.updateMembership(name, contact);
 				break;
 				
@@ -701,11 +730,13 @@ public class RestaurantApp {
 			
 			switch (choice) {
 			case 1:
-				date = UserInput.getDateForReport("Please choose date to display report for");
+				date = UserInput.getDateForReport("Please choose date to display report for (Enter -1 to exit) ");
+				if (date == null) break;
 				reports.printReportByDay(date);
 				break;
 			case 2:
-				date = UserInput.getMonthYearForReport("Please choose month and year to display report for");
+				date = UserInput.getMonthYearForReport("Please choose month and year to display report for (Enter -1 to exit) ");
+				if (date == null) break;
 				int year = date.get(Calendar.YEAR);
 				int month = date.get(Calendar.MONTH)+1;
 				reports.printReportByMonth(month,year);

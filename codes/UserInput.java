@@ -53,6 +53,7 @@ public class UserInput {
 				valid = true;
 				System.out.print(inMsg);
 				n = sc.nextInt();
+				if (n==-1) return n;
 				valid = (n >= lLimit && n <= uLimit);
 				if(!valid){
 					System.out.println("Please enter an integer between " + lLimit + " and " + uLimit + " (inclusive).");
@@ -86,6 +87,7 @@ public class UserInput {
 				valid = true;
 				System.out.print(inMsg);
 				n = sc.nextDouble();
+				if (n==-1) return n;
 			}catch(InputMismatchException e){
 				valid = false;
 				sc.nextLine();	// get dummy line
@@ -116,6 +118,7 @@ public class UserInput {
 				valid = true;
 				System.out.print(inMsg);
 				n = sc.nextDouble();
+				if (n==-1) return n;
 				valid = (n >= lLimit && n <= uLimit);
 				if(!valid){
 					System.out.println("Please enter a double between " + lLimit + " and " + uLimit + " (inclusive).");
@@ -308,6 +311,7 @@ public class UserInput {
 				valid = true;
 				System.out.print(inMsg);
 				n = sc.nextInt();
+				if (n==-1) return n;
 				int length = (int) (Math.log10(n) + 1);
 				if (length != 8) {
 					System.out.println("Error: expected a 8 digit number");
@@ -341,6 +345,7 @@ public class UserInput {
 		do{
 		    System.out.print("Enter reservation date and time in the correct format (dd/MM/yyyy HH:mm): ");	
 			date  = sc.nextLine();
+			if (date.compareTo("-1")==0) return null; 
 		    dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		    try {
 		    	inputDate = dateFormat.parse(date);
@@ -378,6 +383,7 @@ public class UserInput {
 			System.out.println(inMsg);
 		    System.out.print("Enter date and time in the correct format (dd/MM/yyyy): ");	
 			date  = sc.nextLine();
+			if (date.compareTo("-1")==0) return null;
 		    dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		    try {
 		    	inputDate = dateFormat.parse(date);
@@ -411,6 +417,7 @@ public class UserInput {
 			System.out.println(inMsg);
 		    System.out.print("Enter Month and Date in the correct format (MM/yyyy): ");	
 			date  = sc.nextLine();
+			if (date.compareTo("-1")==0) return null;
 		    dateFormat = new SimpleDateFormat("MM/yyyy");
 		    try {
 		    	inputDate = dateFormat.parse(date);
