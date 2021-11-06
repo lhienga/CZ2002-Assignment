@@ -164,12 +164,12 @@ public class ReservationManager {
 	 * 
 	 * @param contact
 	 */
-	public Reservation updateReservationDetails(int contact) {
+	public void updateReservationDetails(int contact) {
 		int reservationType = UserInput.nextInt("Is it (1) pre-order or (2) walk-in reservation? ", 1, 2)-1;
 		Reservation reservation = getReservationByContact(contact);
 		if (reservation == null){
 			System.out.println("There is no reservation under this contact number!");
-			return null;
+			
 		}
 		System.out.println("What do you want to update?");
 		System.out.println("1.Update customer personal information"+ '\n'+
@@ -181,13 +181,13 @@ public class ReservationManager {
 				Reservation exist = getReservationByContact(newContact);
 				if (exist!=null){
 					System.out.println("This contact number has existing reservation");
-					return null;
+					
 				}
 				String newName = UserInput.getString("Enter new name: ");
 				reservation.setContact(newContact);
 				reservation.setName(newName);
 				System.out.println("Reservation updated!");
-				return reservation;
+				
 				
 			case 2:
 				Calendar newBookingTime;
@@ -202,13 +202,13 @@ public class ReservationManager {
 				if (updated==null){
 					System.out.println("Cannot find any table!");
 					reservations.add(reservation);
-					return null;
+					
 				}
 				
 				System.out.println("Reservation updated!");
-				return updated;
+				
 		}
-		return null;
+		
 
 	}
 

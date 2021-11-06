@@ -561,10 +561,7 @@ public class RestaurantApp {
                 	reserve.printAllReservation();
                     break;
 				case 5:
-					Reservation updated = reserve.updateReservationDetails(contactNum);
-					if (updated!=null){
-						contactNum = updated.getContact();
-					}
+					reserve.updateReservationDetails(contactNum);
 					break;
 				case 4:
 					reserve.printReservation(contactNum);
