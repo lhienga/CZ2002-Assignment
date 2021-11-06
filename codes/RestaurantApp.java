@@ -461,7 +461,8 @@ public class RestaurantApp {
 					//reservations.removeReservationByContact(contactNum);
 					//orders.clearOrder(contactNum);
 					reports.addOrderToReport(invoice);
-					
+					//ReservationManager reserve = new ReservationManager(tableManager, reservations, settledReservations);
+					reservations.moveReservationToSettledReservations(order.getContactNum());
 					
 					break;
 			
@@ -550,7 +551,7 @@ public class RestaurantApp {
 						//change table to occupied since it is a walk-in
 						orders.createOrder(walkInReservation.getTableID(), contactNum, currentStaff, new ArrayList<MenuItem>());
 						tables.changeTableOccupiedStatus(walkInReservation.getTableID(), true);
-						reserve.moveReservationToSettledReservations(contactNum);
+						//reserve.moveReservationToSettledReservations(contactNum);
 						System.out.println("Go back to Order Manager to add items to order\n");
 					}
 						break;

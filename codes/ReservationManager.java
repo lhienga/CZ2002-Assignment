@@ -7,6 +7,12 @@ public class ReservationManager {
 	public TableManager tableManager;
 	public int RESERVATIONDURATION=3; 
 
+	/**
+	 * constructor for 
+	 * @param tableManager
+	 * @param reservations
+	 * @param settledReservations
+	 */
 	public ReservationManager(TableManager tableManager, ArrayList<Reservation> reservations, ArrayList<Reservation> settledReservations) {
 		this.tableManager = tableManager;
 		this.reservations = reservations;
@@ -84,7 +90,7 @@ public class ReservationManager {
 		Calendar bookingTime = bookTime;
 		for (int i=0; i<tables.size(); i++){
 			possibleTables.add(tables.get(i).getTableId());
-			//System.out.println("id added"+possibleTables.get(i));
+			System.out.println("id added"+possibleTables.get(i));
 		}
 		
 		for (int i = 0; i<reservations.size(); i++){
@@ -96,10 +102,10 @@ public class ReservationManager {
 			int upper = bookTime.get(Calendar.HOUR_OF_DAY);
 			bookingTime.add(Calendar.HOUR_OF_DAY,-RESERVATIONDURATION);
 			int reservedHour = reservedTime.get(Calendar.HOUR_OF_DAY);
-			//System.out.println(upper+" "+ lower+" "+reservedHour);
+			System.out.println(upper+" "+ lower+" "+reservedHour);
 			if (reservedHour<= upper && reservedHour>=lower){
 				possibleTables.remove(possibleTables.indexOf(tableid));
-				//System.out.println("remove " + tableid);
+				System.out.println("remove " + tableid);
 			}
 		}
 		return possibleTables;
@@ -149,14 +155,15 @@ public class ReservationManager {
 
 		}
 		Reservation reservation = new Reservation(bookingTime, numOfPax, name, contact, tableid);
+		
 		if (choice == 0) { //normal reservation
-			this.reservations.add(reservation);
+			//this.reservations.add(reservation);
 			tableManager.changeTableReservedStatus(tableid, true);
-		} else {
-			
+		} else { //walk in
+			tableManager.changeTableOccupiedStatus(tableid, true);
 		}
 		this.reservations.add(reservation);
-		tableManager.changeTableReservedStatus(tableid, true);
+		
 		return reservation;
 	}
 
