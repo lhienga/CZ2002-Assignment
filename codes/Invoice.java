@@ -3,6 +3,7 @@ import java.io.Serializable;
 public class Invoice implements Serializable{
 	private Order paidOrder;
 	private int invoiceID;
+	private int tableID;
 	private double subtotal;
 	private double totalPrice;
 	private double gst;
@@ -13,6 +14,7 @@ public class Invoice implements Serializable{
 	
 	public Invoice(Order order, Calendar paymentDate, boolean isMember,double subtotal) {
 		this.paidOrder = order;
+		this.tableID = order.getTableId();
 		this.dateCreated = paymentDate;
 		this.invoiceID = Calendar.getInstance().hashCode();
 		this.subtotal = subtotal;
@@ -40,6 +42,7 @@ public class Invoice implements Serializable{
 	public void printInvoice(){
 		System.out.println("Date & Time: " + dateCreated.getTime());
 		System.out.println("Invoice Number: " + this.invoiceID);
+		System.out.println("Table Number: " + this.tableID);
 		System.out.printf("Subtotal: $%.2f\n",subtotal);
 		if (membershipDiscount != 0) {
 			System.out.printf("Membership Discount: $%.2f\n",membershipDiscount);
