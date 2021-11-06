@@ -46,7 +46,7 @@ public class RestaurantApp {
 					manageOrder(orders, reserve, staff, menu,reports,tables);
 					break;
 				case 4:
-					manageReservation(reserve);
+					manageReservation(reserve,orders,staff,tables);
 					break;
 				case 5:
 					managingReport(reports, menu);
@@ -288,8 +288,8 @@ public class RestaurantApp {
 		Order order;
 		Reservation reservation;
 		int subchoice;
-		contactNum = UserInput.getContact("Enter contact number of customer: (-1 to cancel)");
-		while (contactNum!=-1){
+		//contactNum = UserInput.getContact("Enter contact number of customer: (-1 to cancel)");
+		
 		do {
 			System.out.println();
 			
@@ -304,6 +304,38 @@ public class RestaurantApp {
 			System.out.println();
 			switch (choice) {
 				case 1:
+					
+					tableId = UserInput.nextInt("Enter ID of table to create order for: ",1,20);
+					
+					//check if table already has an order means walk-in is occupying table now so no need create an order for it
+					
+					order = orders.getOrderByTableId(tableId);
+					if (order!=null) {
+						System.out.println("Order for table "+tableId+" has already been created, would you like to add items instead (Enter choice 3) instead");
+						break;
+					}
+					
+					// if table has no order means, reserved customer to table can now occupy table so create a table for customer
+					//check if contactNum has already have a reservation under table Id
+					contactNum = UserInput.getContact("Currently it is unoccupied, check if customer has made a reservation.\nEnter contact number of customer making order: ");
+					
+					reservation = reservations.getReservationByContact(contactNum);
+					if (reservation == null) {
+						System.out.println("Reservation not found\n Please create a reservation or walk in under customer with contact number "+contactNum + " first!");
+						break;
+					}
+					if (reservation.getTableID() != tableId) {
+						System.out.println("Wrong table id for reserved customer, should create order for table "+reservation.getTableID()+ " instead");
+						subchoice = UserInput.nextInt("Enter 1 to continue creating order under table "+reservation.getTableID()+" or Enter 0 to cancel creating order",0,1);
+						if (subchoice == 0) {
+							System.out.println("Create Order Operation Cancelled");
+				            System.out.println();
+				            break;
+						}
+					}
+					
+					// get correct tableId for creating order
+					tableId = reservation.getTableID();
 					do {
 						staffId = UserInput.nextInt("Enter Staff ID to create the order in (-1 to cancel): ");
 						
@@ -320,31 +352,15 @@ public class RestaurantApp {
 			            System.out.println();
 			            break;
 					} 
-					//contactNum = UserInput.getContact("Enter contact number of customer making order: ");
-					//check if contactNum has alr created an order
-					order = orders.getOrderByContact(contactNum);
-					if (order!=null) {
-						System.out.println("Order has already been created, would you like to add on order instead (Enter choice 3) instead");
-						break;
-					}
 					
-					reservation = reservations.getReservationByContact(contactNum);
-					if (reservation == null) {
-						System.out.println("Reservation or walk in not found\n Please create a reservation or walk in under customer with contact number "+contactNum + " first!");
-						break;
-					}
-					tableId = reservation.getTableID();
-					subchoice = UserInput.nextInt("Is order a 1. pre-order for reservation or a 2. walk-in order? ",1,2);
-					//If walk-in-order, walk in reservation is moved to settled
-					//table status changed to occupied if at first reservation was made since customer has arrived
-					if (subchoice == 2) {
-						//tables.changeTableStatus(reservation.getTableID(), Table.STATUS.OCCUPIED);
-						reservations.moveReservationToSettledReservations(contactNum);
-						tables.changeTableOccupiedStatus(tableId, true);
-					}
+					//Reservation is moved to settled reservations since reserved customer has arrived
+					//table status changed to occupied since reserved customer has arrived
+					reservations.moveReservationToSettledReservations(contactNum);
+					tables.changeTableOccupiedStatus(tableId, true);
+					
 
-					orders.createOrder(reservation.getTableID(), contactNum, currentStaff, new ArrayList<MenuItem>());
-					order = orders.getOrderByContact(contactNum);
+					orders.createOrder(tableId, contactNum, currentStaff, new ArrayList<MenuItem>());
+					order = orders.getOrderByTableId(tableId);
 					do {
 						System.out.println("Currently, there are "+order.getNumItems()+" items in order.\n");
 						menu.printMenu(0);
@@ -352,7 +368,7 @@ public class RestaurantApp {
 						if (i==0) {
 							break;
 						}
-						orders.addToOrder(contactNum, menu.getMenuItems().get(i-1)); 
+						orders.addToOrder(tableId, menu.getMenuItems().get(i-1)); 
 						System.out.println("Item has been added to order:");
 						menu.printMenuItem(menu.getMenuItems().get(i-1));
 					} while (i!=0);
@@ -361,20 +377,17 @@ public class RestaurantApp {
 
 					break;
 				case 2:
-					//contactNum = UserInput.getContact("Enter contact number of customer removing order: ");
-					order = orders.getOrderByContact(contactNum);
-					if (order == null) {
-						System.out.println("There is no order under customer with contact number "+contactNum);
-						break;
-					}
-					orders.clearOrder(contactNum);
+					tableId = UserInput.nextInt("Enter ID of table to remove order for: ",1,20);
+					orders.clearOrder(tableId);
 					break;
 				case 3:
 
 					//contactNum = UserInput.getContact("Enter contact number of customer adding items to order: ");
-					order = orders.getOrderByContact(contactNum);
+					tableId = UserInput.nextInt("Enter ID of table to add items for: ",1,20);
+					order = orders.getOrderByTableId(tableId);
 					if (order == null) {
-						System.out.println("There is no order under customer with contact number "+contactNum);
+						System.out.println("There is no order for table " + tableId +" !");
+						System.out.println();
 						break;
 					}
 					
@@ -385,7 +398,7 @@ public class RestaurantApp {
 						if (i==0) {
 							break;
 						}
-						orders.addToOrder(contactNum, menu.getMenuItems().get(i-1));  
+						orders.addToOrder(tableId, menu.getMenuItems().get(i-1));  
 						System.out.println("Item has been added to order:");
 						menu.printMenuItem(menu.getMenuItems().get(i-1));
 					} while (i!=0);
@@ -394,10 +407,11 @@ public class RestaurantApp {
 
 					break;
 				case 4:
-					//contactNum = UserInput.getContact("Enter contact number of customer removing order: ");
-					order = orders.getOrderByContact(contactNum);
+					tableId = UserInput.nextInt("Enter ID of table to remove items for: ",1,20);
+					order = orders.getOrderByTableId(tableId);
 					if (order == null) {
-						System.out.println("There is no order under customer with contact number "+contactNum);
+						System.out.println("There is no order for table " + tableId +" !");
+						System.out.println();
 						break;
 					}
 					
@@ -410,7 +424,7 @@ public class RestaurantApp {
 							break;
 						}
 						
-						orders.removeFromOrder(contactNum, order.getOrder().get(i-1)); 
+						orders.removeFromOrder(tableId, order.getOrder().get(i-1)); 
 						System.out.println("Item has been removed from order:");
 					} while (i!=0);
 					System.out.println("Remaining Items in order:");
@@ -418,38 +432,36 @@ public class RestaurantApp {
 
 					break;
 				case 5:
-					//contactNum = UserInput.getContact("Enter contact number of customer whom order is under: ");
-					order = orders.getOrderByContact(contactNum);
+				
+					tableId = UserInput.nextInt("Enter ID of table to view order for: ",1,20);
+					order = orders.getOrderByTableId(tableId);
 					if (order == null) {
-						System.out.println("There is no order under customer with contact number "+contactNum);
+						System.out.println("There is no order for table " + tableId +" !");
+						System.out.println();
 						break;
 					}
-			
+					System.out.println("Currently, there are "+order.getNumItems()+" items in order.\n");
 					System.out.println("\nTotal Items in order arranged from earliest to latest added:\n");
 					order.printOrder();
 					break;
 				case 6:
-					//contactNum = UserInput.getContact("Enter contact number of customer whom order is under: ");
-					order = orders.getOrderByContact(contactNum);
-					orders.settledOrders.add(order);
+					
+					tableId = UserInput.nextInt("Enter ID of table to print invoice for: ",1,20);
+					order = orders.getOrderByTableId(tableId);
 					if (order == null) {
-						System.out.println("There is no order under customer with contact number "+contactNum);
+						System.out.println("There is no order for table " + tableId +" !");
+						System.out.println();
 						break;
 					}
-					tableId = order.getTableId();
-					Invoice invoice = orders.printInvoice(contactNum, menu);
-					orders.moveOrderToSettledOrders(contactNum);
+					Invoice invoice = orders.printInvoice(tableId, menu);
+					//move order to settled orders
+					orders.moveOrderToSettledOrders(tableId);
+					//change table to unoccupied
 					tables.changeTableOccupiedStatus(tableId, false);
 					//reservations.removeReservationByContact(contactNum);
 					//orders.clearOrder(contactNum);
 					reports.addOrderToReport(invoice);
 					
-					
-					//check again if reservation not moved to settled reservations
-					reservation = reservations.getReservationByContact(contactNum);
-					if (reservation!=null) {
-						reservations.moveReservationToSettledReservations(contactNum);
-					}
 					
 					break;
 			
@@ -457,7 +469,7 @@ public class RestaurantApp {
 			contactNum = -1;
 			
 		}while (choice != 0);
-	}
+	
 	}
 	
 	
@@ -466,9 +478,11 @@ public class RestaurantApp {
 	 * @param reserve
 	 */
 
-	public static void manageReservation(ReservationManager reserve) {
+	public static void manageReservation(ReservationManager reserve, OrderManager orders, StaffManager staffs, TableManager tables) {
 		
 		int choice;
+		int staffId;
+		Staff currentStaff;
 		
 		//release all table with expired reservation
 		reserve.removeExpiredReservations();
@@ -519,8 +533,25 @@ public class RestaurantApp {
 						System.out.println("Cannot make reservation");
 					}
 					else {
-						System.out.println("Walk in created:");
+						System.out.println("Walk-in created:");
 						reserve.printReservation(walkInReservation.getContact());
+						
+						//create default order for walk-in
+						while (true) {
+							staffId = UserInput.nextInt("Enter Staff ID to create the order for walk-in");
+							
+							currentStaff = staffs.getStaffByID(staffId);
+							if (currentStaff == null) {
+								System.out.println("Invalid staff ID!");
+							} else {
+								break;
+							}
+						}
+						//change table to occupied since it is a walk-in
+						orders.createOrder(walkInReservation.getTableID(), contactNum, currentStaff, new ArrayList<MenuItem>());
+						tables.changeTableOccupiedStatus(walkInReservation.getTableID(), true);
+						reserve.moveReservationToSettledReservations(contactNum);
+						System.out.println("Go back to Order Manager to add items to order\n");
 					}
 						break;
                 case 3:
