@@ -387,7 +387,7 @@ public class UserInput {
 		    }
 		    time.setTime(inputDate);
 			if (time.compareTo(Calendar.getInstance())>0){
-				System.out.println("Entered a date after current date!");
+				System.out.println("You have entered a date after current date! Please enter a valid date!");
 			}
 			else validDate = true;
 		} while(!validDate);
@@ -420,7 +420,7 @@ public class UserInput {
 		    }
 		    time.setTime(inputDate);
 			if (time.compareTo(Calendar.getInstance())>0){
-				System.out.println("Entered a date after current date!");
+				System.out.println("You have entered period after current date! Please enter a valid period!");
 			}
 			else validDate = true;
 		} while(!validDate);
