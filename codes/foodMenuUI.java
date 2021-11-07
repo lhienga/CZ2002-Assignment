@@ -43,7 +43,7 @@ public class FoodMenuUI {
 			case 1:
 				String name = UserInput.getString("\nWhat is the name of your food? (Enter -1 to exit) ");
 				if (name.compareTo("-1")==0) break;
-				Double price = UserInput.nextDouble("What is the price of "+ name + "? (Enter -1 to exit) ");
+				Double price = UserInput.nextDouble("What is the price of "+ name + "? (Enter -1 to exit) $");
 				if (price == -1) break;
 				String desc = UserInput.getString("What is the description of "+ name + "? (Enter -1 to exit) ");
 				if (desc.compareTo("-1")==0) break;
@@ -89,7 +89,7 @@ public class FoodMenuUI {
 							if(include == 0){
 								name = UserInput.getString("What is the name of your promotion package? (Enter -1 to exit) ");
 								if (name.compareTo("-1")==0) break;
-								price = UserInput.nextDouble("What is the price of the promotion package? (Enter -1 to exit) ");
+								price = UserInput.nextDouble("What is the price of the promotion package? (Enter -1 to exit) $");
 								if (price == -1) break;
 								while (price <= 0) {
 									System.out.println("Price cannot be 0 or negative.");
