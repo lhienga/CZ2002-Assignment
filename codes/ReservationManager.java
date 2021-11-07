@@ -174,13 +174,14 @@ public class ReservationManager {
 	 * @param contact
 	 */
 	public void updateReservationDetails(int contact) {
-		int reservationType = UserInput.nextInt("Is it (1) pre-order or (2) walk-in reservation? (Enter -1 to exit) ", 1, 2)-1;
-		if (reservationType==-1) return;
 		Reservation reservation = getReservationByContact(contact);
 		if (reservation == null){
 			System.out.println("There is no reservation under this contact number!");
 			
 		}
+		int reservationType = UserInput.nextInt("Is it (1) normal reservation or (2) walk-in reservation? (Enter -1 to exit) ", 1, 2);
+		if (reservationType==-1) return;
+		
 		System.out.println("What do you want to update?");
 		System.out.println("1.Update customer personal information"+ '\n'+
 							"2.Update reservation information");
@@ -204,7 +205,7 @@ public class ReservationManager {
 				
 			case 2:
 				Calendar newBookingTime;
-				if (reservationType == 0){
+				if (reservationType == 1){
 					newBookingTime = UserInput.getDateTime("Enter new booking time: (Enter -1 to exit) ");
 					if (newBookingTime == null) return;
 				}
