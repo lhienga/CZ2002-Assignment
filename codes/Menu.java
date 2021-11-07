@@ -42,7 +42,7 @@ public class Menu {
 	 * @param item MenuItem
 	 */
 	public void printMenuItem(MenuItem item) {
-		int j=1;
+
 		if(item instanceof AlaCarte) {
 			System.out.printf("%-20s %s\nPrice: $%.2f \nDescription: %s\n\n",
 					item.getName(), "(AlaCarte - "+item.getType()+")", item.getPrice(), item.getDesc());
@@ -50,9 +50,9 @@ public class Menu {
 			System.out.printf("%-20s %s\n",
 					item.getName(), "(Promotion Set)", item.getPrice(), item.getDesc());
 			for (Food food : item.getPackage()) {
-				System.out.printf("%d: %s: %s\n", j,
+				System.out.printf("%s: %s\n",
 						food.getType(), food.getName());
-				j++;
+			
 			}
 				
 			System.out.printf("Price: $%.2f\nDescription:%s\n\n",
