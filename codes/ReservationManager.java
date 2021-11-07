@@ -104,8 +104,12 @@ public class ReservationManager {
 			int reservedHour = reservedTime.get(Calendar.HOUR_OF_DAY);
 			System.out.println(upper+" "+ lower+" "+reservedHour);
 			if (reservedHour<= upper && reservedHour>=lower){
-				possibleTables.remove(possibleTables.indexOf(tableid));
-				System.out.println("remove " + tableid);
+				System.out.println(tableid);
+				if (possibleTables.contains(tableid)) {
+					possibleTables.remove(possibleTables.indexOf(tableid));
+					System.out.println("remove " + tableid);
+				}
+				
 			}
 		}
 		return possibleTables;
@@ -243,7 +247,7 @@ public class ReservationManager {
 		// if there are no other reservations under same table, change reserved status to not reserved
 		for (Reservation r: reservations) {
 			if (r.getTableID() == tableId) {
-				break;
+				return;
 			}
 		}
 		tableManager.changeTableReservedStatus(tableId, false);
@@ -271,7 +275,7 @@ public class ReservationManager {
 		ArrayList<Reservation> expiredReservations = new ArrayList<Reservation>();
 		for (int i = 0; i<reservations.size(); i++){
 			Calendar expiryTime = reservations.get(i).getExpiryTime();
-			if (expiryTime.compareTo(Calendar.getInstance())<=0){
+			if (expiryTime.compareTo(Calendar.getInstance())>=0){
 				expiredReservations.add(reservations.get(i));
 			}
 			
