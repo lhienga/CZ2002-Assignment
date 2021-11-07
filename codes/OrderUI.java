@@ -19,7 +19,7 @@ public class OrderUI {
 			
 			choice = UserInput.nextInt("Select a choice:\n" +
 					"1. Create an order\n"+
-					"2. Cancel an order\n" +
+					"2. Cancel an order and clear table\n" +
 					"3. Add items to order\n" +
 					"4. Remove items from order\n"+
 					"5. View an order\n"+
@@ -29,19 +29,19 @@ public class OrderUI {
 			switch (choice) {
 				case 1:
 					creatOrder(orders, reservations, staff, menu, reports, tables);
-					return;
+					break;
 				case 2:
-					cancelOrder(orders);
-					return;
+					cancelOrder(orders,reservations,tables);
+					break;
 				case 3:
                     addItem(orders,  menu);
-					return;
+					break;
 				case 4:
 					removeItem(orders, menu);
-					return;
+					break;
 				case 5:
                     viewOrder(orders);
-					return;
+					break;
 				case 6:
 					printInvoice(orders, reports, reservations, tables, menu);
 
@@ -52,11 +52,15 @@ public class OrderUI {
 	
 	}
 
-    public static void cancelOrder(OrderManager orders){
+    public static void cancelOrder(OrderManager orders,ReservationManager reservations,TableManager tables){
         int tableId;
         tableId = UserInput.nextInt("Enter ID of table to remove order for: (Enter -1 to exit) ",1,20);
 		if (tableId==-1) return;
-			orders.clearOrder(tableId);
+		orders.clearOrder(tableId);
+		tables.changeTableOccupiedStatus(tableId, false);
+		int contactNum = UserInput.getContact("\nEnter contact number of customer removing order and leaving restaurant: (Enter -1 to exit) ");
+		if (contactNum==-1) return;
+		reservations.removeReservationByContact(contactNum);
     }
     public static void creatOrder(OrderManager orders, ReservationManager reservations,StaffManager staff, Menu menu,ReportManager reports,TableManager tables){
         int i;
