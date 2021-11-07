@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 public class RestaurantApp {
 
 	/**
@@ -7,6 +8,8 @@ public class RestaurantApp {
 	public static void main(String[] args) {
 		
 		Restaurant.loadRestaurant();
+
+
 
 		Menu menu = new Menu(Restaurant.foodMenu);
 		StaffManager staff = new StaffManager(Restaurant.staffs);
@@ -22,6 +25,20 @@ public class RestaurantApp {
 		StaffUI staffUI = new StaffUI();
 		MembershipUI membershipUI = new MembershipUI();
 		ReportUI reportUI = new ReportUI();
+
+		ArrayList<Reservation> expiredReservations = reserve.getExpiredReservations();
+		for (Reservation exReservation: expiredReservations){
+			int contact = exReservation.getContact();
+			Order exOrder = orders.getOrderbyContact(contact);
+			if (exOrder!=null){
+				int tableid = exOrder.getTableId();
+				tables.changeTableOccupiedStatus(tableid, false);
+				orders.removerOrder(contact);
+			}
+		}
+		reserve.removeExpiredReservations();
+
+		
 		int choice = 0;
 
 		do {

@@ -181,6 +181,24 @@ public class OrderManager {
 		return new Invoice(order,paymentDate,isMember,totalPrice);
 			
 	}
+
+	public Order getOrderbyContact(int contact){
+		for (int i=0; i<orders.size(); i++) {
+			Order order = orders.get(i);
+			if (contact == order.getContactNum()) {
+				return order;
+			}
+		}
+		System.out.println();
+		return null;
+	}
+
+	public void removerOrder(int contact){
+		Order order = getOrderbyContact(contact);
+		if (order!=null){
+			orders.remove(order);
+		}
+	}
 	
 
 }
