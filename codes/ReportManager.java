@@ -102,11 +102,13 @@ public class ReportManager {
 		System.out.println("--------Total Number of Food Products sold:----------\n");
 		for (MenuItem m: menu.getMenuItems()){
 			if (m instanceof AlaCarte) {
-		System.out.println("Ala Carte :");
-		System.out.println(m.getFood().getName() + ": " + numOfProductSold[menu.getMenuItems().indexOf(m)]);
+				if (numOfProductSold[menu.getMenuItems().indexOf(m)]==0) {continue;}
+			System.out.print("Ala Carte :");
+			System.out.println(m.getFood().getName() + ": " + numOfProductSold[menu.getMenuItems().indexOf(m)]);
 			}
 			else {
-		System.out.println("Promotion Package :");
+				if (numOfProductSold[menu.getMenuItems().indexOf(m)]==0) {continue;}
+				System.out.print("Promotion Package :");
 				System.out.println(m.getName() + ": " + numOfProductSold[menu.getMenuItems().indexOf(m)]);
 			}
 		

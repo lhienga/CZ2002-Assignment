@@ -160,6 +160,7 @@ public class OrderManager {
 		
 		System.out.print("\nSubtotal: \t");
 	    System.out.printf("%.2f\n", totalPrice);
+		System.out.println("-------------------------------------------------------------------------");
 	    
 	    // print membership status and discount amount
 		if (membershipManager.getMembershipByContact(order.getContactNum()) != null) {
@@ -175,6 +176,7 @@ public class OrderManager {
 		System.out.print("TOTAL PAYABLE: \t");
 		System.out.printf("%.2f\n", totalPriceMember*1.1*1.07);
 		System.out.println();
+		
 		
 		return new Invoice(order,paymentDate,isMember,totalPrice);
 			
