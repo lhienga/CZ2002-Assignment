@@ -62,11 +62,16 @@ public class ReservationUI {
 	}
 
     public static void makeReservation(ReservationManager reserve, int contactNum){
+    	Reservation reservation = reserve.getReservationByContact(contactNum);
+    	if (reservation != null) {
+    		System.out.println("This contact number has already booked a reservation!");
+    		return;
+    	}
         String name = UserInput.getString("Enter customer's name: (Enter -1 to exit) ");
 					if (name.compareTo("-1")==0) return;
 					Calendar bookingTime = UserInput.getDateTime("Please enter the time you want to reserve table (Enter -1 to exit) ");
 					if (bookingTime == null) return;
-					Reservation reservation = reserve.createReservation(contactNum, name, bookingTime, 0);
+					reservation = reserve.createReservation(contactNum, name, bookingTime, 0);
 					if (reservation==null){
 						System.out.println("Cannot make reservation, unavailable tables");
 					}
@@ -80,14 +85,19 @@ public class ReservationUI {
     public static void walkinReservation(ReservationManager reserve, int contactNum, OrderManager orders, StaffManager staffs, TableManager tables){
         int staffId;
 		Staff currentStaff;
+		Reservation walkInReservation = reserve.getReservationByContact(contactNum);
+		if (walkInReservation != null) {
+    		System.out.println("This contact number has already booked a reservation!");
+    		return;
+    	}
         String cusName = UserInput.getString("Enter customer's name: (Enter -1 to exit) ");
         if (cusName.compareTo("-1")==0) return;
         Calendar walkInTime = Calendar.getInstance();
         if (walkInTime.get(Calendar.HOUR_OF_DAY)<9 || walkInTime.get(Calendar.HOUR_OF_DAY)>18) {
-            System.out.println("Restaurant opens from 9 am to 6 pm!");
+            System.out.println("Restaurant opens from 9 am to 9 pm! Latest Order: 6.59pm");
             return;
         }
-        Reservation walkInReservation = reserve.createReservation(contactNum, cusName, walkInTime,1);
+        walkInReservation = reserve.createReservation(contactNum, cusName, walkInTime,1);
         if (walkInReservation==null){
             System.out.println("Cannot make reservation");
         }
