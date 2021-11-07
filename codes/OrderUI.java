@@ -117,7 +117,7 @@ public class OrderUI {
 					
 					//Reservation is moved to settled reservations since reserved customer has arrived
 					//table status changed to occupied since reserved customer has arrived
-					reservations.moveReservationToSettledReservations(contactNum);
+					//reservations.moveReservationToSettledReservations(contactNum);
 					tables.changeTableOccupiedStatus(tableId, true);
 					
 
