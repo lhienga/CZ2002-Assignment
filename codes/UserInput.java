@@ -357,8 +357,8 @@ public class UserInput {
 			if (time.compareTo(Calendar.getInstance())<0){
 				System.out.println("Entered a passed date time!");
 			}
-			else if (time.get(Calendar.HOUR_OF_DAY)<9 || time.get(Calendar.HOUR_OF_DAY)>18){
-				System.out.println("Restaurant opens from 9 am to 9 pm! Latest booking time: 6.59pm");
+			else if (time.get(Calendar.HOUR_OF_DAY)<9 || time.get(Calendar.HOUR_OF_DAY)>20){
+				System.out.println("Restaurant opens from 9 am to 11 pm! Latest booking time: 20:59");
 			}
 			else validDate = true;
 		} while(!validDate);
