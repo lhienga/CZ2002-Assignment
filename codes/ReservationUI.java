@@ -7,7 +7,7 @@ public class ReservationUI {
 	 * @param reserve
 	 */
 
-	public void manageReservationOptions(ReservationManager reserve, OrderManager orders, StaffManager staffs, TableManager tables) {
+	public static void manageReservationOptions(ReservationManager reserve, OrderManager orders, StaffManager staffs, TableManager tables) {
 		
 		int choice;
 		
@@ -39,7 +39,7 @@ public class ReservationUI {
             
             switch (choice) {
                 case 1:
-					makeReservation(reserve, contactNum);
+					makeReservation(reserve, contactNum,orders);
                     break;
                 case 2:
 					walkinReservation(reserve, contactNum, orders, staffs, tables);
@@ -61,22 +61,21 @@ public class ReservationUI {
 
 	}
 
-    public static void makeReservation(ReservationManager reserve, int contactNum){
-    	Reservation reservation = reserve.getReservationByContact(contactNum);
-    	if (reservation != null) {
-    		System.out.println("This contact number has already booked a reservation!");
-    		return;
-    	}
+    public static void makeReservation(ReservationManager reserve, int contactNum,OrderManager orders){
+    	if (reserve.getReservationByContact(contactNum)!=null){
+			System.out.println("This contact number has already booked a reservation!");
+			return;
+		}
         String name = UserInput.getString("Enter customer's name: (Enter -1 to exit) ");
 					if (name.compareTo("-1")==0) return;
 					Calendar bookingTime = UserInput.getDateTime("Please enter the time you want to reserve table (Enter -1 to exit) ");
 					if (bookingTime == null) return;
-					reservation = reserve.createReservation(contactNum, name, bookingTime, 0);
+					Reservation reservation = reserve.createReservation(contactNum, name, bookingTime, 0,orders);
 					if (reservation==null){
-						System.out.println("Cannot make reservation, unavailable tables");
+						System.out.println("\nCannot make reservation, unavailable tables");
 					}
 					else {
-						System.out.println("Reservation has been successfully created!\n");
+						System.out.println("\nReservation has been successfully created!\n");
 						reserve.printReservation(reservation.getContact());
 						
 					}
@@ -85,29 +84,30 @@ public class ReservationUI {
     public static void walkinReservation(ReservationManager reserve, int contactNum, OrderManager orders, StaffManager staffs, TableManager tables){
         int staffId;
 		Staff currentStaff;
-		Reservation walkInReservation = reserve.getReservationByContact(contactNum);
-		if (walkInReservation != null) {
-    		System.out.println("This contact number has already booked a reservation!");
-    		return;
-    	}
+		if (reserve.getReservationByContact(contactNum)!=null){
+			System.out.println("This contact number has already booked a reservation!");
+			return;
+		}
+		
+		
         String cusName = UserInput.getString("Enter customer's name: (Enter -1 to exit) ");
         if (cusName.compareTo("-1")==0) return;
         Calendar walkInTime = Calendar.getInstance();
-        if (walkInTime.get(Calendar.HOUR_OF_DAY)<9 || walkInTime.get(Calendar.HOUR_OF_DAY)>18) {
-            System.out.println("Restaurant opens from 9 am to 9 pm! Latest Order: 6.59pm");
+        if (walkInTime.get(Calendar.HOUR_OF_DAY)<9 || walkInTime.get(Calendar.HOUR_OF_DAY)>20) {
+            System.out.println("Restaurant opens from 9 am to 11 pm! Latest Order: 20:59");
             return;
         }
-        walkInReservation = reserve.createReservation(contactNum, cusName, walkInTime,1);
+        Reservation walkInReservation = reserve.createReservation(contactNum, cusName, walkInTime,1,orders);
         if (walkInReservation==null){
             System.out.println("Cannot make reservation");
         }
         else {
-            System.out.println("Walk-in created:");
+            System.out.println("\nWalk-in created:");
             reserve.printReservation(walkInReservation.getContact());
             
             //create default order for walk-in
             while (true) {
-                staffId = UserInput.nextInt("Enter Staff ID to create the order for walk-in ");
+                staffId = UserInput.nextInt("\nEnter Staff ID to create the order for walk-in ");
 
                 currentStaff = staffs.getStaffByID(staffId);
                 if (currentStaff == null) {

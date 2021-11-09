@@ -29,25 +29,31 @@ public class ReportManager {
 		
 		double totalRevenue = getTotalRevenueByDay(specifiedDate);
 		int[] numOfProductSold = getIndividualSaleItemsByDay(specifiedDate);
-		
-		
 		System.out.println("\nSales Revenue Report for " + specifiedDate.getTime());
-		System.out.printf("\n\nTotal Sales Revenue: $%.2f\n\n", totalRevenue);
-		
-		
-		System.out.println("Total Number of Food Products sold: \n");
+
+		System.out.println("----------------------------------------------------------\n");
+		System.out.println("Number of Individual Food Products sold:\n");
 		for (MenuItem m: menu.getMenuItems()){
 			if (m instanceof AlaCarte) {
-				System.out.println("Ala Carte :");
-				System.out.println(m.getFood().getName() + ": " + numOfProductSold[menu.getMenuItems().indexOf(m)]);
+				if (numOfProductSold[menu.getMenuItems().indexOf(m)]==0) {continue;}
+			System.out.print("Ala Carte - ");
+			System.out.println(m.getFood().getName() + ": " + numOfProductSold[menu.getMenuItems().indexOf(m)]);
 			}
 			else {
-				System.out.println("Promotion Package :");
+				if (numOfProductSold[menu.getMenuItems().indexOf(m)]==0) {continue;}
+				System.out.print("Promotion Package - ");
 				System.out.println(m.getName() + ": " + numOfProductSold[menu.getMenuItems().indexOf(m)]);
 			}
 		
 			System.out.println();
 		}
+		System.out.println("-----------------------------------------------------\n");
+		System.out.printf("Total Sales Revenue: $%.2f\n\n", totalRevenue);
+		System.out.println("-----------------------------------------------------\n");
+		
+
+		
+		
 
 	}
 	/**
@@ -98,25 +104,25 @@ public class ReportManager {
 		
 		
 		System.out.println("\nSales Revenue Report for " + monthName + " of Year " + year);
-		System.out.println("-----------------------------------------------------");
-		System.out.println("--------Total Number of Food Products sold:----------\n");
+		System.out.println("-----------------------------------------------------\n");
+		System.out.println("Number of Individual Food Products sold:\n");
 		for (MenuItem m: menu.getMenuItems()){
 			if (m instanceof AlaCarte) {
 				if (numOfProductSold[menu.getMenuItems().indexOf(m)]==0) {continue;}
-			System.out.print("Ala Carte :");
+			System.out.print("Ala Carte - ");
 			System.out.println(m.getFood().getName() + ": " + numOfProductSold[menu.getMenuItems().indexOf(m)]);
 			}
 			else {
 				if (numOfProductSold[menu.getMenuItems().indexOf(m)]==0) {continue;}
-				System.out.print("Promotion Package :");
+				System.out.print("Promotion Package - ");
 				System.out.println(m.getName() + ": " + numOfProductSold[menu.getMenuItems().indexOf(m)]);
 			}
 		
 			System.out.println();
 		}
-		System.out.println("-----------------------------------------------------");
-		System.out.printf("\n-------------Total Sales Revenue: $%.2f-------------\n\n", totalRevenue);
-		System.out.println("-----------------------------------------------------");
+		System.out.println("-----------------------------------------------------\n");
+		System.out.printf("Total Sales Revenue: $%.2f\n\n", totalRevenue);
+		System.out.println("-----------------------------------------------------\n");
 
 	}
 	

@@ -7,7 +7,7 @@ public class OrderUI {
 	 * @param order
 	 */
 	
-	public void manageOrderOptions(OrderManager orders, ReservationManager reservations, StaffManager staff, Menu menu,ReportManager reports,TableManager tables) {
+	public static void manageOrderOptions(OrderManager orders, ReservationManager reservations, StaffManager staff, Menu menu,ReportManager reports,TableManager tables) {
 		
 		//release all table with expired reservation
 		reservations.removeExpiredReservations();
@@ -19,7 +19,7 @@ public class OrderUI {
 			
 			choice = UserInput.nextInt("Select a choice:\n" +
 					"1. Create an order\n"+
-					"2. Cancel an order and clear table\n" +
+					"2. Remove an order and clear table\n" + //if customer need to leave urgently without making payment and food haven't arrived
 					"3. Add items to order\n" +
 					"4. Remove items from order\n"+
 					"5. View an order\n"+
@@ -28,7 +28,7 @@ public class OrderUI {
 			System.out.println();
 			switch (choice) {
 				case 1:
-					creatOrder(orders, reservations, staff, menu, reports, tables);
+					createOrder(orders, reservations, staff, menu, reports, tables);
 					break;
 				case 2:
 					cancelOrder(orders,reservations,tables);
@@ -53,17 +53,19 @@ public class OrderUI {
 	}
 
     public static void cancelOrder(OrderManager orders,ReservationManager reservations,TableManager tables){
-        int tableId;
+    	int tableId;
         tableId = UserInput.nextInt("Enter ID of table to remove order for: (Enter -1 to exit) ",1,20);
 		if (tableId==-1) return;
+		int contactNum;
+		contactNum = orders.getOrderByTableId(tableId).getContactNum();
 		orders.clearOrder(tableId);
 		tables.changeTableOccupiedStatus(tableId, false);
-		int contactNum = UserInput.getContact("\nEnter contact number of customer removing order and leaving restaurant: (Enter -1 to exit) ");
-		if (contactNum==-1) return;
+		//int contactNum = UserInput.getContact("Enter contact number of customer removing order and leaving restaurant: (Enter -1 to exit) ");
+		//if (contactNum==-1) return;
 		reservations.removeReservationByContact(contactNum);
     }
-    public static void creatOrder(OrderManager orders, ReservationManager reservations,StaffManager staff, Menu menu,ReportManager reports,TableManager tables){
-        int i;
+    public static void createOrder(OrderManager orders, ReservationManager reservations,StaffManager staff, Menu menu,ReportManager reports,TableManager tables){
+        //int i;
         int contactNum;
 		int tableId;
 		int staffId;
@@ -109,7 +111,7 @@ public class OrderUI {
 						if (currentStaff == null) {
 							System.out.println("Invalid staff ID!");
 						} else {
-							return;
+							break;
 						}
 					} while (staffId != -1);
 					
@@ -126,20 +128,9 @@ public class OrderUI {
 					
 
 					orders.createOrder(tableId, contactNum, currentStaff, new ArrayList<MenuItem>());
-					order = orders.getOrderByTableId(tableId);
-					System.out.println("Currently, there are "+order.getNumItems()+" items in order.\n");
-					menu.printMenu(0);
-					do {
-						i = UserInput.nextInt("Which Menu Item do you want to add?\nENTER 0 to QUIT\n",0,menu.getMenuSize(0));
-						if (i==0) {
-							return;
-						}
-						orders.addToOrder(tableId, menu.getMenuItems().get(i-1)); 
-						System.out.println("Item has been added to order:");
-						menu.printMenuItem(menu.getMenuItems().get(i-1));
-					} while (i!=0);
-					System.out.println("Items in order:");
-					order.printOrder();
+					
+					System.out.println("Order for table "+tableId+" has been created successfully, choose (choice = 3) to add items to order!");
+					
     }
     public static void addItem(OrderManager orders, Menu menu){
         int tableId;
@@ -161,13 +152,13 @@ public class OrderUI {
 					do {
 						i = UserInput.nextInt("Which Menu Item do you want to add?\nENTER 0 to QUIT\n",0,menu.getMenuSize(0));
 						if (i==0) {
-							return;
+							break;
 						}
 						orders.addToOrder(tableId, menu.getMenuItems().get(i-1));  
 						System.out.println("Item has been added to order:");
 						menu.printMenuItem(menu.getMenuItems().get(i-1));
 					} while (i!=0);
-					System.out.println("Items in order:");
+					System.out.println("\nItems in order:");
 					order.printOrder();
     }
     public static void removeItem(OrderManager orders, Menu menu){
@@ -195,7 +186,7 @@ public class OrderUI {
 						orders.removeFromOrder(tableId, order.getOrder().get(i-1)); 
 						System.out.println("Item has been removed from order:");
 					} while (i!=0);
-					System.out.println("Remaining Items in order:");
+					System.out.println("\nRemaining Items in order:");
 					order.printOrder();
 
     }
@@ -235,7 +226,10 @@ public class OrderUI {
         //orders.clearOrder(contactNum);
         reports.addOrderToReport(invoice);
         //ReservationManager reserve = new ReservationManager(tableManager, reservations, settledReservations);
-        reservations.moveReservationToSettledReservations(order.getContactNum());
+        if (reservations.getReservationByContact(order.getContactNum()) != null) {
+        	reservations.moveReservationToSettledReservations(order.getContactNum());
+        }
+        
         
     }
 

@@ -1,6 +1,6 @@
 public class MembershipUI {
     	
-	public void manageMembersOptions(MembershipManager members) {
+	public static void manageMembersOptions(MembershipManager members) {
 		String name;
 		int contact;
 		Membership member;

@@ -41,6 +41,23 @@ public class OrderManager {
 		System.out.println();
 		return null;
 	}
+	
+	/**
+	 * get the order for a table
+	 * @param contactNum
+	 * @return the order made by customer
+	 */
+	public Order getOrderByContactNum(int contactNum) {
+		// TODO - implement OrderManager.getTableIdOrder
+		for (int i=0; i<orders.size(); i++) {
+			Order order = orders.get(i);
+			if (contactNum == order.getContactNum()) {
+				return order;
+			}
+		}
+		System.out.println();
+		return null;
+	}
 
 	/**
 	 * clear the entire order made by table
@@ -56,7 +73,7 @@ public class OrderManager {
 		}
 		orders.remove(order);
 		System.out.println("Order for table "+tableId+ " has been successfully removed");
-
+		System.out.println();
 		
 		return;
 	}
@@ -158,7 +175,7 @@ public class OrderManager {
 			}
 		}
 		
-		System.out.print("\nSubtotal: \t");
+		System.out.print("\nSubtotal: \t\t\t$");
 	    System.out.printf("%.2f\n", totalPrice);
 		System.out.println("-------------------------------------------------------------------------");
 	    
@@ -167,37 +184,20 @@ public class OrderManager {
 			System.out.print("Membership: ");
 			System.out.println("Yes");
 			totalPriceMember *= 0.9;
-			System.out.printf("Membership discount: 10%\t%.2f%n", totalPrice*0.1);
+			System.out.print("Membership 10% discount: \t$");
+			System.out.printf("%.2f\n", totalPrice*0.1);
 		}
-		System.out.print("GST 7% \t");
+		System.out.print("GST 7%: \t\t\t$");
 	    System.out.printf("%.2f\n", totalPrice*0.07);
-	    System.out.print("Service charge 10% \t");
+	    System.out.print("Service charge 10%: \t\t$");
 	    System.out.printf("%.2f\n", totalPrice*0.1);
-		System.out.print("TOTAL PAYABLE: \t");
+		System.out.print("TOTAL PAYABLE: \t\t\t$");
 		System.out.printf("%.2f\n", totalPriceMember*1.1*1.07);
 		System.out.println();
 		
 		
 		return new Invoice(order,paymentDate,isMember,totalPrice);
 			
-	}
-
-	public Order getOrderbyContact(int contact){
-		for (int i=0; i<orders.size(); i++) {
-			Order order = orders.get(i);
-			if (contact == order.getContactNum()) {
-				return order;
-			}
-		}
-		System.out.println();
-		return null;
-	}
-
-	public void removerOrder(int contact){
-		Order order = getOrderbyContact(contact);
-		if (order!=null){
-			orders.remove(order);
-		}
 	}
 	
 

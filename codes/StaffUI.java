@@ -3,7 +3,7 @@ public class StaffUI {
 	 * manage staff
 	 * @param staff
 	 */
-	public void manageStaffOptions(StaffManager staff) {
+	public static void manageStaffOptions(StaffManager staff) {
 		String name;
 		char gender;
 		int staffID;

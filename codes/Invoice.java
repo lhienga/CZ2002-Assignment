@@ -37,6 +37,14 @@ public class Invoice implements Serializable{
 	public double getTotalPrice() {
 		return totalPrice;
 	}
+
+	public double getSubtotal(){
+		return subtotal;
+	}
+
+	public double getInvoiceID(){
+		return invoiceID;
+	}
 	
 	
 	public void printInvoice(){

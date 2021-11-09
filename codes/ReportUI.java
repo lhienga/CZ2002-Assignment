@@ -1,7 +1,7 @@
 import java.util.Calendar;
 public class ReportUI {
     	
-	public void managingReportOptions(ReportManager reports, Menu menu) {
+	public static void managingReportOptions(ReportManager reports, Menu menu) {
 		int choice = 0;
 
 		Calendar date = Calendar.getInstance();
