@@ -1,7 +1,8 @@
 public class StaffUI {
-    	/**
-	 * manage staff
-	 * @param staff
+    
+	/**
+	 * manage staff options
+	 * @param staff staff manager
 	 */
 	public static void manageStaffOptions(StaffManager staff) {
 		String name;

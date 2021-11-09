@@ -11,8 +11,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
- * Static restaurant database class keeping track of
- * objects in the restaurant
+ * Restaurant class to load and save data after every session
  */
 public class Restaurant {
 	
@@ -31,7 +30,7 @@ public class Restaurant {
 
 	
 	/**
-	 * Save restaurant current state
+	 * Save restaurant data
 	 */
 	public static void saveRestaurant(){
 		
@@ -69,7 +68,7 @@ public class Restaurant {
 	}
 	
 	/**
-	 * Load restaurant previous save state.
+	 * Load restaurant data from previous session
 	 */
 	@SuppressWarnings("unchecked")
 	public static void loadRestaurant(){
@@ -159,7 +158,7 @@ public class Restaurant {
 	}
 	
 	/**
-	 * Initialise restaurant food menu
+	 * Initialise restaurant menu
 	 */
 	public static void initFoodMenu(){
 		
@@ -242,10 +241,16 @@ public class Restaurant {
         Restaurant.reservations = new ArrayList<Reservation>();
 	}
 
+	/**
+	 * Initialise restaurant settled reservations
+	 */
 	public static void initSettledReservations(){
         Restaurant.settledReservations = new ArrayList<Reservation>();
 	}
 
+	/**
+	 * Initialise restaurant membership
+	 */
     public static void initMembers(){
         ArrayList<Membership> memberships = new ArrayList<Membership>();
 			memberships.add(new Membership("Mary",98733789));

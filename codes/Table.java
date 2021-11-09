@@ -74,25 +74,41 @@ public class Table implements Serializable {
 		smokingOrNot = smoking;
 	}
 	
+	/**
+	 * get the occupied status of table
+	 * @return occupied status true/false
+	 */
 	public boolean getOccupied() {
 		return occupied;
 	}
 
-
+	/**
+	 * set the occupied status to true/false
+	 * @param occupied true or false
+	 */
 	public void setOccupied(boolean occupied) {
 		this.occupied = occupied;
 	}
 	
+	/**
+	 * get the reserved status of table
+	 * @return reserved status true/false
+	 */
 	public boolean getReserved() {
 		return reserved;
 	}
 
-
+	/**
+	 * set the reserved status to true/false
+	 * @param reserved true or false
+	 */
 	public void setReserved(boolean reserved) {
 		this.reserved = reserved;
 	}
+
 	/**
 	 * print out details of table
+	 * @param choice choose 0 to include reserved and occupied status
 	 */
 	public void printTable(int choice) {
 		String o = "occupied";

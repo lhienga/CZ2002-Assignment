@@ -3,12 +3,12 @@ import java.util.ArrayList;
 public class StaffManager {
 
 	private ArrayList<Staff> staffs;
+	/**
+	 * Staff manager constructor
+	 * @param staffs ArrayList of staffs
+	 */
 	public StaffManager(ArrayList<Staff> staffs) {
-		
-		// TODO - implement StaffManager.StaffManager
 		this.staffs = staffs;
-		
-		
 	}
 
 	/**
@@ -76,6 +76,7 @@ public class StaffManager {
 						   "Gender: "+curStaff.getGender()+"\n"+						   
 						   "Title: "+curStaff.getJobTitle());
 	}
+	
 	/**
 	 * print all staff
 	 */

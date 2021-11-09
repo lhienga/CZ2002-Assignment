@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class ReservationUI {
     	
 	/**
-	 * manage reservations
+	 * manage reservation options
 	 * @param reserve
 	 */
 
@@ -61,6 +61,12 @@ public class ReservationUI {
 
 	}
 
+	/**
+	 * make reservation
+	 * @param reserve reservation manager
+	 * @param contactNum customer's contact number 
+	 * @param orders order manager
+	 */
     public static void makeReservation(ReservationManager reserve, int contactNum,OrderManager orders){
     	if (reserve.getReservationByContact(contactNum)!=null){
 			System.out.println("This contact number has already booked a reservation!");
@@ -81,6 +87,14 @@ public class ReservationUI {
 					}
     }
 
+	/**
+	 * make walk in reservation
+	 * @param reserve reservation manager
+	 * @param contactNum customer's contact number
+	 * @param orders order manager
+	 * @param staffs staff manager
+	 * @param tables table manager
+	 */
     public static void walkinReservation(ReservationManager reserve, int contactNum, OrderManager orders, StaffManager staffs, TableManager tables){
         int staffId;
 		Staff currentStaff;

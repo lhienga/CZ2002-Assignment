@@ -7,6 +7,10 @@ public class TableManager {
 	private ArrayList<Table> tables;
 	private int TOTALTABLES = 20;
 	
+	/**
+	 * constructor of TableManager
+	 * @param tables
+	 */
 	public TableManager(ArrayList<Table> tables) {
 		this.tables = tables;
 	}
@@ -90,44 +94,10 @@ public class TableManager {
 		return null;
 	}
 
-
 	/**
-	 * get status of a table by id
-	 * @param tableid
-	 * @return status of table or null if table ID does not exist
-	 */
-	/*
-	public Table.STATUS getStatusByTableId(int tableid) {
-		Table curTable = getTableByID(tableid);
-		if (curTable==null){
-			System.out.println("Table ID does not exist!");
-			return null;
-		}
-		for (int i =0; i<tables.size(); i++){
-			if (tables.get(i).getTableId()==tableid){
-				return tables.get(i).getStatus();
-			}
-		}
-		return null;
-	}
-*/
-
-	/**
-	 * 
-	 * @param reservation
-	 * @return 1 if reserved successfully
-	 */
-	
-	/*
-	public int reserveTable(Reservation reservation) {
-		int id = reservation.getTableID();
-		changeTableStatus(id, Table.STATUS.RESERVED);
-		return 1;
-	}
-*/
-	/**
-	 * 
-	 * @param numOfPax
+	 * calculate the suitable table capactity given number of customers from 1 to 10
+	 * @param numOfPax number of customers come together
+	 * @return suitable table capacity
 	 */
 	public int calculateTableCapacity(int numOfPax) {
 		if (numOfPax >10){
@@ -139,6 +109,11 @@ public class TableManager {
 		return numOfPax;
 	}
 	
+	/**
+	 * change the table's status to occupied or unoccupied 
+	 * @param tableid table id
+	 * @param occupied true if occupied, false if unoccupied
+	 */
 	public void changeTableOccupiedStatus(int tableid, boolean occupied) {
 		Table curTable = getTableByID(tableid);
 		if (curTable==null){
@@ -150,6 +125,11 @@ public class TableManager {
 		//System.out.println("Occupied Status of "+ tableid +" has been changed from "+prevStatus+" to "+occupied);
 	}
 	
+	/**
+	 * change the table's status to reserved or not reserved
+	 * @param tableid table id
+	 * @param reserved true if reserved, false if not reserved
+	 */
 	public void changeTableReservedStatus(int tableid, boolean reserved) {
 		Table curTable = getTableByID(tableid);
 		if (curTable==null){

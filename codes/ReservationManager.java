@@ -9,10 +9,10 @@ public class ReservationManager {
 	public int EATINGDURATION=2; 
 
 	/**
-	 * constructor for 
-	 * @param tableManager
-	 * @param reservations
-	 * @param settledReservations
+	 * constructor for reservation
+	 * @param tableManager table manager
+	 * @param reservations unsettled reservations
+	 * @param settledReservations settled reservations
 	 */
 	public ReservationManager(TableManager tableManager, OrderManager orders, ArrayList<Reservation> reservations, ArrayList<Reservation> settledReservations) {
 		this.tableManager = tableManager;
@@ -33,7 +33,7 @@ public class ReservationManager {
 
 	/**
 	 * print a reservation of a contact
-	 * @param contact
+	 * @param contact customer's contact number
 	 */
 	public void printReservation(int contact){
 		Reservation reservation = getReservationByContact(contact);
@@ -51,7 +51,7 @@ public class ReservationManager {
 	}
 	/**
 	 * get reservation by customer's contact
-	 * @param contact
+	 * @param contact customer's contact number
 	 */
 	public Reservation getReservationByContact(int contact) {
 		for (int i = 0; i<reservations.size(); i++){
@@ -62,6 +62,11 @@ public class ReservationManager {
 		return null;
 	}
 	
+	/**
+	 * get setteld reservation by contact
+	 * @param contact customer's contact number
+	 * @return the settled reservation if there is or null otherwise
+	 */
 	public Reservation getSettledReservationByContact(int contact) {
 		for (int i = 0; i<settledReservations.size(); i++){
 			if (contact == settledReservations.get(i).getContact()){
