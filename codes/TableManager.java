@@ -147,7 +147,7 @@ public class TableManager {
 		}
 		boolean prevStatus = curTable.getOccupied();
 		curTable.setOccupied(occupied);
-		System.out.println("Occupied Status of "+ tableid +" has been changed from "+prevStatus+" to "+occupied);
+		//System.out.println("Occupied Status of "+ tableid +" has been changed from "+prevStatus+" to "+occupied);
 	}
 	
 	public void changeTableReservedStatus(int tableid, boolean reserved) {
@@ -158,6 +158,6 @@ public class TableManager {
 		}
 		boolean prevStatus = curTable.getReserved();
 		curTable.setReserved(reserved);
-		System.out.println("Reserved Status of "+ tableid +" has been changed from "+prevStatus+" to "+reserved);
+		//System.out.println("Reserved Status of "+ tableid +" has been changed from "+prevStatus+" to "+reserved);
 	}
 }
