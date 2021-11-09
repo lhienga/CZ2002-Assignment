@@ -4,7 +4,7 @@ public class TableUI {
 	 * manage tables
 	 * @param table
 	 */
-	public void manageTableOptions(TableManager tables, ReservationManager reservations) {
+	public static void manageTableOptions(TableManager tables, ReservationManager reservations) {
 		
 		int choice;
 		//release all table with expired reservation
