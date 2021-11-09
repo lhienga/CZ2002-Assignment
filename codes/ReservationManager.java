@@ -37,6 +37,7 @@ public class ReservationManager {
 	 */
 	public void printReservation(int contact){
 		Reservation reservation = getReservationByContact(contact);
+		
 		if (reservation!=null){
 			System.out.println("Reservation information:");
 			System.out.println("Customer contact number: "+reservation.getContact()+"\n"+
@@ -45,7 +46,10 @@ public class ReservationManager {
 						       "Reserved table ID: "+reservation.getTableID()+"\n"+
 							   "Reservation Time: "+ reservation.getBookingTime().getTime()+"\n"+
 							   "Reservation Expiry Time: "+ reservation.getExpiryTime().getTime());
-		return;
+			if (isReservationExpired(contact)) {
+				System.out.println("Reservation is expired!");
+			}
+			return;
 		}
 		System.out.println("There is no reservation for this contact");
 	}
