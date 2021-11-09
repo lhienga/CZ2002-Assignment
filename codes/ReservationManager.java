@@ -9,10 +9,10 @@ public class ReservationManager {
 	public int EATINGDURATION=2; 
 
 	/**
-	 * constructor for reservation
-	 * @param tableManager table manager
-	 * @param reservations unsettled reservations
-	 * @param settledReservations settled reservations
+	 * constructor for 
+	 * @param tableManager
+	 * @param reservations
+	 * @param settledReservations
 	 */
 	public ReservationManager(TableManager tableManager, OrderManager orders, ArrayList<Reservation> reservations, ArrayList<Reservation> settledReservations) {
 		this.tableManager = tableManager;
@@ -33,9 +33,10 @@ public class ReservationManager {
 
 	/**
 	 * print a reservation of a contact
-	 * @param contact customer's contact number
+	 * @param contact
 	 */
 	public void printReservation(int contact){
+		removeExpiredReservations();
 		Reservation reservation = getReservationByContact(contact);
 		
 		if (reservation!=null){
@@ -46,16 +47,14 @@ public class ReservationManager {
 						       "Reserved table ID: "+reservation.getTableID()+"\n"+
 							   "Reservation Time: "+ reservation.getBookingTime().getTime()+"\n"+
 							   "Reservation Expiry Time: "+ reservation.getExpiryTime().getTime());
-			if (isReservationExpired(contact)) {
-				System.out.println("Reservation is expired!");
-			}
-			return;
+			
+		return;
 		}
 		System.out.println("There is no reservation for this contact");
 	}
 	/**
 	 * get reservation by customer's contact
-	 * @param contact customer's contact number
+	 * @param contact
 	 */
 	public Reservation getReservationByContact(int contact) {
 		for (int i = 0; i<reservations.size(); i++){
@@ -66,11 +65,6 @@ public class ReservationManager {
 		return null;
 	}
 	
-	/**
-	 * get setteld reservation by contact
-	 * @param contact customer's contact number
-	 * @return the settled reservation if there is or null otherwise
-	 */
 	public Reservation getSettledReservationByContact(int contact) {
 		for (int i = 0; i<settledReservations.size(); i++){
 			if (contact == settledReservations.get(i).getContact()){
@@ -188,7 +182,7 @@ public class ReservationManager {
 	}
 
 	/**
-	 * 
+	 * update reservation details of a contact
 	 * @param contact
 	 */
 	public void updateReservationDetails(int contact) {
@@ -265,7 +259,7 @@ public class ReservationManager {
 
 	/**
 	 * remove reservation by contact number
-	 * @param contact
+	 * @param contact contact number of customer
 	 */
 	public void removeReservationByContact(int contact) {
 		Reservation reservation = getReservationByContact(contact);
@@ -288,6 +282,10 @@ public class ReservationManager {
 		//tableManager.changeTableStatus(reservation.getTableID(), Table.STATUS.AVAILABLE);
 	}
 	
+	/**
+	 * settle a reservation
+	 * @param contact customer's contact number
+	 */
 	public void moveReservationToSettledReservations(int contact) {
 		Reservation reservation = getReservationByContact(contact);
 		if (reservation == null) {
@@ -303,7 +301,7 @@ public class ReservationManager {
 	
 	/**
 	 * get expired reservations
-	 * @return
+	 * @return expired reservations
 	 */
 	public ArrayList<Reservation> getExpiredReservations() {
 		ArrayList<Reservation> expiredReservations = new ArrayList<Reservation>();
@@ -321,7 +319,6 @@ public class ReservationManager {
 	 * print expired reservation
 	 */
 	public void printExpiredReservations() {
-		// TODO - implement ReservationManager.printExpiredReservations
 		ArrayList<Reservation> expiredReservations = getExpiredReservations();
 		for (int i = 0; i<expiredReservations.size(); i++){
 			printReservation(expiredReservations.get(i).getContact());
@@ -330,20 +327,18 @@ public class ReservationManager {
 
 	/**
 	 * get all reservations
-	 * @return
+	 * @return all valid reservations
 	 */
 	public ArrayList<Reservation> getAllReservations() {
-		// TODO - implement ReservationManager.getAllReservations
 
 		return reservations;
 	}
 
 	/**
 	 * check if a reservation expired
-	 * @param contact
+	 * @param contact customer's contact number
 	 */
 	public boolean isReservationExpired(int contact) {
-		// TODO - implement ReservationManager.isReservationExpired
 		Reservation reservation = getReservationByContact(contact);
 		Calendar expiryTime = reservation.getExpiryTime();
 		if (expiryTime.compareTo(Calendar.getInstance())<=0){
@@ -355,10 +350,9 @@ public class ReservationManager {
 
 	/**
 	 * get not expired reservations
-	 * @return
+	 * @return valid reservations
 	 */
 	public ArrayList<Reservation> getNotExpiredReservations() {
-		// TODO - implement ReservationManager.getNotExpiredReservations
 		ArrayList<Reservation> validReservations = new ArrayList<Reservation>();
 		for (int i = 0; i<reservations.size(); i++){
 			Calendar expiryTime = reservations.get(i).getExpiryTime();
@@ -373,7 +367,6 @@ public class ReservationManager {
 	 * print not expired reservations
 	 */
 	public void printNotExpiredReservations() {
-		// TODO - implement ReservationManager.printNotExpiredReservations
 		ArrayList<Reservation> validReservations = getNotExpiredReservations();
 		for (int i = 0; i<validReservations.size(); i++){
 			printReservation(validReservations.get(i).getContact());
@@ -381,8 +374,10 @@ public class ReservationManager {
 	}
 
 	
+	/**
+	 * remove expired reservations
+	 */
 	public void removeExpiredReservations() {
-		// TODO - implement ReservationManager.printNotExpiredReservations
 		ArrayList<Reservation> expiredReservations = getExpiredReservations();
 		for (Reservation rv : expiredReservations) {
 			//if order for reservation is still there (it means customer hasn't leave yet/stil eating, don't remove the reservation

@@ -13,14 +13,13 @@ public class Reservation implements Serializable {
 
 	/**
 	 * constructor of reservation - 1 contact number can only book 1 reservation
-	 * @param bookTime
-	 * @param numOfPax
-	 * @param name
-	 * @param contact
-	 * @param smoking
+	 * @param bookTime booking time
+	 * @param numOfPax number of customers
+	 * @param name customer's name
+	 * @param contact customer's contact number
+	 * @param smoking smoking option
 	 */
 	public Reservation(Calendar bookTime, int numOfPax, String name, int contact, int tableid) {
-		// TODO - implement Reservation.Reservation
 		this.bookingTime = bookTime;
 		this.numOfPax = numOfPax;
 		this.name = name;
@@ -74,7 +73,7 @@ public class Reservation implements Serializable {
 
 	/**
 	 * set booking time
-	 * @param date
+	 * @param date booking time
 	 */
 	public void setBookingTime(Calendar date) {
 		this.bookingTime = date;
@@ -82,7 +81,7 @@ public class Reservation implements Serializable {
 
 	/**
 	 * set number of customers
-	 * @param num
+	 * @param num number of customers coming together
 	 */
 	public void setNumOfPax(int num) {
 		this.numOfPax = num;
@@ -90,7 +89,7 @@ public class Reservation implements Serializable {
 
 	/**
 	 * set customer's name
-	 * @param name
+	 * @param name customer's name
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -98,7 +97,7 @@ public class Reservation implements Serializable {
 
 	/**
 	 * set customer's contact number
-	 * @param contact
+	 * @param contact customer's contact number
 	 */
 	public void setContact(int contact) {
 		this.contact = contact;
@@ -106,7 +105,7 @@ public class Reservation implements Serializable {
 
 	/**
 	 * set reservation expiry time
-	 * @param date
+	 * @param date expiry time
 	 */
 	public void setExpiryTime(Calendar date) {
 		this.expiryTime = date;
@@ -117,16 +116,14 @@ public class Reservation implements Serializable {
 	 * @return table id
 	 */
 	public int getTableID() {
-		// TODO - implement Reservation.getTableID
 		return this.tableid;
 	}
 
 	/**
 	 * set table id for reservation
-	 * @param tableid
+	 * @param tableid table id
 	 */
 	public void setTableID(int tableid) {
-		// TODO - implement Reservation.setTableID
 		this.tableid = tableid;
 	}
 }

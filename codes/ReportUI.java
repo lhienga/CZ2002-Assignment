@@ -1,6 +1,11 @@
 import java.util.Calendar;
 public class ReportUI {
-    	
+    
+	/**
+	 * manage report options
+	 * @param reports report manager
+	 * @param menu restaurant menu
+	 */
 	public static void managingReportOptions(ReportManager reports, Menu menu) {
 		int choice = 0;
 
