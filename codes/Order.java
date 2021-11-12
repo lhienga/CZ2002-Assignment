@@ -150,13 +150,13 @@ public class Order implements Serializable{
 		int k=1;
 		for (MenuItem item : menuItem) {
 			
-			if(item instanceof AlaCarte) {
+			if(item instanceof AlaCarte) { //if it is an AlaCarte
 				System.out.printf("%d. %-20s %s\nPrice: $%.2f \nDescription: %s\n\n",k,
 						item.getName(), "(AlaCarte - "+item.getType()+")", item.getPrice(), item.getDesc());
-			} else if(item instanceof PromotionPackage){
+			} else if(item instanceof PromotionPackage){ //if it is a Promotion Package
 				System.out.printf("%d. %-20s %s\n",k,
 						item.getName(), "(Promotion Set)", item.getPrice(), item.getDesc());
-				for (Food food : item.getPackage()) {
+				for (Food food : item.getPackage()) { //get all the food in the package
 					System.out.printf("%s: %s\n",
 							food.getType(), food.getName());
 

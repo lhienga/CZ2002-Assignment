@@ -16,14 +16,14 @@ public class OrderUI {
 		
 		do {
 			System.out.println();
-			
+			// order choices
 			choice = UserInput.nextInt("Select a choice:\n" +
 					"1. Create an order\n"+
 					"2. Remove an order and clear table\n" + //if customer need to leave urgently without making payment and food haven't arrived
 					"3. Add items to order\n" +
 					"4. Remove items from order\n"+
 					"5. View an order\n"+
-					"6. Print invoice/receipt for order\n" +
+					"6. Print invoice/receipt for order\n" + //customers make payment
 					"ENTER 0 to return to main menu\n",0,6);
 			System.out.println();
 			switch (choice) {

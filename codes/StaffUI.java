@@ -8,13 +8,12 @@ public class StaffUI {
 		String name;
 		char gender;
 		int staffID;
-		Staff.JOB jobTitle;
-		
+		Staff.JOB jobTitle;	
 		int choice;
 		
 		do {
 			System.out.println();
-
+			//manage staff choices
 			choice = UserInput.nextInt("Select a choice:\n" +
 					"1. Add Staff\n"+
 					"2. Remove Staff\n" +

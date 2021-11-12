@@ -34,7 +34,7 @@ public class Restaurant {
 	 */
 	public static void saveRestaurant(){
 		
-		if(!Files.exists(DATAPATH)){
+		if(!Files.exists(DATAPATH)){ //if the app is run for the first time, initialize a data folder
 			System.out.println("Data folder not found!");
 			File dir = new File(DATAPATH.toString());
 			if(dir.mkdir()){
@@ -42,7 +42,7 @@ public class Restaurant {
 			}
 		}
 		
-		Object[] restaurantMember 	= {tables,
+		Object[] restaurantMember 	= {tables,						//members of restaurants
 										staffs, 
 										foodMenu, 
 										invoices, 
@@ -52,14 +52,14 @@ public class Restaurant {
 										settledOrders,
 										settledReservations};
 		
-		Path 				saveFileName 	= Paths.get(DATAPATH.toString(), RESTAURANT_FILE_NAME);
+		Path 				saveFileName 	= Paths.get(DATAPATH.toString(), RESTAURANT_FILE_NAME); //find the path and save data
 		FileOutputStream   	fos 			= null;
 		ObjectOutputStream 	oos 			= null;
 		
 		try {
 			fos = new FileOutputStream(saveFileName.toString());
 			oos = new ObjectOutputStream(fos);
-			oos.writeObject(restaurantMember);
+			oos.writeObject(restaurantMember); //save restaurant members
 			oos.close();
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -71,14 +71,14 @@ public class Restaurant {
 	 * Load restaurant data from previous session
 	 */
 	@SuppressWarnings("unchecked")
-	public static void loadRestaurant(){
+	public static void loadRestaurant(){ //load the existing data 
 		
 		Object[] restaurantMember 	= null;
-		Path saveData 				= Paths.get(DATAPATH.toString(), RESTAURANT_FILE_NAME);
+		Path saveData 				= Paths.get(DATAPATH.toString(), RESTAURANT_FILE_NAME); //find the path where data is stored
 		FileInputStream fis 		= null;
 		ObjectInputStream ois 		= null;
 		
-		try {
+		try { //load all the restaurant memebers
 			fis = new FileInputStream(saveData.toString());
 			ois = new ObjectInputStream(fis);
 			restaurantMember = (Object[]) ois.readObject();			
@@ -94,11 +94,11 @@ public class Restaurant {
 				settledReservations = (ArrayList<Reservation>) restaurantMember[8];
 			}
 			ois.close();
-		} catch (IOException ex) {
-			System.out.println(RESTAURANT_FILE_NAME + " not found or does not exists. Default settings will be loaded.");
+		} catch (IOException ex) { //if no data file is found, use initialized setting
+			System.out.println(RESTAURANT_FILE_NAME + " not found. Loading default setting...");
 			initRestaurant();
 		} catch (ClassCastException|ClassNotFoundException ex) {
-			System.out.println("Data file " + RESTAURANT_FILE_NAME + " is corrupted. Default settings will be loaded instead.");
+			System.out.println("Data file " + RESTAURANT_FILE_NAME + " is corrupted. Loading default setting...");
 			initRestaurant();
 		}
 		
@@ -108,7 +108,7 @@ public class Restaurant {
 	 * Initialise restaurant static members
 	 */
 
-	public static void initRestaurant(){
+	public static void initRestaurant(){ 
 		initTables();
 		initStaff();
 		initFoodMenu();
@@ -166,26 +166,26 @@ public class Restaurant {
 			
 			ArrayList<Food>food = new ArrayList<Food>();
 			
-			food.add(new Food("Miniature crab cakes", "Cakes that taste like crab",4, Food.TYPE.APPETIZER));
-			food.add(new Food("Mac and Cheese", "Chessy macaroni", 2.50, Food.TYPE.APPETIZER));
-			food.add(new Food("Caprese salad", "Extremely healthy but yummy", 2.80, Food.TYPE.APPETIZER));
-			food.add(new Food("Chicken Soup", "Old Fashion and simple soup", 2.00, Food.TYPE.APPETIZER));
+			food.add(new Food("Miniature crab cakes", "Cakes with crab taste",4, Food.TYPE.APPETIZER));
+			food.add(new Food("Mac and Cheese", "Rich in cheese", 2.50, Food.TYPE.APPETIZER));
+			food.add(new Food("Caprese salad", "Healthy diet", 2.80, Food.TYPE.APPETIZER));
+			food.add(new Food("Chicken Soup", "Simple but delicious and nutritious", 2.00, Food.TYPE.APPETIZER));
 			
-			food.add(new Food("Beef Burger", "Freshly grilled beef", 5, Food.TYPE.MAINCOURSE));
-			food.add(new Food("Classic Cheese Burger", "The usual", 3, Food.TYPE.MAINCOURSE));
-			food.add(new Food("Double-up Cheese Burger", "Double the trouble, double the satisfaction", 5.50, Food.TYPE.MAINCOURSE));
-			food.add(new Food("Fish Burger", "Deep fried fish with tartar sauce", 3.50, Food.TYPE.MAINCOURSE));
+			food.add(new Food("Beef Burger", "Freshest beef", 5, Food.TYPE.MAINCOURSE));
+			food.add(new Food("Classic Cheese Burger", "Old but good", 3, Food.TYPE.MAINCOURSE));
+			food.add(new Food("Double-up Cheese Burger", "Double the fun", 5.50, Food.TYPE.MAINCOURSE));
+			food.add(new Food("Fish Burger", "Crispy fish", 3.50, Food.TYPE.MAINCOURSE));
 			food.add(new Food("Grilled Chicken Burger", "Freshly grilled chicken", 3, Food.TYPE.MAINCOURSE));
 
-			food.add(new Food("Coke", "Just Coke",1.70, Food.TYPE.DRINK));
-			food.add(new Food("Lemon Tea", "A classic favourite tea", 1.50, Food.TYPE.DRINK));
-			food.add(new Food("Mountain Dew", "Love it", 1.80, Food.TYPE.DRINK));
-			food.add(new Food("Water", "H2O", 1.00, Food.TYPE.DRINK));
+			food.add(new Food("Coke", "Multiple sugar level available",1.70, Food.TYPE.DRINK));
+			food.add(new Food("Lemon Tea", "Classic but not out-dated", 1.50, Food.TYPE.DRINK));
+			food.add(new Food("Mountain Dew", "Super cool", 1.80, Food.TYPE.DRINK));
+			food.add(new Food("Water", "Plain and simple", 1.00, Food.TYPE.DRINK));
 
 			food.add(new Food("Ice cream cone", "Two scoops of ice cream on a cone", 2.50, Food.TYPE.DESSERT));
-			food.add(new Food("Chocolate Brownie", "Mouth watering chocolate", 4.50, Food.TYPE.DESSERT));
+			food.add(new Food("Chocolate Brownie", "Rich in chocolate", 4.50, Food.TYPE.DESSERT));
 			food.add(new Food("Banana Split", "Banana with ice cream", 5.50, Food.TYPE.DESSERT));
-			food.add(new Food("Cheese Cake", "Just Cheese", 4.50, Food.TYPE.DESSERT));
+			food.add(new Food("Cheese Cake", "Taste like Cheese", 4.50, Food.TYPE.DESSERT));
 
 			for(int i=0; i<food.size(); i++)
 				menu.add(new AlaCarte(food.get(i)));

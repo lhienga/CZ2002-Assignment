@@ -9,9 +9,10 @@ public class TableUI {
 		int choice;
 		//release all table with expired reservation
 		reservations.removeExpiredReservations();
+
 		do {
 			System.out.println();
-
+			//manage tables choices
 			choice = UserInput.nextInt("Select a choice:\n" +
 					"1. Find available table for group\n"+
 					"2. List occupied tables\n" +

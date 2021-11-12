@@ -18,14 +18,14 @@ public class Menu {
 		
 		for (MenuItem item : this.menu){
 
-			if(item instanceof AlaCarte && (choice == 1 || choice == 0)) {
+			if(item instanceof AlaCarte && (choice == 1 || choice == 0)) { //if it is an AlaCarte
 				System.out.printf("%d. %-20s %s\nPrice: $%.2f \nDescription: %s\n\n",
 						j+1, item.getName(), "(AlaCarte - "+item.getType()+")", item.getPrice(), item.getDesc());
 			}
-			else if(item instanceof PromotionPackage && (choice == 2 || choice == 0)){
+			else if(item instanceof PromotionPackage && (choice == 2 || choice == 0)){ //if it is a Promotion Package
 				System.out.printf("%d. %-20s %s\n",
 						j+1, item.getName(), "(Promotion Set)", item.getPrice(), item.getDesc());
-				for (Food food : item.getPackage())
+				for (Food food : item.getPackage()) //Print all items in the package
 					System.out.printf("%s: %s\n",
 							food.getType(), food.getName());
 				System.out.printf("Price: $%.2f\nDescription:%s\n\n",
@@ -43,13 +43,13 @@ public class Menu {
 	 */
 	public void printMenuItem(MenuItem item) {
 		int j=1;
-		if(item instanceof AlaCarte) {
+		if(item instanceof AlaCarte) { //if it is an AlaCarte item
 			System.out.printf("%-20s %s\nPrice: $%.2f \nDescription: %s\n\n",
 					item.getName(), "(AlaCarte - "+item.getType()+")", item.getPrice(), item.getDesc());
-		} else if(item instanceof PromotionPackage){
+		} else if(item instanceof PromotionPackage){ //if it is a Promotion Package
 			System.out.printf("%-20s %s\n",
 					item.getName(), "(Promotion Set)", item.getPrice(), item.getDesc());
-			for (Food food : item.getPackage()) {
+			for (Food food : item.getPackage()) { //get all the items in the package
 				System.out.printf("%d: %s: %s\n",j,
 						food.getType(), food.getName());
 				j++;
@@ -164,7 +164,7 @@ public class Menu {
 	        		  Food.TYPE prevType = Item.getType();
 					  Item.setType(foodType);
 	      			  System.out.println("Food Description : " + prevType + " has been updated to " + foodType);
-		      		}catch(IndexOutOfBoundsException e){
+		      		}catch(IndexOutOfBoundsException e){ // check for invalid input
 		      			System.out.println("Update menu item in food menu failed! (Invalid Type)");
 		      		}
 	              break;
@@ -182,21 +182,21 @@ public class Menu {
 	 */
 	public void UpdatePromoPackage(MenuItem Item) {
 		
-		if (!(Item instanceof PromotionPackage)) {
+		if (!(Item instanceof PromotionPackage)) { //check if input item is a Promotion Package
 			System.out.println("Menu Item is not a Promotion Package\n");
 			return;
 		}
 		
 		int choice;
 		
-		System.out.printf("%-20s %s\n", Item.getName(), "(Promotion Set)", Item.getPrice(), Item.getDesc());
+		System.out.printf("%-20s %s\n", Item.getName(), "(Promotion Set)", Item.getPrice(), Item.getDesc()); //print the package
 		for (Food food : Item.getPackage())
 			System.out.printf("%s: %s\n",
 					food.getType(), food.getName());
 		System.out.printf("Price: $%.2f\nDescription:%s\n\n",
 				Item.getPrice(), Item.getDesc());
 
-      
+      //upadate choices
       do {
         System.out.println("\nWhat would you like to update?");
         System.out.println("(1) Promotion Package Name");
@@ -236,7 +236,7 @@ public class Menu {
 	      		do{
 	      			System.out.println();
 	      			
-					
+					//update individual item choices
 	      			System.out.println("\nWould you like to add or delete food from Promotion Package?");
 	      			System.out.println("(1) Add food");
 	      			System.out.println("(2) Remove food");
